@@ -1,23 +1,31 @@
-// Web Audio API kanggo efek swara UI
-function playSound() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // Swara Tone D5
-    gain.gain.setValueAtTime(0.1, ctx.currentTime);
-    
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    
-    osc.start();
-    osc.stop(ctx.currentTime + 0.15);
+// Web Audio API භාවිතයෙන් Click සද්දයක් ලබා දීම
+function playClickSound() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, ctx.currentTime);
+            gain.gain.setValueAtTime(0.05, ctx.currentTime);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.08);
+        }
+    } catch (e) {
+        console.log("Audio not supported or allowed yet");
+    }
 }
 
-// Fungsi pindah tab Login lan Register
+// Login සහ Register Tabs මාරු කිරීමේ Function එක
 function switchTab(tab) {
-    playSound();
+    playClickSound();
+
     const loginSection = document.getElementById('loginFormSection');
     const registerSection = document.getElementById('registerFormSection');
     const loginBtn = document.getElementById('loginTabBtn');
@@ -28,7 +36,7 @@ function switchTab(tab) {
         registerSection.style.display = 'none';
         loginBtn.classList.add('active');
         registerBtn.classList.remove('active');
-    } else {
+    } else if (tab === 'register') {
         loginSection.style.display = 'none';
         registerSection.style.display = 'block';
         registerBtn.classList.add('active');
@@ -36,17 +44,17 @@ function switchTab(tab) {
     }
 }
 
-// Proses submit Login
+// Login Submit Form
 function handleLogin(event) {
     event.preventDefault();
-    playSound();
-    alert("Login berhasil!");
+    playClickSound();
+    alert("Login Successful!");
 }
 
-// Proses submit Registration
+// Registration Submit Form
 function handleRegister(event) {
     event.preventDefault();
-    playSound();
-    alert("Registration berhasil! Silakan Login.");
+    playClickSound();
+    alert("Registration Successful! Now you can Login.");
     switchTab('login');
 }

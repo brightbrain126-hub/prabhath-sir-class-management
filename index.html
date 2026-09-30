@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Educational Portal</title>
+    <title>Educational Portal - Student Login & Register</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,11 +20,11 @@
             <h2>Student Login</h2>
             <form onsubmit="handleLogin(event)">
                 <div class="input-group">
-                    <label>Index / Student ID</label>
+                    <label for="loginId">Index / Student ID</label>
                     <input type="text" id="loginId" required placeholder="Enter ID">
                 </div>
                 <div class="input-group">
-                    <label>Password</label>
+                    <label for="loginPassword">Password</label>
                     <input type="password" id="loginPassword" required placeholder="Enter Password">
                 </div>
                 <button type="submit" class="submit-btn">Login</button>
@@ -36,11 +36,11 @@
             <h2>Student Registration</h2>
             <form onsubmit="handleRegister(event)">
                 <div class="input-group">
-                    <label>Full Name</label>
+                    <label for="regName">Full Name</label>
                     <input type="text" id="regName" required placeholder="Enter Full Name">
                 </div>
                 <div class="input-group">
-                    <label>Grade</label>
+                    <label for="regGrade">Grade</label>
                     <select id="regGrade" required>
                         <option value="">Select Grade</option>
                         <option value="1">Grade 1</option>
@@ -57,11 +57,11 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>Phone Number</label>
+                    <label for="regPhone">WhatsApp / Phone Number</label>
                     <input type="tel" id="regPhone" required placeholder="Enter WhatsApp Number">
                 </div>
                 <div class="input-group">
-                    <label>Password</label>
+                    <label for="regPassword">Password</label>
                     <input type="password" id="regPassword" required placeholder="Create Password">
                 </div>
                 <button type="submit" class="submit-btn">Register Now</button>
