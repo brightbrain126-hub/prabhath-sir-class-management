@@ -1,169 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Portal</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-        body {
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 950px;
-            text-align: center;
-        }
-        .hidden {
-            display: none !important;
-        }
-        h2 {
-            color: #003366;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-        .btn {
-            background: #003366;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
-            margin-top: 10px;
-        }
-        .btn:hover {
-            background: #002244;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .grid-btn {
-            background: #28a745;
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .grid-btn:hover {
-            background: #218838;
-            transform: translateY(-2px);
-        }
-        .lesson-btn {
-            background: #007bff;
-        }
-        .lesson-btn:hover {
-            background: #0056b3;
-        }
-        .back-btn {
-            background: #6c757d;
-        }
-        .back-btn:hover {
-            background: #5a6268;
-        }
-    </style>
+    <title>Educational Portal</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
+    <div class="portal-card">
+        <!-- Tab Navigation -->
+        <div class="tab-buttons">
+            <button id="loginTabBtn" class="active" onclick="switchTab('login')">Login</button>
+            <button id="registerTabBtn" onclick="switchTab('register')">Register</button>
+        </div>
 
-        <!-- 1. LOGIN SECTION -->
-        <div id="login-section">
+        <!-- Login Form -->
+        <div id="loginFormSection" class="form-section">
             <h2>Student Login</h2>
-            <form id="loginForm" onsubmit="return handleLogin(event)">
-                <div class="form-group">
-                    <label for="username">Username (Contact No)</label>
-                    <input type="text" id="username" placeholder="Enter Contact Number" required>
+            <form onsubmit="handleLogin(event)">
+                <div class="input-group">
+                    <label>Index / Student ID</label>
+                    <input type="text" id="loginId" required placeholder="Enter ID">
                 </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter Password" required>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter Password">
                 </div>
-                <button type="submit" class="btn">Login</button>
+                <button type="submit" class="submit-btn">Login</button>
             </form>
         </div>
 
-        <!-- 2. GRADE SELECTION (Grade 1 - 11) -->
-        <div id="grade-selection" class="hidden">
-            <h2>Select Your Grade</h2>
-            <div class="grid">
-                <button class="grid-btn" onclick="selectGrade(1)">Grade 1</button>
-                <button class="grid-btn" onclick="selectGrade(2)">Grade 2</button>
-                <button class="grid-btn" onclick="selectGrade(3)">Grade 3</button>
-                <button class="grid-btn" onclick="selectGrade(4)">Grade 4</button>
-                <button class="grid-btn" onclick="selectGrade(5)">Grade 5</button>
-                <button class="grid-btn" onclick="selectGrade(6)">Grade 6</button>
-                <button class="grid-btn" onclick="selectGrade(7)">Grade 7</button>
-                <button class="grid-btn" onclick="selectGrade(8)">Grade 8</button>
-                <button class="grid-btn" onclick="selectGrade(9)">Grade 9</button>
-                <button class="grid-btn" onclick="selectGrade(10)">Grade 10</button>
-                <button class="grid-btn" onclick="selectGrade(11)">Grade 11</button>
-            </div>
+        <!-- Registration Form -->
+        <div id="registerFormSection" class="form-section" style="display: none;">
+            <h2>Student Registration</h2>
+            <form onsubmit="handleRegister(event)">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="regName" required placeholder="Enter Full Name">
+                </div>
+                <div class="input-group">
+                    <label>Grade</label>
+                    <select id="regGrade" required>
+                        <option value="">Select Grade</option>
+                        <option value="1">Grade 1</option>
+                        <option value="2">Grade 2</option>
+                        <option value="3">Grade 3</option>
+                        <option value="4">Grade 4</option>
+                        <option value="5">Grade 5</option>
+                        <option value="6">Grade 6</option>
+                        <option value="7">Grade 7</option>
+                        <option value="8">Grade 8</option>
+                        <option value="9">Grade 9</option>
+                        <option value="10">Grade 10</option>
+                        <option value="11">Grade 11</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="regPhone" required placeholder="Enter WhatsApp Number">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" required placeholder="Create Password">
+                </div>
+                <button type="submit" class="submit-btn">Register Now</button>
+            </form>
         </div>
-
-        <!-- 3. SUBJECT SELECTION -->
-        <div id="subject-selection" class="hidden">
-            <h2 id="selected-grade-title">Select Subject</h2>
-            <div class="grid">
-                <button class="grid-btn" onclick="showSubjectContent('Mathematics')">Mathematics</button>
-                <button class="grid-btn" onclick="showSubjectContent('English')">English</button>
-                <button class="grid-btn" onclick="showSubjectContent('Science')">Science</button>
-                <button class="grid-btn" onclick="showSubjectContent('Sinhala')">Sinhala</button>
-            </div>
-            <button class="btn back-btn" onclick="goBackToGrades()">⬅️ Back to Grades</button>
-        </div>
-
-        <!-- 4. LESSON SELECTION (Grade 1 English) -->
-        <div id="lesson-selection" class="hidden">
-            <h2>Grade 1 - English Lessons</h2>
-            <div class="grid">
-                <button class="grid-btn lesson-btn" onclick="loadLesson('alphabet.html', 'Lesson 1 - Alphabet')">Lesson 1</button>
-                <button class="grid-btn lesson-btn" onclick="loadLesson('alphabet2.html', 'Lesson 2 - Alphabet Part 2')">Lesson 2</button>
-            </div>
-            <button class="btn back-btn" onclick="goBackToSubjects()">⬅️ Back to Subjects</button>
-        </div>
-
-        <!-- 5. CONTENT / PAYMENT SECTION -->
-        <div id="content-section" class="hidden"></div>
-
     </div>
 
     <script src="app.js"></script>
