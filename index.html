@@ -3,111 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BrightBrain Class Management</title>
+    <title>BrightBrain Class Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; padding: 20px; background-color: #f4f6f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+            overflow-x: hidden;
+            background-color: #f4f6f9;
         }
+
+        /* Dynamic Background Slideshow */
         .bg-slideshow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-size: cover; background-position: center; transition: background-image 1s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1.2s ease-in-out;
         }
-        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: rgba(243, 244, 246, 0.65); }
-        .top-bar { position: absolute; top: 20px; left: 20px; display: flex; align-items: center; gap: 10px; }
-        .brand-logo { font-size: 24px; font-weight: bold; color: #7c3aed; display: flex; align-items: center; gap: 10px; }
-        .portal-card { background: #ffffff; width: 100%; max-width: 420px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); overflow: hidden; z-index: 1; margin-top: 40px; }
-        .tab-buttons { display: flex; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-        .tab-btn { flex: 1; padding: 14px; border: none; background: none; font-size: 14px; font-weight: 600; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .tab-btn.active { color: #7c3aed; background: #ffffff; border-bottom: 3px solid #7c3aed; }
-        .card-body { padding: 24px 20px; }
-        .form-header { text-align: center; margin-bottom: 20px; }
-        .form-header h2 { font-size: 20px; color: #1e293b; margin-bottom: 4px; }
-        .form-header p { font-size: 12px; color: #64748b; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; margin-bottom: 6px; font-size: 11px; font-weight: 700; color: #475569; }
-        .input-wrapper { position: relative; display: flex; align-items: center; }
-        .input-wrapper i { position: absolute; left: 14px; color: #94a3b8; font-size: 14px; }
-        .input-wrapper input { width: 100%; padding: 10px 12px 10px 38px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 13px; outline: none; }
-        .btn-primary { width: 100%; padding: 12px; background: #7c3aed; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-primary:hover { background: #6d28d9; }
-        .form-footer { margin-top: 15px; display: flex; justify-content: space-between; font-size: 12px; }
-        .form-footer a { color: #7c3aed; text-decoration: none; font-weight: 600; }
-        .hidden { display: none; }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: rgba(243, 244, 246, 0.65);
+        }
+
+        /* Top Brand Logo */
+        .top-bar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #7c3aed;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 8px 16px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        /* Language Selector Bar */
+        .lang-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: #ffffff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .lang-bar select {
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            color: #7c3aed;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Floating WhatsApp Button */
+        .contact-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #25D366;
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 999;
+            transition: transform 0.2s;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Main Container Card */
+        .portal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border: 1px solid #eef2f6;
+            overflow: hidden;
+            z-index: 1;
+            margin-top: 50px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            background: none;
+            font-size: 15px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            color: #7c3aed;
+            background: #ffffff;
+            border-bottom: 3px solid #7c3aed;
+        }
+
+        .card-body {
+            padding: 28px 24px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .form-header h2 {
+            font-size: 22px;
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .form-header p {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            font-size: 15px;
+        }
+
+        .input-wrapper input, .input-wrapper select {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #334155;
+            background-color: #f8fafc;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-wrapper input:focus, .input-wrapper select:focus {
+            border-color: #7c3aed;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 13px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: #6d28d9;
+        }
+
+        .link-text {
+            color: #7c3aed;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .link-text:hover {
+            text-decoration: underline;
+        }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
+
+    <!-- Language Selector -->
+    <div class="lang-bar">
+        <i class="fa-solid fa-globe" style="color: #7c3aed;"></i>
+        <select id="langSelect" onchange="changeLanguage(this.value)">
+            <option value="si" selected>සිංහල</option>
+            <option value="en">English</option>
+            <option value="ta">தமிழ்</option>
+        </select>
+    </div>
+
+    <!-- Top Logo -->
+    <div class="top-bar">
+        <div class="brand-logo">
+            <i class="fa-solid fa-graduation-cap"></i> BrightBrain
+        </div>
+    </div>
+
+    <!-- Dynamic Background Slideshow -->
     <div id="bgSlide" class="bg-slideshow"></div>
     <div class="bg-overlay"></div>
 
-    <div class="top-bar">
-        <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i> BrightBrain</div>
-    </div>
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/94766980516" target="_blank" class="contact-btn">
+        <i class="fa-brands fa-whatsapp"></i> <span id="txtWhatsapp">Contact Us</span>
+    </a>
 
+    <!-- Main Card Container -->
     <div class="portal-card">
         <div class="tab-buttons">
-            <button id="loginTabBtn" class="tab-btn active" onclick="switchTab('login')"><i class="fa-solid fa-right-to-bracket"></i> ඇතුළු වන්න</button>
-            <button id="registerTabBtn" class="tab-btn" onclick="switchTab('register')"><i class="fa-solid fa-user-plus"></i> ලියාපදිංචිය</button>
+            <button id="loginTabBtn" class="tab-btn active" onclick="switchAuthTab('login')">
+                <i class="fa-solid fa-right-to-bracket"></i> <span id="txtTabLogin">ඇතුළු වන්න</span>
+            </button>
+            <button id="regTabBtn" class="tab-btn" onclick="switchAuthTab('register')">
+                <i class="fa-solid fa-user-plus"></i> <span id="txtTabRegister">ලියාපදිංචිය</span>
+            </button>
         </div>
 
-        <!-- Login Form -->
-        <form id="loginForm" class="card-body" onsubmit="handleLogin(event)">
-            <div class="form-header">
-                <h2>ශිෂ්‍ය ගිණුමට පිවිසෙන්න</h2>
-                <p>ලියාපදිංචි අංකය හෝ දුරකථන අංකය ඇතුළත් කරන්න</p>
-            </div>
-            <div class="form-group">
-                <label>INDEX / STUDENT ID හෝ දුරකථන අංකය</label>
-                <div class="input-wrapper">
-                    <i class="fa-regular fa-id-card"></i>
-                    <input type="text" id="loginId" required placeholder="උදා: STU1001 හෝ 0766980516">
+        <div class="card-body">
+            <!-- LOGIN FORM -->
+            <div id="loginForm">
+                <div class="form-header">
+                    <h2 id="txtLoginTitle">ශිෂ්‍ය ගිණුමට පිවිසෙන්න</h2>
+                    <p id="txtLoginSub">ලියාපදිංචි අංකය හෝ දුරකථන අංකය ඇතුළත් කරන්න</p>
+                </div>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label id="lblLoginId">INDEX / STUDENT ID හෝ දුරකථන අංකය</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-id-card"></i>
+                            <input type="text" id="loginId" required placeholder="උදා: STU1001 හෝ 0766980516">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblLoginPass">මුරපදය (PASSWORD)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="loginPass" required placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" id="btnLogin">
+                        ඇතුළු වන්න <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+                <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+                    <span class="link-text" id="txtForgotPass" onclick="alert('මුරපදය නැවත ලබා ගැනීමට 0766980516 අංකයට WhatsApp පණිවිඩයක් එවන්න.')">මුරපදය අමතකද?</span>
+                    <a href="admin.html" class="link-text" id="txtAdminLink">Admin Panel</a>
                 </div>
             </div>
-            <div class="form-group">
-                <label>මුරපදය (PASSWORD)</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="loginPassword" required placeholder="••••••••">
-                </div>
-            </div>
-            <button type="submit" class="btn-primary">ඇතුළු වන්න <i class="fa-solid fa-arrow-right"></i></button>
-            <div class="form-footer">
-                <a href="#">මුරපදය අමතකද?</a>
-                <a href="admin.html">Admin Panel</a>
-            </div>
-        </form>
 
-        <!-- Register Form -->
-        <form id="registerForm" class="card-body hidden" onsubmit="handleRegister(event)">
-            <div class="form-header">
-                <h2>නවාතැන් ලියාපදිංචිය</h2>
-                <p>ඔබගේ තොරතුරු ඇතුළත් කර ගිණුමක් සාදාගන්න</p>
-            </div>
-            <div class="form-group">
-                <label>සම්පූර්ණ නම</label>
-                <div class="input-wrapper">
-                    <i class="fa-regular fa-user"></i>
-                    <input type="text" id="regName" required placeholder="ඔබගේ නම">
+            <!-- REGISTER FORM -->
+            <div id="registerForm" class="hidden">
+                <div class="form-header">
+                    <h2 id="txtRegTitle">නව ශිෂ්‍ය ලියාපදිංචිය</h2>
+                    <p id="txtRegSub">ඔබගේ තොරතුරු ඇතුළත් කර ගිණුමක් සාදාගන්න</p>
                 </div>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label id="lblRegName">සම්පූර්ණ නම</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="regName" required placeholder="ඔබගේ සම්පූර්ණ නම">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblRegGrade">ශ්‍රේණිය / පන්තිය</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <select id="regGrade" required>
+                                <option value="">ශ්‍රේණිය තෝරන්න</option>
+                                <option value="Grade 1-5">1 - 5 ශ්‍රේණිය</option>
+                                <option value="Grade 6-11">6 - 11 ශ්‍රේණිය</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblRegPhone">WHATSAPP දුරකථන අංකය</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="tel" id="regPhone" required placeholder="07XXXXXXXX">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblRegPass">නව මුරපදයක් (PASSWORD)</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="regPass" required placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" id="btnRegister">
+                        ලියාපදිංචි වන්න <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
             </div>
-            <div class="form-group">
-                <label>දුරකථන අංකය</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="tel" id="regPhone" required placeholder="07XXXXXXXX">
-                </div>
-            </div>
-            <div class="form-group">
-                <label>මුරපදය (PASSWORD)</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="regPassword" required placeholder="••••••••">
-                </div>
-            </div>
-            <button type="submit" class="btn-primary">ලියාපදිංචි වන්න <i class="fa-solid fa-user-check"></i></button>
-        </form>
+        </div>
     </div>
 
-    <script src="app.js"></script>
+    <script>
+        // Upload කරන ලද Wallpaper File Names Exact Match
+        const bgImages = [
+            './image15.jpg',
+            './image13.png',
+            './image12.jpg',
+            './image11.jpg',
+            './image10.jpg',
+            './image9.jpg',
+            './image8.jpg',
+            './image7.png',
+            './image6.jpg',
+            './image5.jpg',
+            './image4.png',
+            './image3.png',
+            './image2.jpg',
+            './image1.png'
+        ];
+
+        let currentBgIndex = 0;
+        function changeBackground() {
+            const bgDiv = document.getElementById('bgSlide');
+            if (bgDiv && bgImages.length > 0) {
+                bgDiv.style.backgroundImage = `url('${bgImages[currentBgIndex]}')`;
+                currentBgIndex = (currentBgIndex + 1) % bgImages.length;
+            }
+        }
+        changeBackground();
+        setInterval(changeBackground, 4000);
+
+        // Language Translations
+        const translations = {
+            si: {
+                txtWhatsapp: "සම්බන්ධ වන්න",
+                txtTabLogin: "ඇතුළු වන්න",
+                txtTabRegister: "ලියාපදිංචිය",
+                txtLoginTitle: "ශිෂ්‍ය ගිණුමට පිවිසෙන්න",
+                txtLoginSub: "ලියාපදිංචි අංකය හෝ දුරකථන අංකය ඇතුළත් කරන්න",
+                lblLoginId: "INDEX / STUDENT ID හෝ දුරකථන අංකය",
+                lblLoginPass: "මුරපදය (PASSWORD)",
+                btnLogin: "ඇතුළු වන්න",
+                txtForgotPass: "මුරපදය අමතකද?",
+                txtAdminLink: "Admin Panel",
+                txtRegTitle: "නව ශිෂ්‍ය ලියාපදිංචිය",
+                txtRegSub: "ඔබගේ තොරතුරු ඇතුළත් කර ගිණුමක් සාදාගන්න",
+                lblRegName: "සම්පූර්ණ නම",
+                lblRegGrade: "ශ්‍රේණිය / පන්තිය",
+                lblRegPhone: "WHATSAPP දුරකථන අංකය",
+                lblRegPass: "නව මුරපදයක් (PASSWORD)",
+                btnRegister: "ලියාපදිංචි වන්න"
+            },
+            en: {
+                txtWhatsapp: "Contact Us",
+                txtTabLogin: "Login",
+                txtTabRegister: "Register",
+                txtLoginTitle: "Student Login",
+                txtLoginSub: "Enter your Student ID or Phone number",
+                lblLoginId: "INDEX / STUDENT ID OR PHONE",
+                lblLoginPass: "PASSWORD",
+                btnLogin: "Login",
+                txtForgotPass: "Forgot Password?",
+                txtAdminLink: "Admin Panel",
+                txtRegTitle: "Student Registration",
+                txtRegSub: "Fill in your details to create an account",
+                lblRegName: "FULL NAME",
+                lblRegGrade: "GRADE / CLASS",
+                lblRegPhone: "WHATSAPP PHONE NUMBER",
+                lblRegPass: "CREATE PASSWORD",
+                btnRegister: "Register Now"
+            },
+            ta: {
+                txtWhatsapp: "තொடர்பு கொள்ள",
+                txtTabLogin: "உள்நுழைவு",
+                txtTabRegister: "பதிவு செய்ய",
+                txtLoginTitle: "மாணவர் உள்நுழைவு",
+                txtLoginSub: "உங்கள் அடையாள எண் அல்லது தொலைபேசியை உள்ளிடவும்",
+                lblLoginId: "அடையாள எண் அல்லது தொலைபேசி எண்",
+                lblLoginPass: "கடவுச்சொல்",
+                btnLogin: "உள்நுழைக",
+                txtForgotPass: "கடவுச்சொல் மறந்துவிட்டதா?",
+                txtAdminLink: "நிர்வாகக் குழு",
+                txtRegTitle: "மாணவர் பதிவு",
+                txtRegSub: "கணக்கை உருவாக்க விவரங்களை நிரப்பவும்",
+                lblRegName: "முழுப் பெயர்",
+                lblRegGrade: "வகுப்பு",
+                lblRegPhone: "WHATSAPP தொலைபேசி எண்",
+                lblRegPass: "புதிய கடவுச்சொல்",
+                btnRegister: "பதிவு செய்க"
+            }
+        };
+
+        function changeLanguage(lang) {
+            const dict = translations[lang];
+            for (let key in dict) {
+                const el = document.getElementById(key);
+                if (el) el.innerText = dict[key];
+            }
+        }
+
+        function switchAuthTab(tab) {
+            document.getElementById('loginTabBtn').classList.toggle('active', tab === 'login');
+            document.getElementById('regTabBtn').classList.toggle('active', tab === 'register');
+            document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
+            document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
+        }
+
+        // Handle Login Action
+        function handleLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('loginId').value;
+            const pass = document.getElementById('loginPass').value;
+
+            if (id && pass) {
+                alert('සාර්ථකව ඇතුළු විය!');
+                // ඊළඟ පිටුවට (alphabet.html) යෑමට:
+                window.location.href = 'alphabet.html';
+            } else {
+                alert('කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න.');
+            }
+        }
+
+        // Handle Register Action
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const phone = document.getElementById('regPhone').value;
+            const pass = document.getElementById('regPass').value;
+
+            if (name && phone && pass) {
+                alert('ලියාපදිංචිය සාර්ථකයි! දැන් ඇතුළු වන්න.');
+                switchAuthTab('login');
+            } else {
+                alert('කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න.');
+            }
+        }
+    </script>
 </body>
 </html>
