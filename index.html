@@ -3,72 +3,674 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Educational Portal - Student Login & Register</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Prabhath Sir Educational Portal</title>
+    <!-- Tailwind CSS CDN for modern responsive UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for UI icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#6d28d9',
+                            600: '#5b21b6',
+                            700: '#4c1d95',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col justify-between">
 
-    <div class="portal-card">
-        <!-- Tab Navigation -->
-        <div class="tab-buttons">
-            <button id="loginTabBtn" class="active" onclick="switchTab('login')">Login</button>
-            <button id="registerTabBtn" onclick="switchTab('register')">Register</button>
+    <header class="bg-brand-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="showPortalHome()">
+                <div class="bg-white text-brand-600 p-2 rounded-lg font-black text-xl shadow">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Prabhath Sir Class Hub</h1>
+                    <p class="text-xs text-brand-100">Grades 1 - 11 Educational Portal</p>
+                </div>
+            </div>
+
+            <!-- Header Right Menu -->
+            <div class="flex items-center space-x-3">
+                <button id="userStatusBadge" class="hidden text-xs bg-brand-700 hover:bg-brand-800 px-3 py-1.5 rounded-full font-medium transition flex items-center gap-2">
+                    <i class="fa-solid fa-circle-user text-emerald-400"></i>
+                    <span id="loggedInUserName">Student</span>
+                </button>
+                <button onclick="openAdminModal()" class="text-xs bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg border border-white/20 font-medium transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>Admin Panel</span>
+                </button>
+                <button id="logoutBtn" onclick="handleLogout()" class="hidden text-xs bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg font-medium transition">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
         </div>
+    </header>
 
-        <!-- Login Form -->
-        <div id="loginFormSection" class="form-section">
-            <h2>Student Login</h2>
-            <form onsubmit="handleLogin(event)">
-                <div class="input-group">
-                    <label for="loginId">Index / Student ID</label>
-                    <input type="text" id="loginId" required placeholder="Enter ID">
-                </div>
-                <div class="input-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" required placeholder="Enter Password">
-                </div>
-                <button type="submit" class="submit-btn">Login</button>
-            </form>
-        </div>
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
 
-        <!-- Registration Form -->
-        <div id="registerFormSection" class="form-section" style="display: none;">
-            <h2>Student Registration</h2>
-            <form onsubmit="handleRegister(event)">
-                <div class="input-group">
-                    <label for="regName">Full Name</label>
-                    <input type="text" id="regName" required placeholder="Enter Full Name">
+        <!-- ================= VIEW 1: AUTHENTICATION CARD (LOGIN / REGISTER) ================= -->
+        <section id="authCardSection" class="w-full max-w-md my-8">
+            <div class="glass-card rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden">
+                
+                <!-- Dual Tabs Navigation -->
+                <div class="flex border-b border-slate-200 bg-slate-50/50">
+                    <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 py-3.5 text-center font-semibold text-sm transition-all border-b-2 border-brand-600 text-brand-600 bg-white">
+                        <i class="fa-solid fa-right-to-bracket mr-1.5"></i> Login
+                    </button>
+                    <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 py-3.5 text-center font-semibold text-sm text-slate-500 hover:text-slate-800 transition-all border-b-2 border-transparent">
+                        <i class="fa-solid fa-user-plus mr-1.5"></i> Register
+                    </button>
                 </div>
-                <div class="input-group">
-                    <label for="regGrade">Grade</label>
-                    <select id="regGrade" required>
-                        <option value="">Select Grade</option>
-                        <option value="1">Grade 1</option>
-                        <option value="2">Grade 2</option>
-                        <option value="3">Grade 3</option>
-                        <option value="4">Grade 4</option>
-                        <option value="5">Grade 5</option>
-                        <option value="6">Grade 6</option>
-                        <option value="7">Grade 7</option>
-                        <option value="8">Grade 8</option>
-                        <option value="9">Grade 9</option>
-                        <option value="10">Grade 10</option>
-                        <option value="11">Grade 11</option>
-                    </select>
+
+                <div class="p-6 sm:p-8">
+                    <!-- Login Form -->
+                    <div id="loginFormSection" class="space-y-4">
+                        <div class="text-center mb-6">
+                            <h2 class="text-2xl font-bold text-slate-800">Student Login</h2>
+                            <p class="text-xs text-slate-500 mt-1">Enter your registered Index or Phone number to continue</p>
+                        </div>
+
+                        <form onsubmit="handleLoginSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">Index / Student ID or Phone</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                        <i class="fa-solid fa-id-card"></i>
+                                    </span>
+                                    <input type="text" id="loginId" required placeholder="e.g. STU1001 or 0771234567" 
+                                        class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">Password</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                        <i class="fa-solid fa-lock"></i>
+                                    </span>
+                                    <input type="password" id="loginPassword" required placeholder="••••••••" 
+                                        class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+                                <span>Login to Class Portal</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Registration Form -->
+                    <div id="registerFormSection" class="space-y-4 hidden">
+                        <div class="text-center mb-6">
+                            <h2 class="text-2xl font-bold text-slate-800">New Registration</h2>
+                            <p class="text-xs text-slate-500 mt-1">Fill in your details to create a student account</p>
+                        </div>
+
+                        <form onsubmit="handleRegisterSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">Full Name</label>
+                                <input type="text" id="regName" required placeholder="e.g. Kasun Perera" 
+                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">Grade</label>
+                                    <select id="regGrade" required class="w-full px-3 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition">
+                                        <option value="">Select Grade</option>
+                                        <option value="1">Grade 1</option>
+                                        <option value="2">Grade 2</option>
+                                        <option value="3">Grade 3</option>
+                                        <option value="4">Grade 4</option>
+                                        <option value="5">Grade 5</option>
+                                        <option value="6">Grade 6</option>
+                                        <option value="7">Grade 7</option>
+                                        <option value="8">Grade 8</option>
+                                        <option value="9">Grade 9</option>
+                                        <option value="10">Grade 10</option>
+                                        <option value="11">Grade 11</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">WhatsApp No</label>
+                                    <input type="tel" id="regPhone" required placeholder="07XXXXXXXX" 
+                                        class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1.5">Password</label>
+                                <input type="password" id="regPassword" required placeholder="Create strong password" 
+                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition">
+                            </div>
+
+                            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition transform active:scale-[0.99] flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-user-check"></i>
+                                <span>Complete Registration</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Direct Admin Switch Link -->
+                    <div class="mt-6 pt-4 border-t border-slate-200 text-center">
+                        <button onclick="openAdminModal()" class="text-xs text-slate-400 hover:text-brand-600 font-medium transition inline-flex items-center gap-1">
+                            <i class="fa-solid fa-lock text-[10px]"></i> Are you a teacher/administrator? Access Admin Panel
+                        </button>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="regPhone">WhatsApp / Phone Number</label>
-                    <input type="tel" id="regPhone" required placeholder="Enter WhatsApp Number">
+            </div>
+        </section>
+
+        <!-- ================= VIEW 2: STUDENT DASHBOARD ================= -->
+        <section id="studentDashboardSection" class="w-full max-w-6xl my-6 hidden">
+            <div class="space-y-6">
+                
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-brand-600 to-indigo-700 text-white p-6 sm:p-8 rounded-2xl shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div>
+                        <span id="dashboardGradeBadge" class="inline-block bg-white/20 text-white text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wider mb-2">Grade 7</span>
+                        <h2 class="text-2xl sm:text-3xl font-bold">Welcome, <span id="dashStudentName">Student</span>!</h2>
+                        <p class="text-brand-100 text-sm mt-1">Access your live Zoom links, recorded video lessons, and online MCQ exams below.</p>
+                    </div>
+                    <div class="bg-white/10 p-4 rounded-xl border border-white/20 text-center min-w-[140px]">
+                        <p class="text-xs text-brand-200">Account Status</p>
+                        <p class="text-emerald-300 font-bold text-sm flex items-center justify-center gap-1 mt-0.5">
+                            <i class="fa-solid fa-circle-check"></i> Active Member
+                        </p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="regPassword">Password</label>
-                    <input type="password" id="regPassword" required placeholder="Create Password">
+
+                <!-- Subjects & Content Area -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Left: Subject Selector List -->
+                    <div class="bg-white p-5 rounded-2xl shadow-md border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-base mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-book-bookmark text-brand-600"></i> Your Subjects
+                        </h3>
+                        <div id="subjectListContainer" class="space-y-2">
+                            <!-- Dynamic Subject Buttons will be rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Content Player & Resources -->
+                    <div class="md:col-span-2 space-y-6">
+                        
+                        <!-- Selected Subject Overview -->
+                        <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <h3 id="currentSubjectTitle" class="text-xl font-bold text-slate-800">Mathematics</h3>
+                                <span class="bg-brand-50 text-brand-600 font-semibold text-xs px-2.5 py-1 rounded-md">Live Resources</span>
+                            </div>
+
+                            <!-- Tabs: Class Recordings vs Free MCQs -->
+                            <div class="mt-6">
+                                <div class="grid grid-cols-2 gap-3 mb-6">
+                                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/80 transition cursor-pointer" onclick="showContentModal('recordings')">
+                                        <div class="w-10 h-10 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-lg mb-2">
+                                            <i class="fa-solid fa-video"></i>
+                                        </div>
+                                        <h4 class="font-bold text-slate-800 text-sm">Class Recordings</h4>
+                                        <p class="text-xs text-slate-500 mt-1">Watch missed video lessons & discussions</p>
+                                    </div>
+
+                                    <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100/80 transition cursor-pointer" onclick="showContentModal('mcq')">
+                                        <div class="w-10 h-10 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-bold text-lg mb-2">
+                                            <i class="fa-solid fa-file-pen"></i>
+                                        </div>
+                                        <h4 class="font-bold text-slate-800 text-sm">Free MCQ Papers</h4>
+                                        <p class="text-xs text-slate-500 mt-1">Practice interactive online model papers</p>
+                                    </div>
+                                </div>
+
+                                <!-- Class Schedule Box -->
+                                <div class="bg-brand-50 border border-brand-100 rounded-xl p-4 flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="text-brand-600 text-xl"><i class="fa-solid fa-calendar-check"></i></div>
+                                        <div>
+                                            <p class="text-xs text-slate-500 font-medium">Next Live Session</p>
+                                            <p class="text-sm font-bold text-slate-800">Saturday @ 8:00 AM - Zoom Class</p>
+                                        </div>
+                                    </div>
+                                    <button onclick="alert('Redirecting to Live Zoom Room...')" class="bg-brand-600 hover:bg-brand-700 text-white text-xs px-3.5 py-2 rounded-lg font-semibold shadow transition">
+                                        Join Zoom
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                <button type="submit" class="submit-btn">Register Now</button>
+
+            </div>
+        </section>
+
+        <!-- ================= VIEW 3: ADMIN DASHBOARD ================= -->
+        <section id="adminDashboardSection" class="w-full max-w-6xl my-6 hidden">
+            <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+                <!-- Admin Header -->
+                <div class="bg-slate-900 text-white p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="bg-amber-500 text-slate-900 font-extrabold text-[10px] uppercase px-2.5 py-0.5 rounded tracking-wide">Administrator</span>
+                        <h2 class="text-2xl font-bold mt-1">Class Management Control Center</h2>
+                        <p class="text-slate-400 text-xs">Manage student accounts, verify payment slips, and manage class access.</p>
+                    </div>
+                    <button onclick="showPortalHome()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3.5 py-2 rounded-lg font-medium border border-slate-700 transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Exit Admin Mode
+                    </button>
+                </div>
+
+                <!-- Admin Tab Nav -->
+                <div class="flex border-b border-slate-200 bg-slate-50">
+                    <button id="adminTabStudentsBtn" onclick="switchAdminSubTab('students')" class="px-6 py-3.5 font-bold text-sm text-brand-600 border-b-2 border-brand-600 bg-white">
+                        <i class="fa-solid fa-users mr-1"></i> Registered Students
+                    </button>
+                    <button id="adminTabPaymentsBtn" onclick="switchAdminSubTab('payments')" class="px-6 py-3.5 font-semibold text-sm text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
+                        <i class="fa-solid fa-file-invoice-dollar mr-1"></i> Payment Verification Slips
+                    </button>
+                </div>
+
+                <!-- Admin Content Body -->
+                <div class="p-6">
+                    <!-- Sub-Tab 1: Student Directory -->
+                    <div id="adminSubTabStudents">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-slate-800">Active Student Directory</h3>
+                            <span id="studentCountBadge" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-md font-semibold">Total: 0 Students</span>
+                        </div>
+                        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                            <table class="w-full text-left text-sm text-slate-600">
+                                <thead class="bg-slate-50 text-xs uppercase text-slate-500 font-semibold border-b border-slate-200">
+                                    <tr>
+                                        <th class="px-4 py-3">Student Name</th>
+                                        <th class="px-4 py-3">Grade</th>
+                                        <th class="px-4 py-3">WhatsApp No</th>
+                                        <th class="px-4 py-3">Index / User ID</th>
+                                        <th class="px-4 py-3">Status</th>
+                                        <th class="px-4 py-3 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminStudentTableBody" class="divide-y divide-slate-200">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Sub-Tab 2: Payment Slips -->
+                    <div id="adminSubTabPayments" class="hidden">
+                        <h3 class="font-bold text-slate-800 mb-4">Pending Payment Approval Requests</h3>
+                        <div class="p-8 border-2 border-dashed border-slate-200 rounded-xl text-center">
+                            <i class="fa-solid fa-receipt text-3xl text-slate-300 mb-2"></i>
+                            <p class="text-sm font-medium text-slate-600">No pending slip approvals at the moment.</p>
+                            <p class="text-xs text-slate-400 mt-1">Student payment submissions will appear here for verification.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MODAL 1: ADMIN LOGIN OVERLAY ================= -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-sm w-full p-6 relative">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 bg-slate-900 text-amber-400 rounded-full flex items-center justify-center mx-auto text-xl mb-2">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800">Admin Authorization</h3>
+                <p class="text-xs text-slate-500">Sign in with teacher / admin credentials</p>
+            </div>
+
+            <form onsubmit="handleAdminAuth(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Username</label>
+                    <input type="text" id="adminUser" required placeholder="admin" 
+                        class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
+                    <input type="password" id="adminPass" required placeholder="admin123" 
+                        class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <p class="text-[11px] text-slate-400 text-center">Default: Username: <span class="font-mono text-slate-600">admin</span> | Password: <span class="font-mono text-slate-600">admin123</span></p>
+                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-lg text-sm transition">
+                    Authenticate
+                </button>
             </form>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- ================= MODAL 2: CONTENT DETAIL POPUP ================= -->
+    <div id="contentDetailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full p-6 relative">
+            <button onclick="closeContentModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <h3 id="modalContentTitle" class="text-lg font-bold text-slate-800 mb-4">Resource Center</h3>
+            <div id="modalContentBody" class="space-y-3">
+                <!-- Content inserted dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+        <p>&copy; 2026 Prabhath Sir Educational Portal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Web Audio API click sound feedback synthesizer
+        function playUiSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (AudioContext) {
+                    const ctx = new AudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.04, ctx.currentTime);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.1);
+                }
+            } catch (e) {
+                // Ignore audio context autoplay restriction
+            }
+        }
+
+        // Subjects configuration according to grade tier
+        const GRADE_SUBJECTS = {
+            primary: ["Mathematics", "English", "Science", "Sinhala"], // Grades 1-5
+            secondary: ["Geography", "Civics", "Health", "English", "History", "Mathematics", "Science"] // Grades 6-11
+        };
+
+        // Initialize local dataset
+        function initializeDefaultData() {
+            if (!localStorage.getItem('portal_students')) {
+                const sampleStudents = [
+                    { name: "Prabhath Perera", grade: "7", phone: "0766980516", id: "STU1001", password: "123" },
+                    { name: "Kamal Silva", grade: "5", phone: "0771234567", id: "STU1002", password: "123" }
+                ];
+                localStorage.setItem('portal_students', JSON.stringify(sampleStudents));
+            }
+        }
+
+        let currentUser = null;
+        let selectedSubject = "Mathematics";
+
+        function switchAuthTab(tab) {
+            playUiSound();
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const regBtn = document.getElementById('tabRegisterBtn');
+            const loginForm = document.getElementById('loginFormSection');
+            const regForm = document.getElementById('registerFormSection');
+
+            if (tab === 'login') {
+                loginBtn.className = "flex-1 py-3.5 text-center font-semibold text-sm transition-all border-b-2 border-brand-600 text-brand-600 bg-white";
+                regBtn.className = "flex-1 py-3.5 text-center font-semibold text-sm text-slate-500 hover:text-slate-800 transition-all border-b-2 border-transparent";
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+            } else {
+                regBtn.className = "flex-1 py-3.5 text-center font-semibold text-sm transition-all border-b-2 border-brand-600 text-brand-600 bg-white";
+                loginBtn.className = "flex-1 py-3.5 text-center font-semibold text-sm text-slate-500 hover:text-slate-800 transition-all border-b-2 border-transparent";
+                regForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            }
+        }
+
+        function showStudentDashboard(user) {
+            currentUser = user;
+            document.getElementById('authCardSection').classList.add('hidden');
+            document.getElementById('adminDashboardSection').classList.add('hidden');
+            document.getElementById('studentDashboardSection').classList.remove('hidden');
+
+            document.getElementById('loggedInUserName').innerText = user.name;
+            document.getElementById('dashStudentName').innerText = user.name;
+            document.getElementById('dashboardGradeBadge').innerText = "Grade " + user.grade;
+            document.getElementById('userStatusBadge').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+
+            renderSubjectList(parseInt(user.grade));
+        }
+
+        function showPortalHome() {
+            document.getElementById('studentDashboardSection').classList.add('hidden');
+            document.getElementById('adminDashboardSection').classList.add('hidden');
+            document.getElementById('authCardSection').classList.remove('hidden');
+        }
+
+        function handleRegisterSubmit(e) {
+            e.preventDefault();
+            playUiSound();
+
+            const name = document.getElementById('regName').value.trim();
+            const grade = document.getElementById('regGrade').value;
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            const students = JSON.parse(localStorage.getItem('portal_students') || '[]');
+            const newId = "STU" + (1001 + students.length);
+
+            const newStudent = { name, grade, phone, id: newId, password };
+            students.push(newStudent);
+            localStorage.setItem('portal_students', JSON.stringify(students));
+
+            alert(`Registration Successful!\n\nYour Student ID is: ${newId}\nYou can now login using your ID or Phone number.`);
+            
+            document.getElementById('loginId').value = newId;
+            switchAuthTab('login');
+        }
+
+        function handleLoginSubmit(e) {
+            e.preventDefault();
+            playUiSound();
+
+            const loginId = document.getElementById('loginId').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            const students = JSON.parse(localStorage.getItem('portal_students') || '[]');
+            const user = students.find(s => (s.id === loginId || s.phone === loginId) && s.password === password);
+
+            if (user) {
+                showStudentDashboard(user);
+            } else {
+                alert("Invalid Credentials! Please check your Index ID / Phone or Register first.");
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            document.getElementById('userStatusBadge').classList.add('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            showPortalHome();
+        }
+
+        function renderSubjectList(gradeNum) {
+            const container = document.getElementById('subjectListContainer');
+            container.innerHTML = '';
+
+            const subjectArray = (gradeNum <= 5) ? GRADE_SUBJECTS.primary : GRADE_SUBJECTS.secondary;
+            selectedSubject = subjectArray[0];
+            document.getElementById('currentSubjectTitle').innerText = selectedSubject;
+
+            subjectArray.forEach((sub, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left px-4 py-3 rounded-xl font-semibold text-sm transition flex items-center justify-between ${idx === 0 ? 'bg-brand-600 text-white shadow' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'}`;
+                btn.innerHTML = `<span>${sub}</span> <i class="fa-solid fa-chevron-right text-xs opacity-70"></i>`;
+                btn.onclick = () => {
+                    playUiSound();
+                    selectedSubject = sub;
+                    document.getElementById('currentSubjectTitle').innerText = sub;
+                    Array.from(container.children).forEach(c => c.className = 'w-full text-left px-4 py-3 rounded-xl font-semibold text-sm transition flex items-center justify-between bg-slate-50 text-slate-700 hover:bg-slate-100');
+                    btn.className = 'w-full text-left px-4 py-3 rounded-xl font-semibold text-sm transition flex items-center justify-between bg-brand-600 text-white shadow';
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function openAdminModal() {
+            playUiSound();
+            document.getElementById('adminLoginModal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminLoginModal').classList.add('hidden');
+        }
+
+        function handleAdminAuth(e) {
+            e.preventDefault();
+            playUiSound();
+            const u = document.getElementById('adminUser').value.trim();
+            const p = document.getElementById('adminPass').value;
+
+            if (u === 'admin' && p === 'admin123') {
+                closeAdminModal();
+                document.getElementById('authCardSection').classList.add('hidden');
+                document.getElementById('studentDashboardSection').classList.add('hidden');
+                document.getElementById('adminDashboardSection').classList.remove('hidden');
+                renderAdminStudentTable();
+            } else {
+                alert("Incorrect Admin Credentials!");
+            }
+        }
+
+        function switchAdminSubTab(sub) {
+            playUiSound();
+            const btnStudents = document.getElementById('adminTabStudentsBtn');
+            const btnPayments = document.getElementById('adminTabPaymentsBtn');
+            const tabStudents = document.getElementById('adminSubTabStudents');
+            const tabPayments = document.getElementById('adminSubTabPayments');
+
+            if (sub === 'students') {
+                btnStudents.className = "px-6 py-3.5 font-bold text-sm text-brand-600 border-b-2 border-brand-600 bg-white";
+                btnPayments.className = "px-6 py-3.5 font-semibold text-sm text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
+                tabStudents.classList.remove('hidden');
+                tabPayments.classList.add('hidden');
+            } else {
+                btnPayments.className = "px-6 py-3.5 font-bold text-sm text-brand-600 border-b-2 border-brand-600 bg-white";
+                btnStudents.className = "px-6 py-3.5 font-semibold text-sm text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
+                tabPayments.classList.remove('hidden');
+                tabStudents.classList.add('hidden');
+            }
+        }
+
+        function renderAdminStudentTable() {
+            const tbody = document.getElementById('adminStudentTableBody');
+            const students = JSON.parse(localStorage.getItem('portal_students') || '[]');
+            document.getElementById('studentCountBadge').innerText = `Total: ${students.length} Students`;
+            tbody.innerHTML = '';
+
+            if (students.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-6 text-center text-slate-400">No registered students found.</td></tr>`;
+                return;
+            }
+
+            students.forEach((s) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition";
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-semibold text-slate-800">${s.name}</td>
+                    <td class="px-4 py-3"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs">Grade ${s.grade}</span></td>
+                    <td class="px-4 py-3">${s.phone}</td>
+                    <td class="px-4 py-3 font-mono text-xs text-brand-600 font-bold">${s.id}</td>
+                    <td class="px-4 py-3"><span class="text-emerald-600 bg-emerald-50 text-xs px-2 py-0.5 rounded font-semibold">Approved</span></td>
+                    <td class="px-4 py-3 text-right">
+                        <button onclick="deleteStudent('${s.id}')" class="text-xs text-rose-600 hover:text-rose-800 font-semibold">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteStudent(id) {
+            if (confirm(`Are you sure you want to delete student ${id}?`)) {
+                let students = JSON.parse(localStorage.getItem('portal_students') || '[]');
+                students = students.filter(s => s.id !== id);
+                localStorage.setItem('portal_students', JSON.stringify(students));
+                renderAdminStudentTable();
+            }
+        }
+
+        function showContentModal(type) {
+            playUiSound();
+            const modal = document.getElementById('contentDetailModal');
+            const title = document.getElementById('modalContentTitle');
+            const body = document.getElementById('modalContentBody');
+
+            if (type === 'recordings') {
+                title.innerText = `${selectedSubject} - Class Recordings`;
+                body.innerHTML = `
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-sm text-slate-800">Lesson 01: Introduction & Fundamentals</p>
+                            <p class="text-xs text-slate-500">Duration: 1h 45m</p>
+                        </div>
+                        <button onclick="alert('Opening video stream...')" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-3 py-1.5 rounded">Watch</button>
+                    </div>
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-sm text-slate-800">Lesson 02: Advanced Exercises</p>
+                            <p class="text-xs text-slate-500">Duration: 2h 10m</p>
+                        </div>
+                        <button onclick="alert('Opening video stream...')" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-3 py-1.5 rounded">Watch</button>
+                    </div>
+                `;
+            } else {
+                title.innerText = `${selectedSubject} - Free Online MCQ Papers`;
+                body.innerHTML = `
+                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-sm text-slate-800">Model Paper 01 (2026 Revision)</p>
+                            <p class="text-xs text-slate-500">20 Questions • Free Access</p>
+                        </div>
+                        <button onclick="alert('Starting interactive exam test...')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded">Start Exam</button>
+                    </div>
+                `;
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeContentModal() {
+            document.getElementById('contentDetailModal').classList.add('hidden');
+        }
+
+        // Initialize Application
+        window.onload = function() {
+            initializeDefaultData();
+        };
+    </script>
 </body>
 </html>
