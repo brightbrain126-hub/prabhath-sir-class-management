@@ -14,7 +14,9 @@
         }
 
         body {
-            background: #f0f2f5;
+            /* Cartoon Educational Background Image */
+            background: linear-gradient(rgba(15, 12, 41, 0.5), rgba(48, 43, 99, 0.5)), 
+                        url('https://img.freepik.com/free-vector/back-school-pattern-concept_23-2148604620.jpg') center/cover no-repeat fixed;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -34,26 +36,29 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             gap: 8px;
             z-index: 999;
-            transition: transform 0.2s;
+            transition: transform 0.2s, background-color 0.2s;
         }
 
         .contact-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.08);
+            background: #20ba5a;
         }
 
-        /* Container Card */
+        /* Container Card - Glassmorphism Style */
         .portal-card {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             width: 100%;
             max-width: 850px;
             padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         /* Tabs */
@@ -95,11 +100,12 @@
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 11px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
             font-size: 14px;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         .form-group input:focus, .form-group select:focus {
@@ -109,28 +115,35 @@
         .btn-primary {
             width: 100%;
             padding: 12px;
-            background: #6c5ce7;
+            background: linear-gradient(135deg, #6c5ce7, #8e44ad);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
         }
 
         .btn-primary:hover {
-            background: #5a4bcf;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(108, 92, 231, 0.4);
         }
 
         .btn-success {
             background: #2ed573;
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .btn-success:hover {
+            background: #26af5f;
         }
 
         .link-text {
@@ -138,6 +151,7 @@
             cursor: pointer;
             text-decoration: underline;
             font-size: 13px;
+            font-weight: 600;
         }
 
         /* Dashboard & Grid */
@@ -145,7 +159,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #eee;
+            border-bottom: 2px solid #eee;
             padding-bottom: 15px;
             margin-bottom: 20px;
         }
@@ -158,22 +172,24 @@
         }
 
         .menu-card {
-            background: #f8f9fa;
+            background: #ffffff;
             padding: 25px;
-            border-radius: 12px;
+            border-radius: 16px;
             text-align: center;
-            border: 1px solid #e9ecef;
+            border: 2px solid #f1f2f6;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
         }
 
         .menu-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(108, 92, 231, 0.15);
+            border-color: #6c5ce7;
         }
 
         .menu-card i {
-            font-size: 36px;
+            font-size: 40px;
             color: #6c5ce7;
             margin-bottom: 12px;
         }
@@ -193,6 +209,9 @@
             border-collapse: collapse;
             margin-top: 15px;
             font-size: 13px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         th, td {
@@ -227,7 +246,7 @@
 
             <!-- LOGIN FORM -->
             <div id="loginForm">
-                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Student Login</h2>
+                <h2 style="text-align: center; margin-bottom: 20px; color: #2d3436;">Student Login</h2>
                 <form onsubmit="handleLogin(event)">
                     <div class="form-group">
                         <label>Student ID or Phone Number</label>
@@ -247,7 +266,7 @@
 
             <!-- REGISTER FORM -->
             <div id="registerForm" class="hidden">
-                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Student Registration</h2>
+                <h2 style="text-align: center; margin-bottom: 20px; color: #2d3436;">Student Registration</h2>
                 <form onsubmit="handleRegister(event)">
                     <div class="form-group">
                         <label>සම්පූර්ණ නම</label>
@@ -277,7 +296,7 @@
         <!-- STUDENT DASHBOARD -->
         <div id="dashboardSection" class="hidden">
             <div class="nav-bar">
-                <h3>සාදරයෙන් පිළිගනිමු, <span id="studentName">Student</span>!</h3>
+                <h3 style="color: #2d3436;">සාදරයෙන් පිළිගනිමු, <span id="studentName" style="color: #6c5ce7;">Student</span>!</h3>
                 <button class="btn-primary" style="width: auto; padding: 8px 18px;" onclick="logout()">Logout</button>
             </div>
 
@@ -300,21 +319,21 @@
         <!-- RECORDINGS & SLIP UPLOAD VIEW -->
         <div id="recordingsView" class="hidden">
             <button class="link-text" onclick="showDashboard()">&larr; Back to Dashboard</button>
-            <h3 style="margin: 15px 0;">Class Recordings & Payment Slip Upload</h3>
+            <h3 style="margin: 15px 0; color: #2d3436;">Class Recordings & Payment Slip Upload</h3>
 
-            <div style="background: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
-                <h4 style="margin-bottom: 10px;">මාසික පන්ති ගෙවීම් රசீද පත (Slip) Upload කරන්න</h4>
+            <div style="background: #ffffff; border: 2px dashed #6c5ce7; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                <h4 style="margin-bottom: 10px; color: #2d3436;">මාසික පන්ති ගෙවීම් රசீද පත (Slip) Upload කරන්න</h4>
                 <input type="file" id="slipInput" accept="image/*" style="margin-bottom: 12px;">
                 <button class="btn-primary" style="width: auto; padding: 8px 20px;" onclick="uploadSlip()">Upload Slip</button>
-                <p id="slipStatus" style="font-size: 13px; margin-top: 8px; font-weight: bold;"></p>
+                <p id="slipStatus" style="font-size: 13px; margin-top: 10px; font-weight: bold;"></p>
             </div>
 
             <div>
-                <h4>ලබාගත හැකි පන්ති Recordings</h4>
-                <div style="background: #fff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 10px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="color: #2d3436;">ලබාගත හැකි පන්ති Recordings</h4>
+                <div style="background: #fff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 12px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
                     <div>
                         <strong>Unit 01 - Main Theory Lesson Recording</strong>
-                        <p style="font-size: 12px; color: #666; margin-top: 4px;">මෙම මාසයේ නැරඹිය හැකි ඉතිරි වාර ගණන: <span id="watchCount">3</span> / 3</p>
+                        <p style="font-size: 12px; color: #666; margin-top: 4px;">මෙම මාසයේ නැරඹිය හැකි ඉතිරි වාර ගණන: <span id="watchCount" style="color:#6c5ce7; font-weight:bold;">3</span> / 3</p>
                     </div>
                     <button class="btn-primary" style="width: auto; padding: 8px 18px;" onclick="playRecording()">Watch Video</button>
                 </div>
@@ -324,10 +343,10 @@
         <!-- ADMIN CONTROL PANEL -->
         <div id="adminSection" class="hidden">
             <div class="nav-bar">
-                <h3>Admin Control Dashboard</h3>
+                <h3 style="color: #2d3436;">Admin Control Dashboard</h3>
                 <button class="btn-primary" style="width: auto; padding: 8px 18px;" onclick="showAuth()">Exit Admin</button>
             </div>
-            <h4 style="margin-bottom: 12px;">ලියාපදිංචි ළමුන් සහ Slip පරීක්ෂා කිරීම</h4>
+            <h4 style="margin-bottom: 12px; color: #2d3436;">ලියාපදිංචි ළමුන් සහ Slip පරීක්ෂා කිරීම</h4>
             <div style="overflow-x: auto;">
                 <table>
                     <thead>
@@ -424,7 +443,7 @@
             const reader = new FileReader();
             reader.onload = function (e) {
                 currentStudent.slipData = e.target.result;
-                currentStudent.approved = false; // Pending approval
+                currentStudent.approved = false;
                 localStorage.setItem('portal_students', JSON.stringify(students));
                 updateSlipUI();
                 alert('Slip එක සාර්ථකව Upload විය! Admin අනුමැතිය සඳහා යොමු කෙරිණි.');
