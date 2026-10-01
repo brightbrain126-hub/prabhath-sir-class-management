@@ -34,6 +34,7 @@
         .input-wrapper input, .input-wrapper select { width: 100%; padding: 12px 14px 12px 42px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #334155; background-color: #f8fafc; outline: none; }
         
         .btn-primary { width: 100%; padding: 13px; background: #7c3aed; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-primary:hover { background: #6d28d9; }
         .btn-success { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; }
         .link-text { color: #7c3aed; cursor: pointer; font-size: 13px; font-weight: 600; text-decoration: none; }
         
@@ -54,7 +55,7 @@
 </head>
 <body>
 
-    <!-- Language Bar -->
+    <!-- Language Selector -->
     <div class="lang-bar">
         <i class="fa-solid fa-globe" style="color: #7c3aed;"></i>
         <select id="langSelect" onchange="changeLanguage(this.value)">
@@ -68,14 +69,14 @@
     <div id="bgSlide" class="bg-slideshow"></div>
     <div class="bg-overlay"></div>
 
-    <!-- WhatsApp Contact -->
+    <!-- WhatsApp Contact Button -->
     <a href="https://wa.me/94766980516" target="_blank" class="contact-btn">
         <i class="fa-brands fa-whatsapp"></i> <span id="txtWhatsapp">Contact Us</span>
     </a>
 
     <div class="portal-card">
 
-        <!-- 1. AUTHENTICATION SECTION -->
+        <!-- 1. AUTHENTICATION SECTION (LOGIN / REGISTER) -->
         <div id="authSection">
             <div class="tab-buttons">
                 <button id="loginTabBtn" class="tab-btn active" onclick="switchAuthTab('login')">
@@ -163,7 +164,6 @@
                     </form>
                 </div>
 
-                <!-- Privacy Policy Footer Link -->
                 <div class="footer-links">
                     <span class="link-text" onclick="showPrivacyModal()" id="txtPrivacyLink">Privacy Policy</span> | <span>© 2026 BrightBrain</span>
                 </div>
@@ -197,7 +197,7 @@
             </div>
         </div>
 
-        <!-- 3. RECORDINGS & SLIP UPLOAD -->
+        <!-- 3. RECORDINGS & SLIP UPLOAD VIEW -->
         <div id="recordingsView" class="card-body hidden">
             <span class="link-text" onclick="showDashboard()" id="txtBackDash">&larr; Dashboard එකට යන්න</span>
             <h3 style="margin: 15px 0 10px; color: #1e293b; font-size: 18px;" id="txtRecTitle">Class Recordings & Payment Slip</h3>
@@ -221,7 +221,7 @@
             </div>
         </div>
 
-        <!-- 4. MCQ TEST VIEW -->
+        <!-- 4. MCQ PAPER VIEW -->
         <div id="mcqView" class="card-body hidden">
             <span class="link-text" onclick="showDashboard()">&larr; Back to Dashboard</span>
             <h3 style="margin: 15px 0; color: #1e293b;">Online MCQ Paper 01</h3>
@@ -240,7 +240,7 @@
             </form>
         </div>
 
-        <!-- 5. ADMIN CONTROL PANEL & MARKS REPORT -->
+        <!-- 5. ADMIN CONTROL PANEL -->
         <div id="adminSection" class="card-body hidden">
             <div class="nav-bar">
                 <h3 style="color: #1e293b; font-size: 16px;">Admin Panel & Reports</h3>
@@ -285,6 +285,424 @@
 
     </div>
 
-    <script src="app.js"></script>
+    <!-- JAVASCRIPT DIRECTLY INTEGRATED -->
+    <script>
+        // Exact Wallpaper Image Array
+        const bgImages = [
+            './image15.jpg', './image13.png', './image12.jpg', './image11.jpg',
+            './image10.jpg', './image9.jpg', './image8.jpg', './image7.png',
+            './image6.jpg', './image5.jpg', './image4.png', './image3.png',
+            './image2.jpg', './image1.png'
+        ];
+
+        let currentBgIndex = 0;
+        function changeBackground() {
+            const bgDiv = document.getElementById('bgSlide');
+            if (bgDiv && bgImages.length > 0) {
+                bgDiv.style.backgroundImage = `url('${bgImages[currentBgIndex]}')`;
+                currentBgIndex = (currentBgIndex + 1) % bgImages.length;
+            }
+        }
+        changeBackground();
+        setInterval(changeBackground, 4000);
+
+        // Language Dictionary
+        const translations = {
+            si: {
+                txtWhatsapp: "සම්බන්ධ වන්න",
+                txtTabLogin: "ඇතුළු වන්න",
+                txtTabRegister: "ලියාපදිංචිය",
+                txtLoginTitle: "ශිෂ්‍ය ගිණුමට පිවිසෙන්න",
+                txtLoginSub: "ලියාපදිංචි අංකය හෝ දුරකථන අංකය ඇතුළත් කරන්න",
+                lblLoginId: "INDEX / STUDENT ID හෝ දුරකථන අංකය",
+                lblLoginPass: "මුරපදය (PASSWORD)",
+                btnLogin: "ඇතුළු වන්න",
+                txtForgotPass: "මුරපදය අමතකද?",
+                txtAdminLink: "Admin Panel",
+                txtRegTitle: "නව ශිෂ්‍ය ලියාපදිංචිය",
+                txtRegSub: "ඔබගේ තොරතුරු ඇතුළත් කර ගිණුමක් සාදාගන්න",
+                lblRegName: "සම්පූර්ණ නම",
+                lblRegGrade: "ශ්‍රේණිය / පන්තිය (GRADE)",
+                optSelectGrade: "ශ්‍රේණිය තෝරන්න",
+                lblRegPhone: "WHATSAPP දුරකථන අංකය",
+                lblRegPass: "නව මුරපදයක් (PASSWORD)",
+                btnRegister: "ලියාපදිංචි වන්න",
+                txtWelcome: "සාදරයෙන් පිළිගනිමු,",
+                btnLogout: "ලොග් අවුට්",
+                txtMenuRecordings: "පටිගත කිරීම්",
+                txtBackDash: "← Dashboard එකට යන්න",
+                txtRecTitle: "පන්ති පටිගත කිරීම් සහ Payment Slip",
+                txtUploadHeader: "මාසික පන්ති ගෙවීම් රිසිට්පත Upload කරන්න",
+                btnUploadSlip: "ලැබීම් පත එකතු කරන්න",
+                txtLessonsHeader: "පවතින වීඩියෝ පාඩම්",
+                txtWatchRemaining: "නැරඹීමට ඉතිරි වාර:",
+                btnWatchVideo: "නරඹන්න",
+                txtPrivacyLink: "Privacy Policy"
+            },
+            en: {
+                txtWhatsapp: "Contact Us",
+                txtTabLogin: "Login",
+                txtTabRegister: "Register",
+                txtLoginTitle: "Student Login",
+                txtLoginSub: "Enter your Student ID or Phone number",
+                lblLoginId: "INDEX / STUDENT ID OR PHONE",
+                lblLoginPass: "PASSWORD",
+                btnLogin: "Login to Portal",
+                txtForgotPass: "Forgot Password?",
+                txtAdminLink: "Admin Panel",
+                txtRegTitle: "Student Registration",
+                txtRegSub: "Fill in your details to create an account",
+                lblRegName: "FULL NAME",
+                lblRegGrade: "GRADE / CLASS",
+                optSelectGrade: "Select Grade",
+                lblRegPhone: "WHATSAPP PHONE NUMBER",
+                lblRegPass: "CREATE PASSWORD",
+                btnRegister: "Register Now",
+                txtWelcome: "Welcome back,",
+                btnLogout: "Logout",
+                txtMenuRecordings: "Recordings",
+                txtBackDash: "← Back to Dashboard",
+                txtRecTitle: "Class Recordings & Payment Slip",
+                txtUploadHeader: "Upload Monthly Payment Slip",
+                btnUploadSlip: "Upload Slip",
+                txtLessonsHeader: "Available Lessons",
+                txtWatchRemaining: "Remaining watches:",
+                btnWatchVideo: "Watch Video",
+                txtPrivacyLink: "Privacy Policy"
+            },
+            ta: {
+                txtWhatsapp: "තொடர்பு கொள்ள",
+                txtTabLogin: "உள்நுழைவு",
+                txtTabRegister: "பதிவு செய்ய",
+                txtLoginTitle: "மாணவர் உள்நுழைவு",
+                txtLoginSub: "உங்கள் அடையாள எண் அல்லது தொலைபேசியை உள்ளிடவும்",
+                lblLoginId: "அடையாள எண் அல்லது தொலைபேசி எண்",
+                lblLoginPass: "கடவுச்சொல்",
+                btnLogin: "உள்நுழைக",
+                txtForgotPass: "கடவுச்சொல் மறந்துவிட்டதா?",
+                txtAdminLink: "நிர்வாகக் குழு",
+                txtRegTitle: "மாணவர் பதிவு",
+                txtRegSub: "கணக்கை உருவாக்க விவரங்களை நிரப்பவும்",
+                lblRegName: "முழுப் பெயர்",
+                lblRegGrade: "வகுப்பு",
+                optSelectGrade: "வகுப்பைத் தேர்ந்தெடுக்கவும்",
+                lblRegPhone: "WHATSAPP தொலைபேசி எண்",
+                lblRegPass: "புதிய கடவுச்சொல்",
+                btnRegister: "பதிவு செய்க",
+                txtWelcome: "நல்வரவு,",
+                btnLogout: "வெளியேறு",
+                txtMenuRecordings: "பதிவுகள்",
+                txtBackDash: "← முகப்பு பக்கத்திற்கு",
+                txtRecTitle: "வகுப்பு பதிவுகள் & கட்டண சீட்டு",
+                txtUploadHeader: "மாதாந்திர கட்டண ரசீதை பதிவேற்றவும்",
+                btnUploadSlip: "ரசீதை பதிவேற்று",
+                txtLessonsHeader: "கிடைக்கும் பாடங்கள்",
+                txtWatchRemaining: "மீதமுள்ள பார்வைகள்:",
+                btnWatchVideo: "பார்க்கவும்",
+                txtPrivacyLink: "தனியுரிமைக் கொள்கை"
+            }
+        };
+
+        let currentLang = 'si';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const dict = translations[lang];
+
+            for (let key in dict) {
+                const el = document.getElementById(key);
+                if (el) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'BUTTON') {
+                        if (el.children.length > 0) {
+                            el.childNodes[0].nodeValue = dict[key] + ' ';
+                        } else {
+                            el.innerText = dict[key];
+                        }
+                    } else {
+                        el.innerText = dict[key];
+                    }
+                }
+            }
+            updateSlipUI();
+        }
+
+        // Core Portal Logic
+        let students = JSON.parse(localStorage.getItem('portal_students')) || [];
+        let mcqMarks = JSON.parse(localStorage.getItem('portal_mcq_marks')) || [];
+        let currentStudent = JSON.parse(localStorage.getItem('portal_active_student')) || null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (currentStudent) {
+                const latestData = students.find(s => s.id === currentStudent.id);
+                if (latestData) {
+                    currentStudent = latestData;
+                    localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+                }
+                document.getElementById('studentName').innerText = currentStudent.name;
+                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
+                document.getElementById('watchCount').innerText = currentStudent.watchLimit;
+                updateSlipUI();
+                showDashboard();
+            } else {
+                showAuth();
+            }
+        });
+
+        function switchAuthTab(tab) {
+            document.getElementById('loginTabBtn').classList.toggle('active', tab === 'login');
+            document.getElementById('regTabBtn').classList.toggle('active', tab === 'register');
+            document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
+            document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const grade = document.getElementById('regGrade').value;
+            const phone = document.getElementById('regPhone').value;
+            const pass = document.getElementById('regPass').value;
+            const id = 'STU' + Math.floor(1000 + Math.random() * 9000);
+
+            const newStudent = { id, name, grade, phone, pass, slipData: null, approved: false, watchLimit: 3 };
+            students.push(newStudent);
+            localStorage.setItem('portal_students', JSON.stringify(students));
+
+            alert(currentLang === 'si' ? `ලියාපදිංචිය සාර්ථකයි! Student ID: ${id}` : `Registration successful! Student ID: ${id}`);
+            
+            const message = `Hello ${name}, registered for BrightBrain Class Portal! ID: ${id}, Password: ${pass}`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+
+            switchAuthTab('login');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const idInput = document.getElementById('loginId').value;
+            const passInput = document.getElementById('loginPass').value;
+
+            const found = students.find(s => (s.id === idInput || s.phone === idInput) && s.pass === passInput);
+
+            if (found) {
+                currentStudent = found;
+                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+                document.getElementById('studentName').innerText = currentStudent.name;
+                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
+                document.getElementById('watchCount').innerText = currentStudent.watchLimit;
+                updateSlipUI();
+                showDashboard();
+            } else {
+                alert(currentLang === 'si' ? 'ඇතුළත් කළ තොරතුරු වැරදියි!' : 'Invalid credentials!');
+            }
+        }
+
+        function updateSlipUI() {
+            const statusEl = document.getElementById('slipStatus');
+            if (!currentStudent || !statusEl) return;
+
+            if (currentStudent.approved) {
+                statusEl.style.color = '#10b981';
+                statusEl.innerText = currentLang === 'si' ? 'Slip එක Admin මගින් අනුමත කර ඇත (Approved)!' : 'Payment Slip Approved by Admin!';
+            } else if (currentStudent.slipData) {
+                statusEl.style.color = '#f59e0b';
+                statusEl.innerText = currentLang === 'si' ? 'Slip එක Upload කර ඇත. Admin අනුමැතිය ලැබෙන තෙක් රැඳී සිටින්න.' : 'Slip Uploaded. Pending Admin Approval.';
+            } else {
+                statusEl.style.color = '#ef4444';
+                statusEl.innerText = currentLang === 'si' ? 'තවමත් Slip එකක් Upload කර නැත.' : 'No payment slip uploaded yet.';
+            }
+        }
+
+        function uploadSlip() {
+            const input = document.getElementById('slipInput');
+            if (input.files.length === 0) {
+                alert(currentLang === 'si' ? 'කරුණාකර Slip එකේ ඡායාරූපයක් තෝරන්න!' : 'Please select an image file!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                currentStudent.slipData = e.target.result;
+                currentStudent.approved = false;
+                
+                const index = students.findIndex(s => s.id === currentStudent.id);
+                if (index !== -1) {
+                    students[index] = currentStudent;
+                    localStorage.setItem('portal_students', JSON.stringify(students));
+                }
+                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+
+                updateSlipUI();
+                alert(currentLang === 'si' ? 'Slip එක සාර්ථකව Upload විය!' : 'Slip Uploaded Successfully!');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        function playRecording() {
+            if (!currentStudent.approved) {
+                alert(currentLang === 'si' ? 'ප්‍රවේශය අවහිර කර ඇත: ඔබගේ Slip එක තවමත් Admin මගින් Approve කර නොමැත!' : 'Access Denied: Slip not approved by Admin yet!');
+                return;
+            }
+
+            if (currentStudent.watchLimit <= 0) {
+                alert(currentLang === 'si' ? 'මෙම මාසය සඳහා ඔබට හිමි වාර ගණන අවසන්!' : 'Maximum watch limit reached!');
+                return;
+            }
+
+            currentStudent.watchLimit--;
+            document.getElementById('watchCount').innerText = currentStudent.watchLimit;
+
+            const index = students.findIndex(s => s.id === currentStudent.id);
+            if (index !== -1) {
+                students[index] = currentStudent;
+                localStorage.setItem('portal_students', JSON.stringify(students));
+            }
+            localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+
+            alert(`Playing Recording... Remaining watches: ${currentStudent.watchLimit}`);
+        }
+
+        function openMCQPapers() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('mcqView').classList.remove('hidden');
+        }
+
+        function submitMCQPaper(e) {
+            e.preventDefault();
+            const q1 = document.querySelector('input[name="q1"]:checked')?.value;
+            const q2 = document.querySelector('input[name="q2"]:checked')?.value;
+
+            let score = 0;
+            if (q1 === 'B') score += 50;
+            if (q2 === 'A') score += 50;
+
+            alert(`Paper Submitted! Your Score: ${score}%`);
+
+            const result = {
+                id: currentStudent.id,
+                name: currentStudent.name,
+                grade: currentStudent.grade,
+                paper: "MCQ Paper 01",
+                marks: score + "%"
+            };
+
+            mcqMarks.push(result);
+            localStorage.setItem('portal_mcq_marks', JSON.stringify(mcqMarks));
+
+            showDashboard();
+        }
+
+        function showPrivacyModal() {
+            alert("Privacy Policy:\nසියලුම ශිෂ්‍ය තොරතුරු, ගෙවීම් රිසිට්පත් සහ විභාග ලකුණු පද්ධතිය තුළ සුරක්ෂිතව තබා ගන්නා අතර අධ්‍යයන කටයුතු සහ පරිපාලන අනුමැතීන් සඳහා පමණක් භාවිතා කරනු ලැබේ.");
+        }
+
+        function showDashboard() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('recordingsView').classList.add('hidden');
+            document.getElementById('mcqView').classList.add('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+        }
+
+        function showAuth() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('recordingsView').classList.add('hidden');
+            document.getElementById('mcqView').classList.add('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+            document.getElementById('authSection').classList.remove('hidden');
+        }
+
+        function logout() {
+            currentStudent = null;
+            localStorage.removeItem('portal_active_student');
+            showAuth();
+        }
+
+        function openRecordings() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('recordingsView').classList.remove('hidden');
+        }
+
+        function showResetModal() {
+            const phone = prompt('Enter registered WhatsApp number:');
+            if (phone) {
+                const found = students.find(s => s.phone === phone);
+                if (found) {
+                    const newPass = prompt('Enter new Password:');
+                    if (newPass) {
+                        found.pass = newPass;
+                        localStorage.setItem('portal_students', JSON.stringify(students));
+                        alert('Password updated successfully!');
+                    }
+                } else {
+                    alert('Phone number not found!');
+                }
+            }
+        }
+
+        function showAdminModal() {
+            const adminUser = prompt('Admin Username:');
+            const adminPass = prompt('Admin Password:');
+
+            if (adminUser === 'admin' && adminPass === 'admin123') {
+                renderAdminTables();
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('adminSection').classList.remove('hidden');
+            } else {
+                alert('Invalid Admin credentials!');
+            }
+        }
+
+        function renderAdminTables() {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
+
+            students.forEach((s, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${s.id}</td>
+                    <td>${s.name}</td>
+                    <td>${s.grade}</td>
+                    <td>${s.phone}</td>
+                    <td>${s.pass || '-'}</td>
+                    <td>${s.slipData ? `<button class="btn-primary" style="padding:2px 6px; font-size:10px;" onclick="viewSlip('${s.slipData}')">View</button>` : 'No'}</td>
+                    <td>${s.approved ? '<span style="color:green;">Approved</span>' : '<span style="color:orange;">Pending</span>'}</td>
+                    <td>${!s.approved && s.slipData ? `<button class="btn-success" onclick="approveStudent(${index})">Approve</button>` : ''}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const mcqBody = document.getElementById('mcqReportBody');
+            mcqBody.innerHTML = '';
+
+            mcqMarks.forEach(m => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${m.id}</td>
+                    <td>${m.name}</td>
+                    <td>${m.grade}</td>
+                    <td>${m.paper}</td>
+                    <td><strong>${m.marks}</strong></td>
+                `;
+                mcqBody.appendChild(tr);
+            });
+        }
+
+        function viewSlip(dataUrl) {
+            const win = window.open();
+            win.document.write(`<img src="${dataUrl}" style="max-width:100%; height:auto;" />`);
+        }
+
+        function approveStudent(index) {
+            students[index].approved = true;
+            localStorage.setItem('portal_students', JSON.stringify(students));
+            
+            if (currentStudent && currentStudent.id === students[index].id) {
+                currentStudent.approved = true;
+                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+            }
+
+            renderAdminTables();
+            alert('Payment Approved!');
+        }
+    </script>
 </body>
 </html>
