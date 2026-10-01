@@ -1,60 +1,78 @@
-// Web Audio API භාවිතයෙන් Click සද්දයක් ලබා දීම
-function playClickSound() {
-    try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) {
-            const ctx = new AudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+// Background Slideshow
+const bgImages = [
+    './image15.jpg',
+    './image13.png',
+    './image12.jpg',
+    './image11.jpg',
+    './image10.jpg',
+    './image9.jpg',
+    './image8.jpg',
+    './image7.png',
+    './image6.jpg',
+    './image5.jpg',
+    './image4.png',
+    './image3.png',
+    './image2.jpg',
+    './image1.png'
+];
 
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, ctx.currentTime);
-            gain.gain.setValueAtTime(0.05, ctx.currentTime);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start();
-            osc.stop(ctx.currentTime + 0.08);
-        }
-    } catch (e) {
-        console.log("Audio not supported or allowed yet");
+let currentBgIndex = 0;
+function changeBackground() {
+    const bgDiv = document.getElementById('bgSlide');
+    if (bgDiv && bgImages.length > 0) {
+        bgDiv.style.backgroundImage = `url('${bgImages[currentBgIndex]}')`;
+        currentBgIndex = (currentBgIndex + 1) % bgImages.length;
     }
 }
+changeBackground();
+setInterval(changeBackground, 4000);
 
-// Login සහ Register Tabs මාරු කිරීමේ Function එක
+// Tab Switch Logic
 function switchTab(tab) {
-    playClickSound();
-
-    const loginSection = document.getElementById('loginFormSection');
-    const registerSection = document.getElementById('registerFormSection');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
     const loginBtn = document.getElementById('loginTabBtn');
     const registerBtn = document.getElementById('registerTabBtn');
 
     if (tab === 'login') {
-        loginSection.style.display = 'block';
-        registerSection.style.display = 'none';
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
         loginBtn.classList.add('active');
         registerBtn.classList.remove('active');
-    } else if (tab === 'register') {
-        loginSection.style.display = 'none';
-        registerSection.style.display = 'block';
-        registerBtn.classList.add('active');
+    } else {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
         loginBtn.classList.remove('active');
+        registerBtn.classList.add('active');
     }
 }
 
-// Login Submit Form
+// Login Handler
 function handleLogin(event) {
     event.preventDefault();
-    playClickSound();
-    alert("Login Successful!");
+    const id = document.getElementById('loginId').value;
+    const pass = document.getElementById('loginPassword').value;
+
+    if (id && pass) {
+        alert("සාර්ථකව ඇතුළු විය! (Login Successful)");
+        // Redirect logic:
+        window.location.href = "alphabet.html";
+    } else {
+        alert("කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න.");
+    }
 }
 
-// Registration Submit Form
+// Register Handler
 function handleRegister(event) {
     event.preventDefault();
-    playClickSound();
-    alert("Registration Successful! Now you can Login.");
-    switchTab('login');
+    const name = document.getElementById('regName').value;
+    const phone = document.getElementById('regPhone').value;
+    const pass = document.getElementById('regPassword').value;
+
+    if (name && phone && pass) {
+        alert("ලියාපදිංචිය සාර්ථකයි! දැන් ඇතුළු වන්න.");
+        switchTab('login');
+    } else {
+        alert("කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න.");
+    }
 }
