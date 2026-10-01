@@ -48,29 +48,6 @@
             background: rgba(243, 244, 246, 0.65);
         }
 
-        /* Top Brand Logo */
-        .top-bar {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .brand-logo {
-            font-size: 22px;
-            font-weight: 700;
-            color: #7c3aed;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 8px 16px;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
         /* Language Selector Bar */
         .lang-bar {
             position: fixed;
@@ -123,13 +100,13 @@
         .portal-card {
             background: #ffffff;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
             border: 1px solid #eef2f6;
             overflow: hidden;
             z-index: 1;
-            margin-top: 50px;
+            margin-top: 40px;
         }
 
         .tab-buttons {
@@ -248,6 +225,17 @@
             background: #6d28d9;
         }
 
+        .btn-success {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
         .link-text {
             color: #7c3aed;
             cursor: pointer;
@@ -258,6 +246,76 @@
 
         .link-text:hover {
             text-decoration: underline;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 16px;
+        }
+
+        .menu-card {
+            background: #f8fafc;
+            padding: 20px 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+            border-color: #7c3aed;
+            background: #ffffff;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+        }
+
+        .menu-card i {
+            font-size: 32px;
+            color: #7c3aed;
+            margin-bottom: 10px;
+        }
+
+        .menu-card h4 {
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .badge-soon {
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            margin-left: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        th {
+            background: #7c3aed;
+            color: white;
         }
 
         .hidden { display: none !important; }
@@ -275,13 +333,6 @@
         </select>
     </div>
 
-    <!-- Top Logo -->
-    <div class="top-bar">
-        <div class="brand-logo">
-            <i class="fa-solid fa-graduation-cap"></i> BrightBrain
-        </div>
-    </div>
-
     <!-- Dynamic Background Slideshow -->
     <div id="bgSlide" class="bg-slideshow"></div>
     <div class="bg-overlay"></div>
@@ -293,96 +344,185 @@
 
     <!-- Main Card Container -->
     <div class="portal-card">
-        <div class="tab-buttons">
-            <button id="loginTabBtn" class="tab-btn active" onclick="switchAuthTab('login')">
-                <i class="fa-solid fa-right-to-bracket"></i> <span id="txtTabLogin">ඇතුළු වන්න</span>
-            </button>
-            <button id="regTabBtn" class="tab-btn" onclick="switchAuthTab('register')">
-                <i class="fa-solid fa-user-plus"></i> <span id="txtTabRegister">ලියාපදිංචිය</span>
-            </button>
-        </div>
 
-        <div class="card-body">
-            <!-- LOGIN FORM -->
-            <div id="loginForm">
-                <div class="form-header">
-                    <h2 id="txtLoginTitle">ශිෂ්‍ය ගිණුමට පිවිසෙන්න</h2>
-                    <p id="txtLoginSub">ලියාපදිංචි අංකය හෝ දුරකථන අංකය ඇතුළත් කරන්න</p>
-                </div>
-                <form onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label id="lblLoginId">INDEX / STUDENT ID හෝ දුරකථන අංකය</label>
-                        <div class="input-wrapper">
-                            <i class="fa-regular fa-id-card"></i>
-                            <input type="text" id="loginId" required placeholder="උදා: STU1001 හෝ 0766980516">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label id="lblLoginPass">මුරපදය (PASSWORD)</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" id="loginPass" required placeholder="••••••••">
-                        </div>
-                    </div>
-                    <button type="submit" class="btn-primary" id="btnLogin">
-                        ඇතුළු වන්න <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </form>
-                <div style="margin-top: 20px; display: flex; justify-content: space-between;">
-                    <span class="link-text" id="txtForgotPass" onclick="alert('මුරපදය නැවත ලබා ගැනීමට 0766980516 අංකයට WhatsApp පණිවිඩයක් එවන්න.')">මුරපදය අමතකද?</span>
-                    <a href="admin.html" class="link-text" id="txtAdminLink">Admin Panel</a>
-                </div>
+        <!-- 1. AUTHENTICATION SECTION (LOGIN / REGISTER) -->
+        <div id="authSection">
+            <div class="tab-buttons">
+                <button id="loginTabBtn" class="tab-btn active" onclick="switchAuthTab('login')">
+                    <i class="fa-solid fa-right-to-bracket"></i> <span id="txtTabLogin">ඇතුළු වන්න</span>
+                </button>
+                <button id="regTabBtn" class="tab-btn" onclick="switchAuthTab('register')">
+                    <i class="fa-solid fa-user-plus"></i> <span id="txtTabRegister">ලියාපදිංචිය</span>
+                </button>
             </div>
 
-            <!-- REGISTER FORM -->
-            <div id="registerForm" class="hidden">
-                <div class="form-header">
-                    <h2 id="txtRegTitle">නව ශිෂ්‍ය ලියාපදිංචිය</h2>
-                    <p id="txtRegSub">ඔබගේ තොරතුරු ඇතුළත් කර ගිණුමක් සාදාගන්න</p>
+            <div class="card-body">
+                <!-- LOGIN FORM -->
+                <div id="loginForm">
+                    <div class="form-header">
+                        <h2 id="txtLoginTitle">ශිෂ්‍ය ගිණුමට පිවිසෙන්න</h2>
+                        <p id="txtLoginSub">ලියාපදිංචි අංකය හෝ දුරකථන අංකය ඇතුළත් කරන්න</p>
+                    </div>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label id="lblLoginId">INDEX / STUDENT ID හෝ දුරකථන අංකය</label>
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-id-card"></i>
+                                <input type="text" id="loginId" required placeholder="උදා: STU1001 හෝ 0766980516">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="lblLoginPass">මුරපදය (PASSWORD)</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="loginPass" required placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary" id="btnLogin">
+                            ඇතුළු වන්න <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                    <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+                        <span class="link-text" id="txtForgotPass" onclick="showResetModal()">මුරපදය අමතකද?</span>
+                        <span class="link-text" id="txtAdminLink" onclick="showAdminModal()">Admin Panel</span>
+                    </div>
                 </div>
-                <form onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label id="lblRegName">සම්පූර්ණ නම</label>
-                        <div class="input-wrapper">
-                            <i class="fa-regular fa-user"></i>
-                            <input type="text" id="regName" required placeholder="ඔබගේ සම්පූර්ණ නම">
-                        </div>
+
+                <!-- REGISTER FORM -->
+                <div id="registerForm" class="hidden">
+                    <div class="form-header">
+                        <h2 id="txtRegTitle">නව ශිෂ්‍ය ලියාපදිංචිය</h2>
+                        <p id="txtRegSub">ඔබගේ තොරතුරු ඇතුළත් කර ගිණුමක් සාදාගන්න</p>
                     </div>
-                    <div class="form-group">
-                        <label id="lblRegGrade">ශ්‍රේණිය / පන්තිය</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                            <select id="regGrade" required>
-                                <option value="">ශ්‍රේණිය තෝරන්න</option>
-                                <option value="Grade 1-5">1 - 5 ශ්‍රේණිය</option>
-                                <option value="Grade 6-11">6 - 11 ශ්‍රේණිය</option>
-                            </select>
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label id="lblRegName">සම්පූර්ණ නම</label>
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-user"></i>
+                                <input type="text" id="regName" required placeholder="ඔබගේ සම්පූර්ණ නම">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label id="lblRegPhone">WHATSAPP දුරකථන අංකය</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-phone"></i>
-                            <input type="tel" id="regPhone" required placeholder="07XXXXXXXX">
+                        <div class="form-group">
+                            <label id="lblRegGrade">ශ්‍රේණිය / පන්තිය (GRADE)</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                <select id="regGrade" required>
+                                    <option value="" id="optSelectGrade">ශ්‍රේණිය තෝරන්න</option>
+                                    <option value="Grade 1">Grade 1</option>
+                                    <option value="Grade 2">Grade 2</option>
+                                    <option value="Grade 3">Grade 3</option>
+                                    <option value="Grade 4">Grade 4</option>
+                                    <option value="Grade 5">Grade 5</option>
+                                    <option value="Grade 6-11">Grade 6 - 11</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label id="lblRegPass">නව මුරපදයක් (PASSWORD)</label>
-                        <div class="input-wrapper">
-                            <i class="fa-solid fa-lock"></i>
-                            <input type="password" id="regPass" required placeholder="••••••••">
+                        <div class="form-group">
+                            <label id="lblRegPhone">WHATSAPP දුරකථන අංකය</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-phone"></i>
+                                <input type="tel" id="regPhone" required placeholder="07XXXXXXXX">
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit" class="btn-primary" id="btnRegister">
-                        ලියාපදිංචි වන්න <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </form>
+                        <div class="form-group">
+                            <label id="lblRegPass">නව මුරපදයක් (PASSWORD)</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="regPass" required placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary" id="btnRegister">
+                            ලියාපදිංචි වන්න <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
+
+        <!-- 2. STUDENT DASHBOARD (LOGGED IN VIEW) -->
+        <div id="dashboardSection" class="card-body hidden">
+            <div class="nav-bar">
+                <div>
+                    <span style="font-size: 12px; color: #64748b;" id="txtWelcome">සාදරයෙන් පිළිගනිමු,</span>
+                    <h3 style="color: #1e293b; font-size: 18px;" id="studentName">Student</h3>
+                    <p style="font-size: 12px; color: #7c3aed; font-weight: bold;" id="studentGrade">Grade: -</p>
+                </div>
+                <button class="btn-primary" style="width: auto; padding: 6px 14px; font-size: 13px;" onclick="logout()" id="btnLogout">Logout</button>
+            </div>
+
+            <div class="grid-menu">
+                <div class="menu-card" onclick="alert('Live Sessions ළඟදීම!')">
+                    <i class="fa-solid fa-video"></i>
+                    <h4>Live <span class="badge-soon">Soon</span></h4>
+                </div>
+                <div class="menu-card" onclick="openRecordings()">
+                    <i class="fa-solid fa-circle-play"></i>
+                    <h4 id="txtMenuRecordings">Recordings</h4>
+                </div>
+                <div class="menu-card" onclick="window.location.href='alphabet.html'">
+                    <i class="fa-solid fa-font"></i>
+                    <h4>Alphabet Magic</h4>
+                </div>
+                <div class="menu-card" onclick="alert('MCQ Papers අංශය විවෘත විය!')">
+                    <i class="fa-solid fa-file-pen"></i>
+                    <h4>MCQ Papers</h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. RECORDINGS & SLIP UPLOAD VIEW -->
+        <div id="recordingsView" class="card-body hidden">
+            <span class="link-text" onclick="showDashboard()" id="txtBackDash">&larr; Dashboard එකට යන්න</span>
+            <h3 style="margin: 15px 0 10px; color: #1e293b; font-size: 18px;" id="txtRecTitle">Class Recordings & Payment Slip</h3>
+
+            <div style="background: #f8fafc; border: 1.5px dashed #7c3aed; padding: 16px; border-radius: 10px; margin-bottom: 20px;">
+                <h4 style="font-size: 13px; color: #334155; margin-bottom: 8px;" id="txtUploadHeader">මාසික පන්ති ගෙවීම් රිසිට්පත Upload කරන්න</h4>
+                <input type="file" id="slipInput" accept="image/*" style="margin-bottom: 10px; font-size: 12px; width: 100%;">
+                <button class="btn-primary" style="width: auto; padding: 6px 14px; font-size: 13px;" onclick="uploadSlip()" id="btnUploadSlip">Upload Slip</button>
+                <p id="slipStatus" style="font-size: 12px; margin-top: 8px; font-weight: 600;"></p>
+            </div>
+
+            <div>
+                <h4 style="font-size: 14px; color: #1e293b; margin-bottom: 10px;" id="txtLessonsHeader">පවතින වීඩියෝ පාඩම්</h4>
+                <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong style="font-size: 13px; color: #334155;">Unit 01 - Main Class Theory</strong>
+                        <p style="font-size: 11px; color: #64748b; margin-top: 2px;"><span id="txtWatchRemaining">නැරඹීමට ඉතිරි වාර:</span> <span id="watchCount" style="color:#7c3aed; font-weight:bold;">3</span> / 3</p>
+                    </div>
+                    <button class="btn-primary" style="width: auto; padding: 6px 12px; font-size: 12px;" onclick="playRecording()" id="btnWatchVideo">නරඹන්න</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. ADMIN CONTROL PANEL -->
+        <div id="adminSection" class="card-body hidden">
+            <div class="nav-bar">
+                <h3 style="color: #1e293b; font-size: 16px;">Admin Control Panel</h3>
+                <button class="btn-primary" style="width: auto; padding: 6px 14px; font-size: 12px;" onclick="showAuth()">Exit</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Grade</th>
+                            <th>Phone</th>
+                            <th>Pass</th>
+                            <th>Slip</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // Upload කරන ලද Wallpaper File Names Exact Match
+        // Exact 14 Wallpapers Array
         const bgImages = [
             './image15.jpg',
             './image13.png',
@@ -427,10 +567,21 @@
                 txtRegTitle: "නව ශිෂ්‍ය ලියාපදිංචිය",
                 txtRegSub: "ඔබගේ තොරතුරු ඇතුළත් කර ගිණුමක් සාදාගන්න",
                 lblRegName: "සම්පූර්ණ නම",
-                lblRegGrade: "ශ්‍රේණිය / පන්තිය",
+                lblRegGrade: "ශ්‍රේණිය / පන්තිය (GRADE)",
+                optSelectGrade: "ශ්‍රේණිය තෝරන්න",
                 lblRegPhone: "WHATSAPP දුරකථන අංකය",
                 lblRegPass: "නව මුරපදයක් (PASSWORD)",
-                btnRegister: "ලියාපදිංචි වන්න"
+                btnRegister: "ලියාපදිංචි වන්න",
+                txtWelcome: "සාදරයෙන් පිළිගනිමු,",
+                btnLogout: "ලොග් අවුට්",
+                txtMenuRecordings: "පටිගත කිරීම්",
+                txtBackDash: "← Dashboard එකට යන්න",
+                txtRecTitle: "පන්ති පටිගත කිරීම් සහ Payment Slip",
+                txtUploadHeader: "මාසික පන්ති ගෙවීම් රිසිට්පත Upload කරන්න",
+                btnUploadSlip: "ලැබීම් පත එකතු කරන්න",
+                txtLessonsHeader: "පවතින වීඩියෝ පාඩම්",
+                txtWatchRemaining: "නැරඹීමට ඉතිරි වාර:",
+                btnWatchVideo: "නරඹන්න"
             },
             en: {
                 txtWhatsapp: "Contact Us",
@@ -440,19 +591,30 @@
                 txtLoginSub: "Enter your Student ID or Phone number",
                 lblLoginId: "INDEX / STUDENT ID OR PHONE",
                 lblLoginPass: "PASSWORD",
-                btnLogin: "Login",
+                btnLogin: "Login to Portal",
                 txtForgotPass: "Forgot Password?",
                 txtAdminLink: "Admin Panel",
                 txtRegTitle: "Student Registration",
                 txtRegSub: "Fill in your details to create an account",
                 lblRegName: "FULL NAME",
                 lblRegGrade: "GRADE / CLASS",
+                optSelectGrade: "Select Grade",
                 lblRegPhone: "WHATSAPP PHONE NUMBER",
                 lblRegPass: "CREATE PASSWORD",
-                btnRegister: "Register Now"
+                btnRegister: "Register Now",
+                txtWelcome: "Welcome back,",
+                btnLogout: "Logout",
+                txtMenuRecordings: "Recordings",
+                txtBackDash: "← Back to Dashboard",
+                txtRecTitle: "Class Recordings & Payment Slip",
+                txtUploadHeader: "Upload Monthly Payment Slip",
+                btnUploadSlip: "Upload Slip",
+                txtLessonsHeader: "Available Lessons",
+                txtWatchRemaining: "Remaining watches:",
+                btnWatchVideo: "Watch Video"
             },
             ta: {
-                txtWhatsapp: "තொடர்பு கொள்ள",
+                txtWhatsapp: "தொடர்பு கொள்ள",
                 txtTabLogin: "உள்நுழைவு",
                 txtTabRegister: "பதிவு செய்ய",
                 txtLoginTitle: "மாணவர் உள்நுழைவு",
@@ -466,19 +628,66 @@
                 txtRegSub: "கணக்கை உருவாக்க விவரங்களை நிரப்பவும்",
                 lblRegName: "முழுப் பெயர்",
                 lblRegGrade: "வகுப்பு",
+                optSelectGrade: "வகுப்பைத் தேர்ந்தெடுக்கவும்",
                 lblRegPhone: "WHATSAPP தொலைபேசி எண்",
                 lblRegPass: "புதிய கடவுச்சொல்",
-                btnRegister: "பதிவு செய்க"
+                btnRegister: "பதிவு செய்க",
+                txtWelcome: "நல்வரவு,",
+                btnLogout: "வெளியேறு",
+                txtMenuRecordings: "பதிவுகள்",
+                txtBackDash: "← முகப்பு பக்கத்திற்கு",
+                txtRecTitle: "வகுப்பு பதிவுகள் & கட்டண சீட்டு",
+                txtUploadHeader: "மாதாந்திர கட்டண ரசீதை பதிவேற்றவும்",
+                btnUploadSlip: "ரசீதை பதிவேற்று",
+                txtLessonsHeader: "கிடைக்கும் பாடங்கள்",
+                txtWatchRemaining: "மீதமுள்ள பார்வைகள்:",
+                btnWatchVideo: "பார்க்கவும்"
             }
         };
 
+        let currentLang = 'si';
+
         function changeLanguage(lang) {
+            currentLang = lang;
             const dict = translations[lang];
+
             for (let key in dict) {
                 const el = document.getElementById(key);
-                if (el) el.innerText = dict[key];
+                if (el) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'BUTTON') {
+                        if (el.children.length > 0) {
+                            el.childNodes[0].nodeValue = dict[key] + ' ';
+                        } else {
+                            el.innerText = dict[key];
+                        }
+                    } else {
+                        el.innerText = dict[key];
+                    }
+                }
             }
+            updateSlipUI();
         }
+
+        // Data Logic & Persistence
+        let students = JSON.parse(localStorage.getItem('portal_students')) || [];
+        let currentStudent = JSON.parse(localStorage.getItem('portal_active_student')) || null;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (currentStudent) {
+                const latestData = students.find(s => s.id === currentStudent.id);
+                if (latestData) {
+                    currentStudent = latestData;
+                    localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+                }
+                document.getElementById('studentName').innerText = currentStudent.name;
+                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
+                document.getElementById('watchCount').innerText = currentStudent.watchLimit;
+                updateSlipUI();
+                showDashboard();
+            } else {
+                showAuth();
+            }
+        });
 
         function switchAuthTab(tab) {
             document.getElementById('loginTabBtn').classList.toggle('active', tab === 'login');
@@ -487,34 +696,202 @@
             document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
         }
 
-        // Handle Login Action
-        function handleLogin(e) {
-            e.preventDefault();
-            const id = document.getElementById('loginId').value;
-            const pass = document.getElementById('loginPass').value;
-
-            if (id && pass) {
-                alert('සාර්ථකව ඇතුළු විය!');
-                // ඊළඟ පිටුවට (alphabet.html) යෑමට:
-                window.location.href = 'alphabet.html';
-            } else {
-                alert('කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න.');
-            }
-        }
-
-        // Handle Register Action
         function handleRegister(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value;
+            const grade = document.getElementById('regGrade').value;
             const phone = document.getElementById('regPhone').value;
             const pass = document.getElementById('regPass').value;
+            const id = 'STU' + Math.floor(1000 + Math.random() * 9000);
 
-            if (name && phone && pass) {
-                alert('ලියාපදිංචිය සාර්ථකයි! දැන් ඇතුළු වන්න.');
-                switchAuthTab('login');
+            const newStudent = { id, name, grade, phone, pass, slipData: null, approved: false, watchLimit: 3 };
+            students.push(newStudent);
+            localStorage.setItem('portal_students', JSON.stringify(students));
+
+            alert(currentLang === 'si' ? `ලියාපදිංචිය සාර්ථකයි! Student ID: ${id}` : `Registration successful! Student ID: ${id}`);
+            
+            const message = `Hello ${name}, registered for BrightBrain Class Portal! ID: ${id}, Password: ${pass}`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+
+            switchAuthTab('login');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const idInput = document.getElementById('loginId').value;
+            const passInput = document.getElementById('loginPass').value;
+
+            const found = students.find(s => (s.id === idInput || s.phone === idInput) && s.pass === passInput);
+
+            if (found) {
+                currentStudent = found;
+                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+                document.getElementById('studentName').innerText = currentStudent.name;
+                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
+                document.getElementById('watchCount').innerText = currentStudent.watchLimit;
+                updateSlipUI();
+                showDashboard();
             } else {
-                alert('කරුණාකර සියලුම තොරතුරු ඇතුළත් කරන්න.');
+                alert(currentLang === 'si' ? 'ඇතුළත් කළ තොරතුරු වැරදියි!' : 'Invalid credentials!');
             }
+        }
+
+        function updateSlipUI() {
+            const statusEl = document.getElementById('slipStatus');
+            if (!currentStudent) return;
+
+            if (currentStudent.approved) {
+                statusEl.style.color = '#10b981';
+                statusEl.innerText = currentLang === 'si' ? 'Slip එක Admin මගින් අනුමත කර ඇත (Approved)!' : 'Payment Slip Approved by Admin!';
+            } else if (currentStudent.slipData) {
+                statusEl.style.color = '#f59e0b';
+                statusEl.innerText = currentLang === 'si' ? 'Slip එක Upload කර ඇත. Admin අනුමැතිය ලැබෙන තෙක් රැඳී සිටින්න.' : 'Slip Uploaded. Pending Admin Approval.';
+            } else {
+                statusEl.style.color = '#ef4444';
+                statusEl.innerText = currentLang === 'si' ? 'තවමත් Slip එකක් Upload කර නැත.' : 'No payment slip uploaded yet.';
+            }
+        }
+
+        function uploadSlip() {
+            const input = document.getElementById('slipInput');
+            if (input.files.length === 0) {
+                alert(currentLang === 'si' ? 'කරුණාකර Slip එකේ ඡායාරූපයක් තෝරන්න!' : 'Please select an image file!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                currentStudent.slipData = e.target.result;
+                currentStudent.approved = false;
+                
+                const index = students.findIndex(s => s.id === currentStudent.id);
+                if (index !== -1) {
+                    students[index] = currentStudent;
+                    localStorage.setItem('portal_students', JSON.stringify(students));
+                }
+                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+
+                updateSlipUI();
+                alert(currentLang === 'si' ? 'Slip එක සාර්ථකව Upload විය!' : 'Slip Uploaded Successfully!');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        function playRecording() {
+            if (!currentStudent.approved) {
+                alert(currentLang === 'si' ? 'ප්‍රවේශය අවහිර කර ඇත: ඔබගේ Slip එක තවමත් Admin මගින් Approve කර නොමැත!' : 'Access Denied: Slip not approved by Admin yet!');
+                return;
+            }
+
+            if (currentStudent.watchLimit <= 0) {
+                alert(currentLang === 'si' ? 'මෙම මාසය සඳහා ඔබට හිමි වාර ගණන අවසන්!' : 'Maximum watch limit reached!');
+                return;
+            }
+
+            currentStudent.watchLimit--;
+            document.getElementById('watchCount').innerText = currentStudent.watchLimit;
+
+            const index = students.findIndex(s => s.id === currentStudent.id);
+            if (index !== -1) {
+                students[index] = currentStudent;
+                localStorage.setItem('portal_students', JSON.stringify(students));
+            }
+            localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+
+            alert(`Playing Recording... Remaining watches: ${currentStudent.watchLimit}`);
+        }
+
+        function showDashboard() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('recordingsView').classList.add('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+        }
+
+        function showAuth() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('recordingsView').classList.add('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+            document.getElementById('authSection').classList.remove('hidden');
+        }
+
+        function logout() {
+            currentStudent = null;
+            localStorage.removeItem('portal_active_student');
+            showAuth();
+        }
+
+        function openRecordings() {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('recordingsView').classList.remove('hidden');
+        }
+
+        function showResetModal() {
+            const phone = prompt('Enter registered WhatsApp number:');
+            if (phone) {
+                const found = students.find(s => s.phone === phone);
+                if (found) {
+                    const newPass = prompt('Enter new Password:');
+                    if (newPass) {
+                        found.pass = newPass;
+                        localStorage.setItem('portal_students', JSON.stringify(students));
+                        alert('Password updated successfully!');
+                    }
+                } else {
+                    alert('Phone number not found!');
+                }
+            }
+        }
+
+        function showAdminModal() {
+            const adminUser = prompt('Admin Username:');
+            const adminPass = prompt('Admin Password:');
+
+            if (adminUser === 'admin' && adminPass === 'admin123') {
+                renderAdminTable();
+                document.getElementById('authSection').classList.add('hidden');
+                document.getElementById('adminSection').classList.remove('hidden');
+            } else {
+                alert('Invalid Admin credentials!');
+            }
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('studentTableBody');
+            tbody.innerHTML = '';
+
+            students.forEach((s, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${s.id}</td>
+                    <td>${s.name}</td>
+                    <td>${s.grade}</td>
+                    <td>${s.phone}</td>
+                    <td>${s.pass || '-'}</td>
+                    <td>${s.slipData ? `<button class="btn-primary" style="padding:2px 6px; font-size:10px;" onclick="viewSlip('${s.slipData}')">View</button>` : 'No'}</td>
+                    <td>${s.approved ? '<span style="color:green;">Approved</span>' : '<span style="color:orange;">Pending</span>'}</td>
+                    <td>${!s.approved && s.slipData ? `<button class="btn-success" onclick="approveStudent(${index})">Approve</button>` : ''}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function viewSlip(dataUrl) {
+            const win = window.open();
+            win.document.write(`<img src="${dataUrl}" style="max-width:100%; height:auto;" />`);
+        }
+
+        function approveStudent(index) {
+            students[index].approved = true;
+            localStorage.setItem('portal_students', JSON.stringify(students));
+            
+            if (currentStudent && currentStudent.id === students[index].id) {
+                currentStudent.approved = true;
+                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+            }
+
+            renderAdminTable();
+            alert('Payment Approved!');
         }
     </script>
 </body>
