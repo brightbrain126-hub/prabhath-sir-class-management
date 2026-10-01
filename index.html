@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BrightBrain Class Management Portal</title>
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -15,47 +14,13 @@
         }
 
         body {
+            background: #f0f2f5;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             position: relative;
-            background: #111;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        /* Background Slide Show */
-        .slideshow-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-        }
-
-        .slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-        }
-
-        .slide.active { opacity: 0.4; }
-
-        .slide-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 15, 25, 0.7);
-            z-index: -1;
+            padding: 20px;
         }
 
         /* Floating Contact Us Button */
@@ -69,35 +34,32 @@
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
             display: flex;
             align-items: center;
             gap: 8px;
             z-index: 999;
-            transition: transform 0.2s, background 0.2s;
+            transition: transform 0.2s;
         }
 
         .contact-btn:hover {
             transform: scale(1.05);
-            background: #1ebc57;
         }
 
         /* Container Card */
-        .main-card {
-            background: rgba(255, 255, 255, 0.95);
-            width: 90%;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 30px;
+        .portal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 850px;
+            padding: 35px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
         }
 
         /* Tabs */
         .tab-buttons {
             display: flex;
-            border-bottom: 2px solid #ddd;
+            border-bottom: 2px solid #e0e0e0;
             margin-bottom: 25px;
         }
 
@@ -120,14 +82,15 @@
 
         /* Form Controls */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-size: 14px;
             font-weight: 600;
+            color: #444;
         }
 
         .form-group input, .form-group select {
@@ -137,6 +100,10 @@
             border-radius: 8px;
             font-size: 14px;
             outline: none;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #6c5ce7;
         }
 
         .btn-primary {
@@ -152,7 +119,19 @@
             transition: 0.2s;
         }
 
-        .btn-primary:hover { background: #5a4bcf; }
+        .btn-primary:hover {
+            background: #5a4bcf;
+        }
+
+        .btn-success {
+            background: #2ed573;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
         .link-text {
             color: #6c5ce7;
@@ -173,14 +152,14 @@
 
         .grid-menu {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
             margin-top: 20px;
         }
 
         .menu-card {
             background: #f8f9fa;
-            padding: 20px;
+            padding: 25px;
             border-radius: 12px;
             text-align: center;
             border: 1px solid #e9ecef;
@@ -189,17 +168,16 @@
         }
 
         .menu-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
         }
 
         .menu-card i {
-            font-size: 30px;
+            font-size: 36px;
             color: #6c5ce7;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        /* Badge */
         .badge-soon {
             background: #ff7675;
             color: white;
@@ -218,34 +196,29 @@
         }
 
         th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
             text-align: left;
         }
 
-        th { background: #6c5ce7; color: white; }
+        th {
+            background: #6c5ce7;
+            color: white;
+        }
 
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- Slide Show Background -->
-    <div class="slideshow-container">
-        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1350&q=80');"></div>
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=1350&q=80');"></div>
-        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1350&q=80');"></div>
-    </div>
-    <div class="slide-overlay"></div>
-
-    <!-- Floating Contact Us Button -->
+    <!-- WhatsApp Contact Us Button -->
     <a href="https://wa.me/94766980516" target="_blank" class="contact-btn">
         <i class="fa-brands fa-whatsapp"></i> Contact Us
     </a>
 
-    <div class="main-card">
+    <div class="portal-card">
         
-        <!-- AUTH SECTION -->
+        <!-- AUTHENTICATION SECTION -->
         <div id="authSection">
             <div class="tab-buttons">
                 <button id="loginTabBtn" class="tab-btn active" onclick="switchAuthTab('login')">Login</button>
@@ -254,19 +227,19 @@
 
             <!-- LOGIN FORM -->
             <div id="loginForm">
-                <h2 style="text-align: center; margin-bottom: 15px;">Student Login</h2>
+                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Student Login</h2>
                 <form onsubmit="handleLogin(event)">
                     <div class="form-group">
-                        <label>Student ID / Phone</label>
-                        <input type="text" id="loginId" required placeholder="Enter ID or Phone">
+                        <label>Student ID or Phone Number</label>
+                        <input type="text" id="loginId" required placeholder="Student ID හෝ Phone අංකය ඇතුළත් කරන්න">
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" id="loginPass" required placeholder="Enter Password">
+                        <input type="password" id="loginPass" required placeholder="මුරපදය ඇතුළත් කරන්න">
                     </div>
                     <button type="submit" class="btn-primary">Login</button>
                 </form>
-                <div style="margin-top: 12px; display: flex; justify-content: space-between;">
+                <div style="margin-top: 15px; display: flex; justify-content: space-between;">
                     <span class="link-text" onclick="showResetModal()">Forgot Password?</span>
                     <span class="link-text" onclick="showAdminModal()">Admin Panel</span>
                 </div>
@@ -274,42 +247,42 @@
 
             <!-- REGISTER FORM -->
             <div id="registerForm" class="hidden">
-                <h2 style="text-align: center; margin-bottom: 15px;">Student Registration</h2>
+                <h2 style="text-align: center; margin-bottom: 20px; color: #333;">Student Registration</h2>
                 <form onsubmit="handleRegister(event)">
                     <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="regName" required placeholder="Enter Name">
+                        <label>සම්පූර්ණ නම</label>
+                        <input type="text" id="regName" required placeholder="ඔබගේ නම ඇතුළත් කරන්න">
                     </div>
                     <div class="form-group">
-                        <label>Grade</label>
+                        <label>ශ්‍රේණිය (Grade)</label>
                         <select id="regGrade" required>
-                            <option value="">Select Grade</option>
+                            <option value="">Grade එක තෝරන්න</option>
                             <option value="Grade 1-5">Grade 1 - 5</option>
                             <option value="Grade 6-11">Grade 6 - 11</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>WhatsApp Number</label>
+                        <label>WhatsApp අංකය</label>
                         <input type="tel" id="regPhone" required placeholder="07XXXXXXXX">
                     </div>
                     <div class="form-group">
-                        <label>Create Password</label>
-                        <input type="password" id="regPass" required placeholder="Password">
+                        <label>නව Password එකක් යොදන්න</label>
+                        <input type="password" id="regPass" required placeholder="Password එකක් ඇතුළත් කරන්න">
                     </div>
                     <button type="submit" class="btn-primary">Register & Send WhatsApp Code</button>
                 </form>
             </div>
         </div>
 
-        <!-- DASHBOARD SECTION -->
+        <!-- STUDENT DASHBOARD -->
         <div id="dashboardSection" class="hidden">
             <div class="nav-bar">
-                <h3>Welcome, <span id="studentName">Student</span>!</h3>
-                <button class="btn-primary" style="width: auto; padding: 6px 15px;" onclick="logout()">Logout</button>
+                <h3>සාදරයෙන් පිළිගනිමු, <span id="studentName">Student</span>!</h3>
+                <button class="btn-primary" style="width: auto; padding: 8px 18px;" onclick="logout()">Logout</button>
             </div>
 
             <div class="grid-menu">
-                <div class="menu-card" onclick="alert('Live Sessions are Available soon!')">
+                <div class="menu-card" onclick="alert('Live Sessions ළඟදීම ලබාගත හැක!')">
                     <i class="fa-solid fa-video"></i>
                     <h4>Live Sessions <span class="badge-soon">Available soon</span></h4>
                 </div>
@@ -317,7 +290,7 @@
                     <i class="fa-solid fa-circle-play"></i>
                     <h4>Class Recordings</h4>
                 </div>
-                <div class="menu-card" onclick="alert('MCQ Papers are loaded for free practice!')">
+                <div class="menu-card" onclick="alert('MCQ Papers අංශය විවෘත විය!')">
                     <i class="fa-solid fa-file-pen"></i>
                     <h4>MCQ Practice Papers</h4>
                 </div>
@@ -329,32 +302,32 @@
             <button class="link-text" onclick="showDashboard()">&larr; Back to Dashboard</button>
             <h3 style="margin: 15px 0;">Class Recordings & Payment Slip Upload</h3>
 
-            <div style="background: #eef2f5; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <h4>Upload Monthly Payment Slip</h4>
-                <input type="file" id="slipInput" accept="image/*,.pdf" style="margin: 10px 0;">
-                <button class="btn-primary" onclick="uploadSlip()">Upload Slip</button>
-                <p id="slipStatus" style="font-size: 12px; margin-top: 5px; color: green;"></p>
+            <div style="background: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                <h4 style="margin-bottom: 10px;">මාසික පන්ති ගෙවීම් රசீද පත (Slip) Upload කරන්න</h4>
+                <input type="file" id="slipInput" accept="image/*" style="margin-bottom: 12px;">
+                <button class="btn-primary" style="width: auto; padding: 8px 20px;" onclick="uploadSlip()">Upload Slip</button>
+                <p id="slipStatus" style="font-size: 13px; margin-top: 8px; font-weight: bold;"></p>
             </div>
 
             <div>
-                <h4>Available Monthly Recordings</h4>
-                <div style="background: #fff; border: 1px solid #ccc; padding: 12px; border-radius: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                <h4>ලබාගත හැකි පන්ති Recordings</h4>
+                <div style="background: #fff; border: 1px solid #e0e0e0; padding: 15px; border-radius: 10px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <strong>Unit 01 - Full Class Recording</strong>
-                        <p style="font-size: 12px; color: #666;">Remaining Watch Count: <span id="watchCount">3</span> / 3 times a month</p>
+                        <strong>Unit 01 - Main Theory Lesson Recording</strong>
+                        <p style="font-size: 12px; color: #666; margin-top: 4px;">මෙම මාසයේ නැරඹිය හැකි ඉතිරි වාර ගණන: <span id="watchCount">3</span> / 3</p>
                     </div>
-                    <button class="btn-primary" style="width: auto; padding: 8px 15px;" onclick="playRecording()">Watch Video</button>
+                    <button class="btn-primary" style="width: auto; padding: 8px 18px;" onclick="playRecording()">Watch Video</button>
                 </div>
             </div>
         </div>
 
-        <!-- ADMIN PANEL SECTION -->
+        <!-- ADMIN CONTROL PANEL -->
         <div id="adminSection" class="hidden">
             <div class="nav-bar">
                 <h3>Admin Control Dashboard</h3>
-                <button class="btn-primary" style="width: auto; padding: 6px 15px;" onclick="showAuth()">Exit Admin</button>
+                <button class="btn-primary" style="width: auto; padding: 8px 18px;" onclick="showAuth()">Exit Admin</button>
             </div>
-            <h4>Registered Students Management</h4>
+            <h4 style="margin-bottom: 12px;">ලියාපදිංචි ළමුන් සහ Slip පරීක්ෂා කිරීම</h4>
             <div style="overflow-x: auto;">
                 <table>
                     <thead>
@@ -364,11 +337,12 @@
                             <th>Grade</th>
                             <th>WhatsApp</th>
                             <th>Password</th>
-                            <th>Slip Status</th>
+                            <th>Slip Image</th>
+                            <th>Approval Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="studentTableBody">
-                        <!-- Student data loaded via JS -->
                     </tbody>
                 </table>
             </div>
@@ -378,20 +352,9 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        // BACKGROUND SLIDESHOW
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 4000);
-
-        // DATA STORE INITIALIZATION
         let students = JSON.parse(localStorage.getItem('portal_students')) || [];
         let currentStudent = null;
 
-        // AUTH TAB SWITCHING
         function switchAuthTab(tab) {
             document.getElementById('loginTabBtn').classList.toggle('active', tab === 'login');
             document.getElementById('regTabBtn').classList.toggle('active', tab === 'register');
@@ -399,7 +362,6 @@
             document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
         }
 
-        // STUDENT REGISTRATION + WHATSAPP REDIRECT
         function handleRegister(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value;
@@ -408,20 +370,18 @@
             const pass = document.getElementById('regPass').value;
             const id = 'STU' + Math.floor(1000 + Math.random() * 9000);
 
-            const newStudent = { id, name, grade, phone, pass, slipUploaded: false, watchLimit: 3 };
+            const newStudent = { id, name, grade, phone, pass, slipData: null, approved: false, watchLimit: 3 };
             students.push(newStudent);
             localStorage.setItem('portal_students', JSON.stringify(students));
 
-            alert(`Registration Successful! Student ID: ${id}`);
+            alert(`ලියාපදිංචිය සාර්ථකයි! ඔබගේ Student ID එක: ${id}`);
 
-            // WhatsApp Notification Pre-fill Link
-            const message = `Hello ${name}, You have successfully registered for BrightBrain Portal!%0A*Username/ID:* ${id}%0A*Password:* ${pass}%0A*Login Link:* ${window.location.href}`;
+            const message = `Hello ${name}, You have registered for Prabhath Sir Class Portal!%0A*Student ID:* ${id}%0A*Password:* ${pass}`;
             window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
 
             switchAuthTab('login');
         }
 
-        // STUDENT LOGIN
         function handleLogin(e) {
             e.preventDefault();
             const idInput = document.getElementById('loginId').value;
@@ -433,13 +393,62 @@
                 currentStudent = found;
                 document.getElementById('studentName').innerText = currentStudent.name;
                 document.getElementById('watchCount').innerText = currentStudent.watchLimit;
+                updateSlipUI();
                 showDashboard();
             } else {
-                alert('Invalid Credentials! Please try again or reset password.');
+                alert('ඇතුළත් කළ තොරතුරු වැරදියි!');
             }
         }
 
-        // NAVIGATION HELPERS
+        function updateSlipUI() {
+            const statusEl = document.getElementById('slipStatus');
+            if (currentStudent.approved) {
+                statusEl.style.color = 'green';
+                statusEl.innerText = 'ඔබගේ Slip එක Admin මගින් ස්ථීර කර ඇත (Approved)! Recordings නරඹන්න.';
+            } else if (currentStudent.slipData) {
+                statusEl.style.color = '#e67e22';
+                statusEl.innerText = 'Slip එක Upload කර ඇත. Admin පරීක්ෂා කරන තෙක් රැඳී සිටින්න (Pending).';
+            } else {
+                statusEl.style.color = 'red';
+                statusEl.innerText = 'තවමත් Slip එකක් Upload කර නැත.';
+            }
+        }
+
+        function uploadSlip() {
+            const input = document.getElementById('slipInput');
+            if (input.files.length === 0) {
+                alert('කරුණාකර Slip එකේ ඡායාරූපයක් තෝරන්න!');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                currentStudent.slipData = e.target.result;
+                currentStudent.approved = false; // Pending approval
+                localStorage.setItem('portal_students', JSON.stringify(students));
+                updateSlipUI();
+                alert('Slip එක සාර්ථකව Upload විය! Admin අනුමැතිය සඳහා යොමු කෙරිණි.');
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+
+        function playRecording() {
+            if (!currentStudent.approved) {
+                alert('ප්‍රවේශය අවහිර කර ඇත: ඔබගේ Slip එක තවමත් Admin මගින් Approve කර නොමැත!');
+                return;
+            }
+
+            if (currentStudent.watchLimit <= 0) {
+                alert('මෙම මාසය සඳහා ඔබට හිමි වාර 3 ම නැරඹා අවසන්!');
+                return;
+            }
+
+            currentStudent.watchLimit--;
+            document.getElementById('watchCount').innerText = currentStudent.watchLimit;
+            localStorage.setItem('portal_students', JSON.stringify(students));
+            alert(`Recording එක විවෘත වේ... මෙම මාසයේ නැරඹිය හැකි ඉතිරි වාර ගණන: ${currentStudent.watchLimit}`);
+        }
+
         function showDashboard() {
             document.getElementById('authSection').classList.add('hidden');
             document.getElementById('recordingsView').classList.add('hidden');
@@ -464,56 +473,23 @@
             document.getElementById('recordingsView').classList.remove('hidden');
         }
 
-        // SLIP UPLOAD LOGIC
-        function uploadSlip() {
-            const input = document.getElementById('slipInput');
-            if (input.files.length === 0) {
-                alert('Please select a payment slip image or document!');
-                return;
-            }
-            if (currentStudent) {
-                currentStudent.slipUploaded = true;
-                document.getElementById('slipStatus').innerText = 'Slip uploaded successfully! Pending Admin verification.';
-                alert('Slip Uploaded! Admin will review your access.');
-            }
-        }
-
-        // WATCH RECORDING (3 TIMES LIMIT SYSTEM)
-        function playRecording() {
-            if (!currentStudent.slipUploaded) {
-                alert('Please upload your Payment Slip first to unlock recordings!');
-                return;
-            }
-
-            if (currentStudent.watchLimit <= 0) {
-                alert('You have reached the limit of 3 views per month for this recording!');
-                return;
-            }
-
-            currentStudent.watchLimit--;
-            document.getElementById('watchCount').innerText = currentStudent.watchLimit;
-            alert(`Opening Recording Video... Remaining plays for this month: ${currentStudent.watchLimit}`);
-        }
-
-        // PASSWORD RESET SYSTEM
         function showResetModal() {
-            const phone = prompt('Enter your registered WhatsApp Phone Number:');
+            const phone = prompt('ඔබ ලියාපදිංචි වූ WhatsApp දුරකථන අංකය ඇතුළත් කරන්න:');
             if (phone) {
                 const found = students.find(s => s.phone === phone);
                 if (found) {
-                    const newPass = prompt('Enter your New Password:');
+                    const newPass = prompt('නව Password එකක් ඇතුළත් කරන්න:');
                     if (newPass) {
                         found.pass = newPass;
                         localStorage.setItem('portal_students', JSON.stringify(students));
-                        alert('Password reset successful! You can now log in.');
+                        alert('Password එක සාර්ථකව වෙනස් විය!');
                     }
                 } else {
-                    alert('Phone number not found in registered students!');
+                    alert('එම දුරකථන අංකය හමු නොවීය!');
                 }
             }
         }
 
-        // ADMIN PANEL MODAL & ACCESS
         function showAdminModal() {
             const adminUser = prompt('Admin Username:');
             const adminPass = prompt('Admin Password:');
@@ -523,7 +499,7 @@
                 document.getElementById('authSection').classList.add('hidden');
                 document.getElementById('adminSection').classList.remove('hidden');
             } else {
-                alert('Invalid Admin Credentials!');
+                alert('Admin තොරතුරු වැරදියි!');
             }
         }
 
@@ -531,18 +507,38 @@
             const tbody = document.getElementById('studentTableBody');
             tbody.innerHTML = '';
 
-            students.forEach(s => {
+            students.forEach((s, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${s.id}</td>
                     <td>${s.name}</td>
                     <td>${s.grade}</td>
                     <td>${s.phone}</td>
-                    <td><strong style="color:#d63031;">${s.pass}</strong></td>
-                    <td>${s.slipUploaded ? '<span style="color:green;">Uploaded</span>' : '<span style="color:red;">Pending</span>'}</td>
+                    <td><strong style="color:#d63031;">${s.pass || '-'}</strong></td>
+                    <td>
+                        ${s.slipData ? `<button class="btn-primary" style="padding:4px 8px; font-size:11px;" onclick="viewSlip('${s.slipData}')">View Slip</button>` : 'No Slip'}
+                    </td>
+                    <td>
+                        ${s.approved ? '<span style="color:green; font-weight:bold;">Approved</span>' : '<span style="color:orange; font-weight:bold;">Pending</span>'}
+                    </td>
+                    <td>
+                        ${!s.approved && s.slipData ? `<button class="btn-success" onclick="approveStudent(${index})">Approve</button>` : ''}
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        function viewSlip(dataUrl) {
+            const win = window.open();
+            win.document.write(`<img src="${dataUrl}" style="max-width:100%; height:auto;" />`);
+        }
+
+        function approveStudent(index) {
+            students[index].approved = true;
+            localStorage.setItem('portal_students', JSON.stringify(students));
+            renderAdminTable();
+            alert('Student ගේ Payment එක Approve කරන ලදී!');
         }
     </script>
 </body>
