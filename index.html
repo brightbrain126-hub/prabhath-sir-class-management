@@ -25,7 +25,7 @@
             background-color: #f4f6f9;
         }
 
-        /* Dynamic Background Slideshow using Provided Images */
+        /* Dynamic Background Slideshow */
         .bg-slideshow {
             position: fixed;
             top: 0;
@@ -45,7 +45,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: rgba(243, 244, 246, 0.72);
+            background: rgba(243, 244, 246, 0.65);
         }
 
         /* Language Selector Bar */
@@ -55,9 +55,9 @@
             right: 20px;
             z-index: 1000;
             background: #ffffff;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -103,7 +103,7 @@
             width: 100%;
             max-width: 480px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             border: 1px solid #eef2f6;
             overflow: hidden;
             z-index: 1;
@@ -334,11 +334,11 @@
         </select>
     </div>
 
-    <!-- Background Slideshow -->
+    <!-- Dynamic Background Slideshow -->
     <div id="bgSlide" class="bg-slideshow"></div>
     <div class="bg-overlay"></div>
 
-    <!-- WhatsApp Contact Button -->
+    <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/94766980516" target="_blank" class="contact-btn">
         <i class="fa-brands fa-whatsapp"></i> <span id="txtWhatsapp">Contact Us</span>
     </a>
@@ -512,30 +512,32 @@
     </div>
 
     <script>
-        // Images Array matching exact uploaded cartoon graphics
+        // Exact Wallpapers provided by User loaded via web hosting
         const bgImages = [
-            'image15.jpg', // Disney Castle & Mickey Friends
-            'image13.png', // Spongebob & Family Guy & Bluey
-            'image12.jpg', // Spongebob, Mickey & Homer
-            'image11.jpg', // Mickey Mouse & Homer Simpson
-            'image10.jpg', // Bugs Bunny & Yosemite Sam
-            'image8.jpg',  // Looney Tunes Basketball
-            'image7.png',  // Looney Tunes Group
-            'image6.jpg',  // Bugs Bunny & Pink Panther
-            'image5.jpg',  // Pink Panther Laying
-            'image12.jpg'  // Garfield & Jon
+            'https://i.ibb.co/3sX8M8H/image15.jpg', // Disney Castle & Mickey Friends
+            'https://i.ibb.co/p3Bcx7d/image13.jpg', // Spongebob, Family Guy & Bluey
+            'https://i.ibb.co/fQ3KCYb/image12.jpg', // Spongebob, Mickey & Homer
+            'https://i.ibb.co/0BGh783/image11.jpg', // Mickey Mouse & Homer Simpson
+            'https://i.ibb.co/gmb9q67/image10.jpg', // Bugs Bunny & Yosemite Sam
+            'https://i.ibb.co/L5fXb7w/image9.jpg',  // Space Jam / Looney Tunes Sports
+            'https://i.ibb.co/c1cKvgp/image8.jpg',  // Looney Tunes Circle Group
+            'https://i.ibb.co/k27r04q/image7.jpg',  // Bugs Bunny & Pink Panther
+            'https://i.ibb.co/y4L2k8d/image6.jpg',  // Pink Panther Laying Down
+            'https://i.ibb.co/T1j86jG/image5.jpg'   // Baby Garfield & Jon
         ];
 
         let currentBgIndex = 0;
         function changeBackground() {
             const bgDiv = document.getElementById('bgSlide');
-            bgDiv.style.backgroundImage = `url('${bgImages[currentBgIndex]}')`;
-            currentBgIndex = (currentBgIndex + 1) % bgImages.length;
+            if (bgDiv) {
+                bgDiv.style.backgroundImage = `url('${bgImages[currentBgIndex]}')`;
+                currentBgIndex = (currentBgIndex + 1) % bgImages.length;
+            }
         }
         changeBackground();
         setInterval(changeBackground, 4000);
 
-        // Language Dictionary
+        // Language Translations
         const translations = {
             si: {
                 txtWhatsapp: "සම්බන්ධ වන්න",
@@ -652,7 +654,7 @@
             updateSlipUI();
         }
 
-        // Data Storage & Persistence
+        // Data Storage & Logic
         let students = JSON.parse(localStorage.getItem('portal_students')) || [];
         let currentStudent = JSON.parse(localStorage.getItem('portal_active_student')) || null;
 
