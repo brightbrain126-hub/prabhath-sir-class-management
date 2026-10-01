@@ -6,324 +6,55 @@
     <title>BrightBrain Class Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            padding: 20px;
-            overflow-x: hidden;
-            background-color: #f4f6f9;
-        }
-
-        /* Dynamic Background Slideshow */
-        .bg-slideshow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background-size: cover;
-            background-position: center;
-            transition: background-image 1.2s ease-in-out;
-        }
-
-        .bg-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: rgba(243, 244, 246, 0.65);
-        }
-
-        /* Language Selector Bar */
-        .lang-bar {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: #ffffff;
-            padding: 6px 14px;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-        }
-
-        .lang-bar select {
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            color: #7c3aed;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* Floating WhatsApp Button */
-        .contact-btn {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: #25D366;
-            color: #fff;
-            padding: 12px 22px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 999;
-            transition: transform 0.2s;
-        }
-
-        .contact-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* Main Container Card */
-        .portal-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 500px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-            border: 1px solid #eef2f6;
-            overflow: hidden;
-            z-index: 1;
-            margin-top: 40px;
-        }
-
-        .tab-buttons {
-            display: flex;
-            background-color: #f8fafc;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            background: none;
-            font-size: 15px;
-            font-weight: 600;
-            color: #64748b;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .tab-btn.active {
-            color: #7c3aed;
-            background: #ffffff;
-            border-bottom: 3px solid #7c3aed;
-        }
-
-        .card-body {
-            padding: 28px 24px;
-        }
-
-        .form-header {
-            text-align: center;
-            margin-bottom: 22px;
-        }
-
-        .form-header h2 {
-            font-size: 22px;
-            color: #1e293b;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .form-header p {
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #475569;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-wrapper i {
-            position: absolute;
-            left: 14px;
-            color: #94a3b8;
-            font-size: 15px;
-        }
-
-        .input-wrapper input, .input-wrapper select {
-            width: 100%;
-            padding: 12px 14px 12px 42px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #334155;
-            background-color: #f8fafc;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .input-wrapper input:focus, .input-wrapper select:focus {
-            border-color: #7c3aed;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 13px;
-            background: #7c3aed;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
-        }
-
-        .btn-primary:hover {
-            background: #6d28d9;
-        }
-
-        .btn-success {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 12px;
-        }
-
-        .link-text {
-            color: #7c3aed;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .link-text:hover {
-            text-decoration: underline;
-        }
-
-        .nav-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 16px;
-            margin-bottom: 24px;
-        }
-
-        .grid-menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 16px;
-        }
-
-        .menu-card {
-            background: #f8fafc;
-            padding: 20px 15px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .menu-card:hover {
-            transform: translateY(-3px);
-            border-color: #7c3aed;
-            background: #ffffff;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-        }
-
-        .menu-card i {
-            font-size: 32px;
-            color: #7c3aed;
-            margin-bottom: 10px;
-        }
-
-        .menu-card h4 {
-            font-size: 14px;
-            color: #334155;
-        }
-
-        .badge-soon {
-            background: #ef4444;
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 8px;
-            margin-left: 4px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 12px;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #e2e8f0;
-            text-align: left;
-        }
-
-        th {
-            background: #7c3aed;
-            color: white;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; padding: 20px; overflow-x: hidden; background-color: #f4f6f9; }
+        
+        .bg-slideshow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-size: cover; background-position: center; transition: background-image 1.2s ease-in-out; }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: rgba(243, 244, 246, 0.65); }
+        
+        .lang-bar { position: fixed; top: 20px; right: 20px; z-index: 1000; background: #ffffff; padding: 6px 14px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.12); display: flex; align-items: center; gap: 8px; font-size: 13px; }
+        .lang-bar select { border: none; background: transparent; font-weight: 600; color: #7c3aed; outline: none; cursor: pointer; }
+        
+        .contact-btn { position: fixed; bottom: 25px; right: 25px; background: #25D366; color: #fff; padding: 12px 22px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; z-index: 999; }
+        
+        .portal-card { background: #ffffff; width: 100%; max-width: 520px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); border: 1px solid #eef2f6; overflow: hidden; z-index: 1; margin-top: 40px; }
+        .tab-buttons { display: flex; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        .tab-btn { flex: 1; padding: 16px; border: none; background: none; font-size: 15px; font-weight: 600; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .tab-btn.active { color: #7c3aed; background: #ffffff; border-bottom: 3px solid #7c3aed; }
+        
+        .card-body { padding: 28px 24px; }
+        .form-header { text-align: center; margin-bottom: 22px; }
+        .form-header h2 { font-size: 22px; color: #1e293b; font-weight: 700; margin-bottom: 6px; }
+        .form-header p { font-size: 13px; color: #64748b; }
+        
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 11px; font-weight: 700; color: #475569; letter-spacing: 0.5px; text-transform: uppercase; }
+        .input-wrapper { position: relative; display: flex; align-items: center; }
+        .input-wrapper i { position: absolute; left: 14px; color: #94a3b8; font-size: 15px; }
+        .input-wrapper input, .input-wrapper select { width: 100%; padding: 12px 14px 12px 42px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #334155; background-color: #f8fafc; outline: none; }
+        
+        .btn-primary { width: 100%; padding: 13px; background: #7c3aed; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-success { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; }
+        .link-text { color: #7c3aed; cursor: pointer; font-size: 13px; font-weight: 600; text-decoration: none; }
+        
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; }
+        .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; }
+        .menu-card { background: #f8fafc; padding: 20px 15px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; cursor: pointer; }
+        .menu-card i { font-size: 32px; color: #7c3aed; margin-bottom: 10px; }
+        .menu-card h4 { font-size: 14px; color: #334155; }
+        .badge-soon { background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; margin-left: 4px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
+        th, td { padding: 8px; border: 1px solid #e2e8f0; text-align: left; }
+        th { background: #7c3aed; color: white; }
+        
+        .footer-links { text-align: center; margin-top: 15px; font-size: 12px; color: #64748b; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <!-- Language Selector -->
+    <!-- Language Bar -->
     <div class="lang-bar">
         <i class="fa-solid fa-globe" style="color: #7c3aed;"></i>
         <select id="langSelect" onchange="changeLanguage(this.value)">
@@ -333,19 +64,18 @@
         </select>
     </div>
 
-    <!-- Dynamic Background Slideshow -->
+    <!-- Background Elements -->
     <div id="bgSlide" class="bg-slideshow"></div>
     <div class="bg-overlay"></div>
 
-    <!-- Floating WhatsApp Button -->
+    <!-- WhatsApp Contact -->
     <a href="https://wa.me/94766980516" target="_blank" class="contact-btn">
         <i class="fa-brands fa-whatsapp"></i> <span id="txtWhatsapp">Contact Us</span>
     </a>
 
-    <!-- Main Card Container -->
     <div class="portal-card">
 
-        <!-- 1. AUTHENTICATION SECTION (LOGIN / REGISTER) -->
+        <!-- 1. AUTHENTICATION SECTION -->
         <div id="authSection">
             <div class="tab-buttons">
                 <button id="loginTabBtn" class="tab-btn active" onclick="switchAuthTab('login')">
@@ -378,9 +108,7 @@
                                 <input type="password" id="loginPass" required placeholder="••••••••">
                             </div>
                         </div>
-                        <button type="submit" class="btn-primary" id="btnLogin">
-                            ඇතුළු වන්න <i class="fa-solid fa-arrow-right"></i>
-                        </button>
+                        <button type="submit" class="btn-primary" id="btnLogin">ඇතුළු වන්න <i class="fa-solid fa-arrow-right"></i></button>
                     </form>
                     <div style="margin-top: 20px; display: flex; justify-content: space-between;">
                         <span class="link-text" id="txtForgotPass" onclick="showResetModal()">මුරපදය අමතකද?</span>
@@ -431,15 +159,18 @@
                                 <input type="password" id="regPass" required placeholder="••••••••">
                             </div>
                         </div>
-                        <button type="submit" class="btn-primary" id="btnRegister">
-                            ලියාපදිංචි වන්න <i class="fa-solid fa-arrow-right"></i>
-                        </button>
+                        <button type="submit" class="btn-primary" id="btnRegister">ලියාපදිංචි වන්න <i class="fa-solid fa-arrow-right"></i></button>
                     </form>
+                </div>
+
+                <!-- Privacy Policy Footer Link -->
+                <div class="footer-links">
+                    <span class="link-text" onclick="showPrivacyModal()" id="txtPrivacyLink">Privacy Policy</span> | <span>© 2026 BrightBrain</span>
                 </div>
             </div>
         </div>
 
-        <!-- 2. STUDENT DASHBOARD (LOGGED IN VIEW) -->
+        <!-- 2. STUDENT DASHBOARD -->
         <div id="dashboardSection" class="card-body hidden">
             <div class="nav-bar">
                 <div>
@@ -459,18 +190,14 @@
                     <i class="fa-solid fa-circle-play"></i>
                     <h4 id="txtMenuRecordings">Recordings</h4>
                 </div>
-                <div class="menu-card" onclick="window.location.href='alphabet.html'">
-                    <i class="fa-solid fa-font"></i>
-                    <h4>Alphabet Magic</h4>
-                </div>
-                <div class="menu-card" onclick="alert('MCQ Papers අංශය විවෘත විය!')">
+                <div class="menu-card" onclick="openMCQPapers()">
                     <i class="fa-solid fa-file-pen"></i>
                     <h4>MCQ Papers</h4>
                 </div>
             </div>
         </div>
 
-        <!-- 3. RECORDINGS & SLIP UPLOAD VIEW -->
+        <!-- 3. RECORDINGS & SLIP UPLOAD -->
         <div id="recordingsView" class="card-body hidden">
             <span class="link-text" onclick="showDashboard()" id="txtBackDash">&larr; Dashboard එකට යන්න</span>
             <h3 style="margin: 15px 0 10px; color: #1e293b; font-size: 18px;" id="txtRecTitle">Class Recordings & Payment Slip</h3>
@@ -486,7 +213,7 @@
                 <h4 style="font-size: 14px; color: #1e293b; margin-bottom: 10px;" id="txtLessonsHeader">පවතින වීඩියෝ පාඩම්</h4>
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <strong style="font-size: 13px; color: #334155;">Unit 01 - Main Class Theory</strong>
+                        <strong style="font-size: 13px; color: #334155;">Unit 01 - Theory Class</strong>
                         <p style="font-size: 11px; color: #64748b; margin-top: 2px;"><span id="txtWatchRemaining">නැරඹීමට ඉතිරි වාර:</span> <span id="watchCount" style="color:#7c3aed; font-weight:bold;">3</span> / 3</p>
                     </div>
                     <button class="btn-primary" style="width: auto; padding: 6px 12px; font-size: 12px;" onclick="playRecording()" id="btnWatchVideo">නරඹන්න</button>
@@ -494,13 +221,34 @@
             </div>
         </div>
 
-        <!-- 4. ADMIN CONTROL PANEL -->
+        <!-- 4. MCQ TEST VIEW -->
+        <div id="mcqView" class="card-body hidden">
+            <span class="link-text" onclick="showDashboard()">&larr; Back to Dashboard</span>
+            <h3 style="margin: 15px 0; color: #1e293b;">Online MCQ Paper 01</h3>
+            <form onsubmit="submitMCQPaper(event)">
+                <div style="margin-bottom: 15px;">
+                    <p style="font-size: 13px; font-weight: bold;">1. බලය මැනීමේ සම්මත ඒකකය කුමක්ද?</p>
+                    <label style="font-size: 12px; display: block;"><input type="radio" name="q1" value="A" required> A) පැස්කල් (Pascal)</label>
+                    <label style="font-size: 12px; display: block;"><input type="radio" name="q1" value="B"> B) නියුටන් (Newton)</label>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <p style="font-size: 13px; font-weight: bold;">2. ශක්තිය මැනීමේ සම්මත ඒකකය කුමක්ද?</p>
+                    <label style="font-size: 12px; display: block;"><input type="radio" name="q2" value="A" required> A) ජූල් (Joule)</label>
+                    <label style="font-size: 12px; display: block;"><input type="radio" name="q2" value="B"> B) වොට් (Watt)</label>
+                </div>
+                <button type="submit" class="btn-primary">Paper එක Submit කරන්න</button>
+            </form>
+        </div>
+
+        <!-- 5. ADMIN CONTROL PANEL & MARKS REPORT -->
         <div id="adminSection" class="card-body hidden">
             <div class="nav-bar">
-                <h3 style="color: #1e293b; font-size: 16px;">Admin Control Panel</h3>
+                <h3 style="color: #1e293b; font-size: 16px;">Admin Panel & Reports</h3>
                 <button class="btn-primary" style="width: auto; padding: 6px 14px; font-size: 12px;" onclick="showAuth()">Exit</button>
             </div>
-            <div style="overflow-x: auto;">
+            
+            <h4 style="font-size: 13px; margin-bottom: 10px; color: #7c3aed;">Student Management & Payments</h4>
+            <div style="overflow-x: auto; margin-bottom: 25px;">
                 <table>
                     <thead>
                         <tr>
@@ -517,382 +265,26 @@
                     <tbody id="studentTableBody"></tbody>
                 </table>
             </div>
+
+            <h4 style="font-size: 13px; margin-bottom: 10px; color: #7c3aed;">MCQ Marks & Exam Report</h4>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Grade</th>
+                            <th>Paper</th>
+                            <th>Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mcqReportBody"></tbody>
+                </table>
+            </div>
         </div>
 
     </div>
 
-    <script>
-        // Exact 14 Wallpapers Array
-        const bgImages = [
-            './image15.jpg',
-            './image13.png',
-            './image12.jpg',
-            './image11.jpg',
-            './image10.jpg',
-            './image9.jpg',
-            './image8.jpg',
-            './image7.png',
-            './image6.jpg',
-            './image5.jpg',
-            './image4.png',
-            './image3.png',
-            './image2.jpg',
-            './image1.png'
-        ];
-
-        let currentBgIndex = 0;
-        function changeBackground() {
-            const bgDiv = document.getElementById('bgSlide');
-            if (bgDiv && bgImages.length > 0) {
-                bgDiv.style.backgroundImage = `url('${bgImages[currentBgIndex]}')`;
-                currentBgIndex = (currentBgIndex + 1) % bgImages.length;
-            }
-        }
-        changeBackground();
-        setInterval(changeBackground, 4000);
-
-        // Language Translations
-        const translations = {
-            si: {
-                txtWhatsapp: "සම්බන්ධ වන්න",
-                txtTabLogin: "ඇතුළු වන්න",
-                txtTabRegister: "ලියාපදිංචිය",
-                txtLoginTitle: "ශිෂ්‍ය ගිණුමට පිවිසෙන්න",
-                txtLoginSub: "ලියාපදිංචි අංකය හෝ දුරකථන අංකය ඇතුළත් කරන්න",
-                lblLoginId: "INDEX / STUDENT ID හෝ දුරකථන අංකය",
-                lblLoginPass: "මුරපදය (PASSWORD)",
-                btnLogin: "ඇතුළු වන්න",
-                txtForgotPass: "මුරපදය අමතකද?",
-                txtAdminLink: "Admin Panel",
-                txtRegTitle: "නව ශිෂ්‍ය ලියාපදිංචිය",
-                txtRegSub: "ඔබගේ තොරතුරු ඇතුළත් කර ගිණුමක් සාදාගන්න",
-                lblRegName: "සම්පූර්ණ නම",
-                lblRegGrade: "ශ්‍රේණිය / පන්තිය (GRADE)",
-                optSelectGrade: "ශ්‍රේණිය තෝරන්න",
-                lblRegPhone: "WHATSAPP දුරකථන අංකය",
-                lblRegPass: "නව මුරපදයක් (PASSWORD)",
-                btnRegister: "ලියාපදිංචි වන්න",
-                txtWelcome: "සාදරයෙන් පිළිගනිමු,",
-                btnLogout: "ලොග් අවුට්",
-                txtMenuRecordings: "පටිගත කිරීම්",
-                txtBackDash: "← Dashboard එකට යන්න",
-                txtRecTitle: "පන්ති පටිගත කිරීම් සහ Payment Slip",
-                txtUploadHeader: "මාසික පන්ති ගෙවීම් රිසිට්පත Upload කරන්න",
-                btnUploadSlip: "ලැබීම් පත එකතු කරන්න",
-                txtLessonsHeader: "පවතින වීඩියෝ පාඩම්",
-                txtWatchRemaining: "නැරඹීමට ඉතිරි වාර:",
-                btnWatchVideo: "නරඹන්න"
-            },
-            en: {
-                txtWhatsapp: "Contact Us",
-                txtTabLogin: "Login",
-                txtTabRegister: "Register",
-                txtLoginTitle: "Student Login",
-                txtLoginSub: "Enter your Student ID or Phone number",
-                lblLoginId: "INDEX / STUDENT ID OR PHONE",
-                lblLoginPass: "PASSWORD",
-                btnLogin: "Login to Portal",
-                txtForgotPass: "Forgot Password?",
-                txtAdminLink: "Admin Panel",
-                txtRegTitle: "Student Registration",
-                txtRegSub: "Fill in your details to create an account",
-                lblRegName: "FULL NAME",
-                lblRegGrade: "GRADE / CLASS",
-                optSelectGrade: "Select Grade",
-                lblRegPhone: "WHATSAPP PHONE NUMBER",
-                lblRegPass: "CREATE PASSWORD",
-                btnRegister: "Register Now",
-                txtWelcome: "Welcome back,",
-                btnLogout: "Logout",
-                txtMenuRecordings: "Recordings",
-                txtBackDash: "← Back to Dashboard",
-                txtRecTitle: "Class Recordings & Payment Slip",
-                txtUploadHeader: "Upload Monthly Payment Slip",
-                btnUploadSlip: "Upload Slip",
-                txtLessonsHeader: "Available Lessons",
-                txtWatchRemaining: "Remaining watches:",
-                btnWatchVideo: "Watch Video"
-            },
-            ta: {
-                txtWhatsapp: "தொடர்பு கொள்ள",
-                txtTabLogin: "உள்நுழைவு",
-                txtTabRegister: "பதிவு செய்ய",
-                txtLoginTitle: "மாணவர் உள்நுழைவு",
-                txtLoginSub: "உங்கள் அடையாள எண் அல்லது தொலைபேசியை உள்ளிடவும்",
-                lblLoginId: "அடையாள எண் அல்லது தொலைபேசி எண்",
-                lblLoginPass: "கடவுச்சொல்",
-                btnLogin: "உள்நுழைக",
-                txtForgotPass: "கடவுச்சொல் மறந்துவிட்டதா?",
-                txtAdminLink: "நிர்வாகக் குழு",
-                txtRegTitle: "மாணவர் பதிவு",
-                txtRegSub: "கணக்கை உருவாக்க விவரங்களை நிரப்பவும்",
-                lblRegName: "முழுப் பெயர்",
-                lblRegGrade: "வகுப்பு",
-                optSelectGrade: "வகுப்பைத் தேர்ந்தெடுக்கவும்",
-                lblRegPhone: "WHATSAPP தொலைபேசி எண்",
-                lblRegPass: "புதிய கடவுச்சொல்",
-                btnRegister: "பதிவு செய்க",
-                txtWelcome: "நல்வரவு,",
-                btnLogout: "வெளியேறு",
-                txtMenuRecordings: "பதிவுகள்",
-                txtBackDash: "← முகப்பு பக்கத்திற்கு",
-                txtRecTitle: "வகுப்பு பதிவுகள் & கட்டண சீட்டு",
-                txtUploadHeader: "மாதாந்திர கட்டண ரசீதை பதிவேற்றவும்",
-                btnUploadSlip: "ரசீதை பதிவேற்று",
-                txtLessonsHeader: "கிடைக்கும் பாடங்கள்",
-                txtWatchRemaining: "மீதமுள்ள பார்வைகள்:",
-                btnWatchVideo: "பார்க்கவும்"
-            }
-        };
-
-        let currentLang = 'si';
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const dict = translations[lang];
-
-            for (let key in dict) {
-                const el = document.getElementById(key);
-                if (el) {
-                    if (el.tagName === 'INPUT' || el.tagName === 'BUTTON') {
-                        if (el.children.length > 0) {
-                            el.childNodes[0].nodeValue = dict[key] + ' ';
-                        } else {
-                            el.innerText = dict[key];
-                        }
-                    } else {
-                        el.innerText = dict[key];
-                    }
-                }
-            }
-            updateSlipUI();
-        }
-
-        // Data Logic & Persistence
-        let students = JSON.parse(localStorage.getItem('portal_students')) || [];
-        let currentStudent = JSON.parse(localStorage.getItem('portal_active_student')) || null;
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (currentStudent) {
-                const latestData = students.find(s => s.id === currentStudent.id);
-                if (latestData) {
-                    currentStudent = latestData;
-                    localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
-                }
-                document.getElementById('studentName').innerText = currentStudent.name;
-                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
-                document.getElementById('watchCount').innerText = currentStudent.watchLimit;
-                updateSlipUI();
-                showDashboard();
-            } else {
-                showAuth();
-            }
-        });
-
-        function switchAuthTab(tab) {
-            document.getElementById('loginTabBtn').classList.toggle('active', tab === 'login');
-            document.getElementById('regTabBtn').classList.toggle('active', tab === 'register');
-            document.getElementById('loginForm').classList.toggle('hidden', tab !== 'login');
-            document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('regName').value;
-            const grade = document.getElementById('regGrade').value;
-            const phone = document.getElementById('regPhone').value;
-            const pass = document.getElementById('regPass').value;
-            const id = 'STU' + Math.floor(1000 + Math.random() * 9000);
-
-            const newStudent = { id, name, grade, phone, pass, slipData: null, approved: false, watchLimit: 3 };
-            students.push(newStudent);
-            localStorage.setItem('portal_students', JSON.stringify(students));
-
-            alert(currentLang === 'si' ? `ලියාපදිංචිය සාර්ථකයි! Student ID: ${id}` : `Registration successful! Student ID: ${id}`);
-            
-            const message = `Hello ${name}, registered for BrightBrain Class Portal! ID: ${id}, Password: ${pass}`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-
-            switchAuthTab('login');
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const idInput = document.getElementById('loginId').value;
-            const passInput = document.getElementById('loginPass').value;
-
-            const found = students.find(s => (s.id === idInput || s.phone === idInput) && s.pass === passInput);
-
-            if (found) {
-                currentStudent = found;
-                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
-                document.getElementById('studentName').innerText = currentStudent.name;
-                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
-                document.getElementById('watchCount').innerText = currentStudent.watchLimit;
-                updateSlipUI();
-                showDashboard();
-            } else {
-                alert(currentLang === 'si' ? 'ඇතුළත් කළ තොරතුරු වැරදියි!' : 'Invalid credentials!');
-            }
-        }
-
-        function updateSlipUI() {
-            const statusEl = document.getElementById('slipStatus');
-            if (!currentStudent) return;
-
-            if (currentStudent.approved) {
-                statusEl.style.color = '#10b981';
-                statusEl.innerText = currentLang === 'si' ? 'Slip එක Admin මගින් අනුමත කර ඇත (Approved)!' : 'Payment Slip Approved by Admin!';
-            } else if (currentStudent.slipData) {
-                statusEl.style.color = '#f59e0b';
-                statusEl.innerText = currentLang === 'si' ? 'Slip එක Upload කර ඇත. Admin අනුමැතිය ලැබෙන තෙක් රැඳී සිටින්න.' : 'Slip Uploaded. Pending Admin Approval.';
-            } else {
-                statusEl.style.color = '#ef4444';
-                statusEl.innerText = currentLang === 'si' ? 'තවමත් Slip එකක් Upload කර නැත.' : 'No payment slip uploaded yet.';
-            }
-        }
-
-        function uploadSlip() {
-            const input = document.getElementById('slipInput');
-            if (input.files.length === 0) {
-                alert(currentLang === 'si' ? 'කරුණාකර Slip එකේ ඡායාරූපයක් තෝරන්න!' : 'Please select an image file!');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                currentStudent.slipData = e.target.result;
-                currentStudent.approved = false;
-                
-                const index = students.findIndex(s => s.id === currentStudent.id);
-                if (index !== -1) {
-                    students[index] = currentStudent;
-                    localStorage.setItem('portal_students', JSON.stringify(students));
-                }
-                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
-
-                updateSlipUI();
-                alert(currentLang === 'si' ? 'Slip එක සාර්ථකව Upload විය!' : 'Slip Uploaded Successfully!');
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-
-        function playRecording() {
-            if (!currentStudent.approved) {
-                alert(currentLang === 'si' ? 'ප්‍රවේශය අවහිර කර ඇත: ඔබගේ Slip එක තවමත් Admin මගින් Approve කර නොමැත!' : 'Access Denied: Slip not approved by Admin yet!');
-                return;
-            }
-
-            if (currentStudent.watchLimit <= 0) {
-                alert(currentLang === 'si' ? 'මෙම මාසය සඳහා ඔබට හිමි වාර ගණන අවසන්!' : 'Maximum watch limit reached!');
-                return;
-            }
-
-            currentStudent.watchLimit--;
-            document.getElementById('watchCount').innerText = currentStudent.watchLimit;
-
-            const index = students.findIndex(s => s.id === currentStudent.id);
-            if (index !== -1) {
-                students[index] = currentStudent;
-                localStorage.setItem('portal_students', JSON.stringify(students));
-            }
-            localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
-
-            alert(`Playing Recording... Remaining watches: ${currentStudent.watchLimit}`);
-        }
-
-        function showDashboard() {
-            document.getElementById('authSection').classList.add('hidden');
-            document.getElementById('recordingsView').classList.add('hidden');
-            document.getElementById('adminSection').classList.add('hidden');
-            document.getElementById('dashboardSection').classList.remove('hidden');
-        }
-
-        function showAuth() {
-            document.getElementById('dashboardSection').classList.add('hidden');
-            document.getElementById('recordingsView').classList.add('hidden');
-            document.getElementById('adminSection').classList.add('hidden');
-            document.getElementById('authSection').classList.remove('hidden');
-        }
-
-        function logout() {
-            currentStudent = null;
-            localStorage.removeItem('portal_active_student');
-            showAuth();
-        }
-
-        function openRecordings() {
-            document.getElementById('dashboardSection').classList.add('hidden');
-            document.getElementById('recordingsView').classList.remove('hidden');
-        }
-
-        function showResetModal() {
-            const phone = prompt('Enter registered WhatsApp number:');
-            if (phone) {
-                const found = students.find(s => s.phone === phone);
-                if (found) {
-                    const newPass = prompt('Enter new Password:');
-                    if (newPass) {
-                        found.pass = newPass;
-                        localStorage.setItem('portal_students', JSON.stringify(students));
-                        alert('Password updated successfully!');
-                    }
-                } else {
-                    alert('Phone number not found!');
-                }
-            }
-        }
-
-        function showAdminModal() {
-            const adminUser = prompt('Admin Username:');
-            const adminPass = prompt('Admin Password:');
-
-            if (adminUser === 'admin' && adminPass === 'admin123') {
-                renderAdminTable();
-                document.getElementById('authSection').classList.add('hidden');
-                document.getElementById('adminSection').classList.remove('hidden');
-            } else {
-                alert('Invalid Admin credentials!');
-            }
-        }
-
-        function renderAdminTable() {
-            const tbody = document.getElementById('studentTableBody');
-            tbody.innerHTML = '';
-
-            students.forEach((s, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${s.id}</td>
-                    <td>${s.name}</td>
-                    <td>${s.grade}</td>
-                    <td>${s.phone}</td>
-                    <td>${s.pass || '-'}</td>
-                    <td>${s.slipData ? `<button class="btn-primary" style="padding:2px 6px; font-size:10px;" onclick="viewSlip('${s.slipData}')">View</button>` : 'No'}</td>
-                    <td>${s.approved ? '<span style="color:green;">Approved</span>' : '<span style="color:orange;">Pending</span>'}</td>
-                    <td>${!s.approved && s.slipData ? `<button class="btn-success" onclick="approveStudent(${index})">Approve</button>` : ''}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function viewSlip(dataUrl) {
-            const win = window.open();
-            win.document.write(`<img src="${dataUrl}" style="max-width:100%; height:auto;" />`);
-        }
-
-        function approveStudent(index) {
-            students[index].approved = true;
-            localStorage.setItem('portal_students', JSON.stringify(students));
-            
-            if (currentStudent && currentStudent.id === students[index].id) {
-                currentStudent.approved = true;
-                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
-            }
-
-            renderAdminTable();
-            alert('Payment Approved!');
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
