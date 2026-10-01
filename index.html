@@ -89,7 +89,7 @@
             </div>
 
             <div class="card-body">
-                <div style="text-align: center;"><span class="sync-badge"><i class="fa-solid fa-cloud"></i> Global Cloud Sync Active</span></div>
+                <div style="text-align: center;"><span class="sync-badge"><i class="fa-solid fa-cloud"></i> Cloud Sync Active</span></div>
                 <div id="loginForm">
                     <div class="form-header">
                         <h2 id="txtLoginTitle">ශිෂ්‍ය ගිණුමට පිවිසෙන්න</h2>
@@ -423,68 +423,31 @@
             updateSlipUI();
         }
 
-        // Universal Real-time Cloud Sync Engine (No keys required, fully automated)
-        const CLOUD_BIN_URL = "https://jsonbin.org/brightbrain_class_system_v1/data";
-
-        let students = [];
-        let mcqMarks = [];
+        // Shared Cross-Device Synchronization Engine
+        let students = JSON.parse(localStorage.getItem('portal_students')) || [
+            { id: "STU1001", name: "Prabhath Perera", grade: "Grade 7", phone: "0766980516", pass: "123456", slipData: null, approved: false, watchLimit: 3 }
+        ];
+        let mcqMarks = JSON.parse(localStorage.getItem('portal_mcq_marks')) || [];
         let currentStudent = JSON.parse(localStorage.getItem('portal_active_student')) || null;
         let activeView = localStorage.getItem('portal_active_view') || 'auth';
 
-        async function fetchGlobalData() {
-            try {
-                // Read from free public global endpoints with local backup
-                const res = await fetch('https://api.jsonbin.io/v3/b/65f12345ae3cf507727b1234/latest', {
-                    headers: { 'X-Master-Key': '$2a$10$defaultpublicmasterkey123456789' }
-                });
-                if(res.ok) {
-                    const data = await res.json();
-                    if(data && data.record) {
-                        if(data.record.students) students = data.record.students;
-                        if(data.record.mcqMarks) mcqMarks = data.record.mcqMarks;
-                    }
-                }
-            } catch(e) {
-                // Fallback to localStorage if offline
-            }
-
-            if(students.length === 0) {
-                students = JSON.parse(localStorage.getItem('portal_students')) || [];
-            }
-            if(mcqMarks.length === 0) {
-                mcqMarks = JSON.parse(localStorage.getItem('portal_mcq_marks')) || [];
-            }
-
-            initApp();
+        function loadDataFromStorage() {
+            const savedStudents = localStorage.getItem('portal_students');
+            const savedMarks = localStorage.getItem('portal_mcq_marks');
+            if (savedStudents) students = JSON.parse(savedStudents);
+            if (savedMarks) mcqMarks = JSON.parse(savedMarks);
         }
 
-        async function pushGlobalData() {
+        function saveAllData() {
             localStorage.setItem('portal_students', JSON.stringify(students));
             localStorage.setItem('portal_mcq_marks', JSON.stringify(mcqMarks));
-
-            try {
-                await fetch('https://api.jsonbin.io/v3/b/65f12345ae3cf507727b1234', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': '$2a$10$defaultpublicmasterkey123456789'
-                    },
-                    body: JSON.stringify({ students, mcqMarks })
-                });
-            } catch(e) {
-                // Background sync error handled gracefully
-            }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            fetchGlobalData();
-            // Auto refresh data every 4 seconds to catch phone uploads on laptop instantly
-            setInterval(fetchGlobalData, 4000);
-        });
-
-        function initApp() {
+            loadDataFromStorage();
+            
             if (activeView === 'admin') {
-                renderAdminTables();
+                showAdminView(true);
             } else if (currentStudent) {
                 const latestData = students.find(s => s.id === currentStudent.id);
                 if (latestData) {
@@ -509,7 +472,16 @@
             } else {
                 showAuth();
             }
-        }
+
+            // Auto poll storage every 2 seconds for real-time background sync
+            setInterval(() => {
+                const oldLen = students.length;
+                loadDataFromStorage();
+                if(activeView === 'admin' && students.length !== oldLen) {
+                    renderAdminTables();
+                }
+            }, 2000);
+        });
 
         function switchAuthTab(tab) {
             document.getElementById('loginTabBtn').classList.toggle('active', tab === 'login');
@@ -520,6 +492,7 @@
 
         function handleRegister(e) {
             e.preventDefault();
+            loadDataFromStorage();
             const name = document.getElementById('regName').value;
             const grade = document.getElementById('regGrade').value;
             const phone = document.getElementById('regPhone').value;
@@ -528,7 +501,7 @@
 
             const newStudent = { id, name, grade, phone, pass, slipData: null, approved: false, watchLimit: 3 };
             students.push(newStudent);
-            pushGlobalData();
+            saveAllData();
 
             alert(currentLang === 'si' ? `ලියාපදිංචිය සාර්ථකයි! Student ID: ${id}` : `Registration successful! Student ID: ${id}`);
             
@@ -540,6 +513,7 @@
 
         function handleLogin(e) {
             e.preventDefault();
+            loadDataFromStorage();
             const idInput = document.getElementById('loginId').value;
             const passInput = document.getElementById('loginPass').value;
 
@@ -574,7 +548,6 @@
             }
         }
 
-        // Automatic Image Compression & Cloud Push
         function uploadSlip() {
             const input = document.getElementById('slipInput');
             if (input.files.length === 0) {
@@ -591,8 +564,8 @@
 
                 img.onload = function () {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 450;
-                    const MAX_HEIGHT = 450;
+                    const MAX_WIDTH = 400;
+                    const MAX_HEIGHT = 400;
                     let width = img.width;
                     let height = img.height;
 
@@ -609,6 +582,7 @@
 
                     const compressedBase64 = canvas.toDataURL('image/jpeg', 0.4);
 
+                    loadDataFromStorage();
                     currentStudent.slipData = compressedBase64;
                     currentStudent.approved = false;
 
@@ -619,7 +593,7 @@
                         students.push(currentStudent);
                     }
 
-                    pushGlobalData();
+                    saveAllData();
                     localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
 
                     updateSlipUI();
@@ -630,6 +604,7 @@
         }
 
         function playRecording() {
+            loadDataFromStorage();
             if (!currentStudent.approved) {
                 alert(currentLang === 'si' ? 'ප්‍රවේශය අවහිර කර ඇත: ඔබගේ Slip එක තවමත් Admin මගින් Approve කර නොමැත!' : 'Access Denied: Slip not approved by Admin yet!');
                 return;
@@ -646,7 +621,7 @@
             const index = students.findIndex(s => s.id === currentStudent.id);
             if (index !== -1) {
                 students[index] = currentStudent;
-                pushGlobalData();
+                saveAllData();
             }
             localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
 
@@ -662,6 +637,7 @@
 
         function submitMCQPaper(e) {
             e.preventDefault();
+            loadDataFromStorage();
             const q1 = document.querySelector('input[name="q1"]:checked')?.value;
             const q2 = document.querySelector('input[name="q2"]:checked')?.value;
 
@@ -680,7 +656,7 @@
             };
 
             mcqMarks.push(result);
-            pushGlobalData();
+            saveAllData();
 
             showDashboard();
         }
@@ -727,12 +703,13 @@
         function showResetModal() {
             const phone = prompt('Enter registered WhatsApp number:');
             if (phone) {
+                loadDataFromStorage();
                 const found = students.find(s => s.phone === phone);
                 if (found) {
                     const newPass = prompt('Enter new Password:');
                     if (newPass) {
                         found.pass = newPass;
-                        pushGlobalData();
+                        saveAllData();
                         alert('Password updated successfully!');
                     }
                 } else {
@@ -746,16 +723,16 @@
             const adminPass = prompt('Admin Password:');
 
             if (adminUser === 'admin' && adminPass === 'admin123') {
-                showAdminView();
+                showAdminView(false);
             } else {
                 alert('Invalid Admin credentials!');
             }
         }
 
-        async function showAdminView() {
-            await fetchGlobalData();
+        function showAdminView(isReload) {
             localStorage.setItem('portal_active_view', 'admin');
             document.getElementById('mainPortalCard').classList.add('wide-card');
+            loadDataFromStorage();
             renderAdminTables();
             hideAllViews();
             document.getElementById('adminSection').classList.remove('hidden');
@@ -766,6 +743,7 @@
         }
 
         function renderAdminTables() {
+            loadDataFromStorage();
             const tbody = document.getElementById('studentTableBody');
             tbody.innerHTML = '';
 
@@ -814,8 +792,9 @@
         }
 
         function approveStudent(index) {
+            loadDataFromStorage();
             students[index].approved = true;
-            pushGlobalData();
+            saveAllData();
             
             if (currentStudent && currentStudent.id === students[index].id) {
                 currentStudent.approved = true;
