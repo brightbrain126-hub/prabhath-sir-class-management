@@ -17,7 +17,10 @@
         
         .contact-btn { position: fixed; bottom: 25px; right: 25px; background: #25D366; color: #fff; padding: 12px 22px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 20px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; z-index: 999; }
         
-        .portal-card { background: #ffffff; width: 100%; max-width: 520px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); border: 1px solid #eef2f6; overflow: hidden; z-index: 1; margin-top: 40px; }
+        /* Dynamic Portal Card Width */
+        .portal-card { background: #ffffff; width: 100%; max-width: 520px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); border: 1px solid #eef2f6; overflow: hidden; z-index: 1; margin-top: 40px; transition: max-width 0.3s ease; }
+        .portal-card.wide-card { max-width: 950px; }
+
         .tab-buttons { display: flex; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; }
         .tab-btn { flex: 1; padding: 16px; border: none; background: none; font-size: 15px; font-weight: 600; color: #64748b; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .tab-btn.active { color: #7c3aed; background: #ffffff; border-bottom: 3px solid #7c3aed; }
@@ -45,9 +48,11 @@
         .menu-card h4 { font-size: 14px; color: #334155; }
         .badge-soon { background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; margin-left: 4px; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
-        th, td { padding: 8px; border: 1px solid #e2e8f0; text-align: left; }
-        th { background: #7c3aed; color: white; }
+        /* Larger Table Styling for Admin */
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
+        th, td { padding: 12px; border: 1px solid #e2e8f0; text-align: left; }
+        th { background: #7c3aed; color: white; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f8fafc; }
         
         .footer-links { text-align: center; margin-top: 15px; font-size: 12px; color: #64748b; }
         .hidden { display: none !important; }
@@ -74,7 +79,7 @@
         <i class="fa-brands fa-whatsapp"></i> <span id="txtWhatsapp">Contact Us</span>
     </a>
 
-    <div class="portal-card">
+    <div class="portal-card" id="mainPortalCard">
 
         <!-- 1. AUTHENTICATION SECTION (LOGIN / REGISTER) -->
         <div id="authSection">
@@ -240,24 +245,24 @@
             </form>
         </div>
 
-        <!-- 5. ADMIN CONTROL PANEL -->
+        <!-- 5. ADMIN CONTROL PANEL (EXPANDED WIDE VIEW) -->
         <div id="adminSection" class="card-body hidden">
             <div class="nav-bar">
-                <h3 style="color: #1e293b; font-size: 16px;">Admin Panel & Reports</h3>
-                <button class="btn-primary" style="width: auto; padding: 6px 14px; font-size: 12px;" onclick="showAuth()">Exit</button>
+                <h3 style="color: #1e293b; font-size: 20px;">Admin Panel & Comprehensive Reports</h3>
+                <button class="btn-primary" style="width: auto; padding: 8px 18px; font-size: 13px;" onclick="exitAdmin()">Exit</button>
             </div>
             
-            <h4 style="font-size: 13px; margin-bottom: 10px; color: #7c3aed;">Student Management & Payments</h4>
-            <div style="overflow-x: auto; margin-bottom: 25px;">
+            <h4 style="font-size: 15px; margin-bottom: 12px; color: #7c3aed;">Student Management & Payments</h4>
+            <div style="overflow-x: auto; margin-bottom: 30px;">
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Student ID</th>
                             <th>Name</th>
                             <th>Grade</th>
-                            <th>Phone</th>
-                            <th>Pass</th>
-                            <th>Slip</th>
+                            <th>Phone Number</th>
+                            <th>Password</th>
+                            <th>Payment Slip</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -266,16 +271,16 @@
                 </table>
             </div>
 
-            <h4 style="font-size: 13px; margin-bottom: 10px; color: #7c3aed;">MCQ Marks & Exam Report</h4>
+            <h4 style="font-size: 15px; margin-bottom: 12px; color: #7c3aed;">MCQ Marks & Examination Performance Report</h4>
             <div style="overflow-x: auto;">
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Student ID</th>
                             <th>Name</th>
                             <th>Grade</th>
-                            <th>Paper</th>
-                            <th>Marks</th>
+                            <th>Exam Paper Name</th>
+                            <th>Marks Obtained</th>
                         </tr>
                     </thead>
                     <tbody id="mcqReportBody"></tbody>
@@ -285,9 +290,8 @@
 
     </div>
 
-    <!-- JAVASCRIPT DIRECTLY INTEGRATED -->
+    <!-- INTEGRATED SCRIPT -->
     <script>
-        // Exact Wallpaper Image Array
         const bgImages = [
             './image15.jpg', './image13.png', './image12.jpg', './image11.jpg',
             './image10.jpg', './image9.jpg', './image8.jpg', './image7.png',
@@ -306,7 +310,6 @@
         changeBackground();
         setInterval(changeBackground, 4000);
 
-        // Language Dictionary
         const translations = {
             si: {
                 txtWhatsapp: "සම්බන්ධ වන්න",
@@ -371,16 +374,16 @@
                 txtPrivacyLink: "Privacy Policy"
             },
             ta: {
-                txtWhatsapp: "තொடர்பு கொள்ள",
+                txtWhatsapp: "තொடர்பු கொள்ள",
                 txtTabLogin: "உள்நுழைவு",
                 txtTabRegister: "பதிவு செய்ய",
                 txtLoginTitle: "மாணவர் உள்நுழைவு",
                 txtLoginSub: "உங்கள் அடையாள எண் அல்லது தொலைபேசியை உள்ளிடவும்",
                 lblLoginId: "அடையாள எண் அல்லது தொலைபேசி எண்",
-                lblLoginPass: "கடவுச்சொல்",
+                lblLoginPass: "கடவுச்சොல்",
                 btnLogin: "உள்நுழைக",
                 txtForgotPass: "கடவுச்சொல் மறந்துவிட்டதா?",
-                txtAdminLink: "நிர்வாகக் குழு",
+                txtAdminLink: "நிර්வாகக் குழு",
                 txtRegTitle: "மாணவர் பதிவு",
                 txtRegSub: "கணக்கை உருவாக்க விவரங்களை நிரப்பவும்",
                 lblRegName: "முழுப் பெயர்",
@@ -426,13 +429,16 @@
             updateSlipUI();
         }
 
-        // Core Portal Logic
+        // Persistent Data State Management
         let students = JSON.parse(localStorage.getItem('portal_students')) || [];
         let mcqMarks = JSON.parse(localStorage.getItem('portal_mcq_marks')) || [];
         let currentStudent = JSON.parse(localStorage.getItem('portal_active_student')) || null;
+        let activeView = localStorage.getItem('portal_active_view') || 'auth';
 
         window.addEventListener('DOMContentLoaded', () => {
-            if (currentStudent) {
+            if (activeView === 'admin') {
+                showAdminView();
+            } else if (currentStudent) {
                 const latestData = students.find(s => s.id === currentStudent.id);
                 if (latestData) {
                     currentStudent = latestData;
@@ -442,7 +448,14 @@
                 document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
                 document.getElementById('watchCount').innerText = currentStudent.watchLimit;
                 updateSlipUI();
-                showDashboard();
+
+                if (activeView === 'recordings') {
+                    openRecordings();
+                } else if (activeView === 'mcq') {
+                    openMCQPapers();
+                } else {
+                    showDashboard();
+                }
             } else {
                 showAuth();
             }
@@ -561,7 +574,9 @@
         }
 
         function openMCQPapers() {
-            document.getElementById('dashboardSection').classList.add('hidden');
+            localStorage.setItem('portal_active_view', 'mcq');
+            document.getElementById('portalCard').classList.remove('wide-card');
+            hideAllViews();
             document.getElementById('mcqView').classList.remove('hidden');
         }
 
@@ -594,19 +609,25 @@
             alert("Privacy Policy:\nසියලුම ශිෂ්‍ය තොරතුරු, ගෙවීම් රිසිට්පත් සහ විභාග ලකුණු පද්ධතිය තුළ සුරක්ෂිතව තබා ගන්නා අතර අධ්‍යයන කටයුතු සහ පරිපාලන අනුමැතීන් සඳහා පමණක් භාවිතා කරනු ලැබේ.");
         }
 
-        function showDashboard() {
+        function hideAllViews() {
             document.getElementById('authSection').classList.add('hidden');
-            document.getElementById('recordingsView').classList.add('hidden');
-            document.getElementById('mcqView').classList.add('hidden');
-            document.getElementById('adminSection').classList.add('hidden');
-            document.getElementById('dashboardSection').classList.remove('hidden');
-        }
-
-        function showAuth() {
             document.getElementById('dashboardSection').classList.add('hidden');
             document.getElementById('recordingsView').classList.add('hidden');
             document.getElementById('mcqView').classList.add('hidden');
             document.getElementById('adminSection').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            localStorage.setItem('portal_active_view', 'dashboard');
+            document.getElementById('mainPortalCard').classList.remove('wide-card');
+            hideAllViews();
+            document.getElementById('dashboardSection').classList.remove('hidden');
+        }
+
+        function showAuth() {
+            localStorage.setItem('portal_active_view', 'auth');
+            document.getElementById('mainPortalCard').classList.remove('wide-card');
+            hideAllViews();
             document.getElementById('authSection').classList.remove('hidden');
         }
 
@@ -617,7 +638,9 @@
         }
 
         function openRecordings() {
-            document.getElementById('dashboardSection').classList.add('hidden');
+            localStorage.setItem('portal_active_view', 'recordings');
+            document.getElementById('mainPortalCard').classList.remove('wide-card');
+            hideAllViews();
             document.getElementById('recordingsView').classList.remove('hidden');
         }
 
@@ -639,16 +662,31 @@
         }
 
         function showAdminModal() {
+            if (activeView === 'admin') {
+                showAdminView();
+                return;
+            }
+
             const adminUser = prompt('Admin Username:');
             const adminPass = prompt('Admin Password:');
 
             if (adminUser === 'admin' && adminPass === 'admin123') {
-                renderAdminTables();
-                document.getElementById('authSection').classList.add('hidden');
-                document.getElementById('adminSection').classList.remove('hidden');
+                showAdminView();
             } else {
                 alert('Invalid Admin credentials!');
             }
+        }
+
+        function showAdminView() {
+            localStorage.setItem('portal_active_view', 'admin');
+            document.getElementById('mainPortalCard').classList.add('wide-card');
+            renderAdminTables();
+            hideAllViews();
+            document.getElementById('adminSection').classList.remove('hidden');
+        }
+
+        function exitAdmin() {
+            showAuth();
         }
 
         function renderAdminTables() {
@@ -658,13 +696,13 @@
             students.forEach((s, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${s.id}</td>
+                    <td><strong>${s.id}</strong></td>
                     <td>${s.name}</td>
                     <td>${s.grade}</td>
                     <td>${s.phone}</td>
                     <td>${s.pass || '-'}</td>
-                    <td>${s.slipData ? `<button class="btn-primary" style="padding:2px 6px; font-size:10px;" onclick="viewSlip('${s.slipData}')">View</button>` : 'No'}</td>
-                    <td>${s.approved ? '<span style="color:green;">Approved</span>' : '<span style="color:orange;">Pending</span>'}</td>
+                    <td>${s.slipData ? `<button class="btn-primary" style="padding:4px 8px; font-size:11px;" onclick="viewSlip('${s.slipData}')">View Slip</button>` : '<span style="color:#94a3b8;">No Slip</span>'}</td>
+                    <td>${s.approved ? '<span style="color:#10b981; font-weight:bold;">Approved</span>' : '<span style="color:#f59e0b; font-weight:bold;">Pending</span>'}</td>
                     <td>${!s.approved && s.slipData ? `<button class="btn-success" onclick="approveStudent(${index})">Approve</button>` : ''}</td>
                 `;
                 tbody.appendChild(tr);
@@ -673,17 +711,21 @@
             const mcqBody = document.getElementById('mcqReportBody');
             mcqBody.innerHTML = '';
 
-            mcqMarks.forEach(m => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${m.id}</td>
-                    <td>${m.name}</td>
-                    <td>${m.grade}</td>
-                    <td>${m.paper}</td>
-                    <td><strong>${m.marks}</strong></td>
-                `;
-                mcqBody.appendChild(tr);
-            });
+            if (mcqMarks.length === 0) {
+                mcqBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">තවමත් කිසිදු ශිෂ්‍යයෙක් MCQ Paper එකක් Submit කර නැත.</td></tr>`;
+            } else {
+                mcqMarks.forEach(m => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${m.id}</strong></td>
+                        <td>${m.name}</td>
+                        <td>${m.grade}</td>
+                        <td>${m.paper}</td>
+                        <td><span style="color:#7c3aed; font-weight:bold; font-size:15px;">${m.marks}</span></td>
+                    `;
+                    mcqBody.appendChild(tr);
+                });
+            }
         }
 
         function viewSlip(dataUrl) {
