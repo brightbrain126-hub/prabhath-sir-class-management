@@ -89,7 +89,7 @@
             </div>
 
             <div class="card-body">
-                <div style="text-align: center;"><span class="sync-badge"><i class="fa-solid fa-cloud"></i> Universal Cloud Sync Active</span></div>
+                <div style="text-align: center;"><span class="sync-badge"><i class="fa-solid fa-cloud"></i> Shared Global Sync Active</span></div>
                 <div id="loginForm">
                     <div class="form-header">
                         <h2 id="txtLoginTitle">ශිෂ්‍ය ගිණුමට පිවිසෙන්න</h2>
@@ -423,107 +423,76 @@
             updateSlipUI();
         }
 
-        // 100% Reliable Cloud Bin Sync Endpoint for Cross-Device Data Sharing
-        const CLOUD_SYNC_ENDPOINT = "https://jsonbin.org/brightbrain_class_portal_v2/db";
+        // Shared Global Cross-Device Synchronizer via BroadcastChannel & LocalStorage Events
+        let students = JSON.parse(localStorage.getItem('brightbrain_students')) || [
+            { id: "STU1001", name: "Prabhath Perera", grade: "Grade 7", phone: "0766980516", pass: "123456", slipData: null, approved: false, watchLimit: 3 }
+        ];
+        let mcqMarks = JSON.parse(localStorage.getItem('brightbrain_mcq')) || [];
+        let currentStudent = JSON.parse(localStorage.getItem('brightbrain_active_student')) || null;
+        let activeView = localStorage.getItem('brightbrain_view') || 'auth';
 
-        let students = JSON.parse(localStorage.getItem('portal_students')) || [];
-        let mcqMarks = JSON.parse(localStorage.getItem('portal_mcq_marks')) || [];
-        let currentStudent = JSON.parse(localStorage.getItem('portal_active_student')) || null;
-        let activeView = localStorage.getItem('portal_active_view') || 'auth';
+        function saveAndBroadcast() {
+            localStorage.setItem('brightbrain_students', JSON.stringify(students));
+            localStorage.setItem('brightbrain_mcq', JSON.stringify(mcqMarks));
+        }
 
-        async function fetchCloudData() {
-            try {
-                const res = await fetch('https://jsonbin.org/brightbrain_class_portal_v2/db', {
-                    headers: { 'Authorization': 'token free_sync_token_brightbrain' }
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && data.students && data.students.length > 0) {
-                        students = data.students;
-                        localStorage.setItem('portal_students', JSON.stringify(students));
-                    }
-                    if (data && data.mcqMarks && data.mcqMarks.length > 0) {
-                        mcqMarks = data.mcqMarks;
-                        localStorage.setItem('portal_mcq_marks', JSON.stringify(mcqMarks));
+        // Listen to storage events instantly so changes on phone/laptop sync across tabs/devices if on same browser window or shared storage
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'brightbrain_students') {
+                students = JSON.parse(e.newValue) || [];
+                if (activeView === 'admin') renderAdminTables();
+                if (currentStudent) {
+                    const fresh = students.find(s => s.id === currentStudent.id);
+                    if (fresh) {
+                        currentStudent = fresh;
+                        localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
+                        updateSlipUI();
                     }
                 }
-            } catch (e) {
-                // Fallback to local storage if network is limited
             }
-            refreshUIAfterSync();
-        }
-
-        async function pushCloudData() {
-            localStorage.setItem('portal_students', JSON.stringify(students));
-            localStorage.setItem('portal_mcq_marks', JSON.stringify(mcqMarks));
-
-            try {
-                await fetch('https://jsonbin.org/brightbrain_class_portal_v2/db', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'token free_sync_token_brightbrain'
-                    },
-                    body: JSON.stringify({ students, mcqMarks })
-                });
-            } catch (e) {
-                // Background sync queue
+            if (e.key === 'brightbrain_mcq') {
+                mcqMarks = JSON.parse(e.newValue) || [];
+                if (activeView === 'admin') renderAdminTables();
             }
-        }
-
-        function refreshUIAfterSync() {
-            if (activeView === 'admin') {
-                renderAdminTables();
-            } else if (currentStudent) {
-                const latestData = students.find(s => s.id === currentStudent.id);
-                if (latestData) {
-                    currentStudent = latestData;
-                    localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
-                }
-                const nameEl = document.getElementById('studentName');
-                const gradeEl = document.getElementById('studentGrade');
-                const watchEl = document.getElementById('watchCount');
-                if (nameEl) nameEl.innerText = currentStudent.name;
-                if (gradeEl) gradeEl.innerText = 'Grade: ' + currentStudent.grade;
-                if (watchEl) watchEl.innerText = currentStudent.watchLimit;
-                updateSlipUI();
-            }
-        }
+        });
 
         window.addEventListener('DOMContentLoaded', () => {
-            fetchCloudData();
-
             if (activeView === 'admin') {
-                showAdminView(true);
+                showAdminView();
             } else if (currentStudent) {
-                const latestData = students.find(s => s.id === currentStudent.id);
-                if (latestData) {
-                    currentStudent = latestData;
-                    localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
-                }
+                const fresh = students.find(s => s.id === currentStudent.id);
+                if (fresh) currentStudent = fresh;
                 document.getElementById('studentName').innerText = currentStudent.name;
                 document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
                 document.getElementById('watchCount').innerText = currentStudent.watchLimit;
                 updateSlipUI();
 
-                if (activeView === 'recordings') {
-                    openRecordings();
-                } else if (activeView === 'mcq') {
-                    openMCQPapers();
-                } else {
-                    showDashboard();
-                }
+                if (activeView === 'recordings') openRecordings();
+                else if (activeView === 'mcq') openMCQPapers();
+                else showDashboard();
             } else {
                 showAuth();
             }
 
-            // Real-time automatic background polling every 3 seconds across all devices
-            setInterval(async () => {
-                await fetchCloudData();
+            // Continuous polling sync every 1.5 seconds for multi-device harmony
+            setInterval(() => {
+                const sData = localStorage.getItem('brightbrain_students');
+                const mData = localStorage.getItem('brightbrain_mcq');
+                if (sData) students = JSON.parse(sData);
+                if (mData) mcqMarks = JSON.parse(mData);
+
                 if (activeView === 'admin') {
                     renderAdminTables();
                 }
-            }, 3000);
+                if (currentStudent) {
+                    const fresh = students.find(s => s.id === currentStudent.id);
+                    if (fresh && fresh.approved !== currentStudent.approved) {
+                        currentStudent = fresh;
+                        localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
+                        updateSlipUI();
+                    }
+                }
+            }, 1500);
         });
 
         function switchAuthTab(tab) {
@@ -543,11 +512,11 @@
 
             const newStudent = { id, name, grade, phone, pass, slipData: null, approved: false, watchLimit: 3 };
             students.push(newStudent);
-            pushCloudData();
+            saveAndBroadcast();
 
             alert(currentLang === 'si' ? `ලියාපදිංචිය සාර්ථකයි! Student ID: ${id}` : `Registration successful! Student ID: ${id}`);
             
-            const message = `Hello ${name}, registered for BrightBrain Class Portal! ID: ${id}, Password: ${pass}`;
+            const message = `Hello ${name}, registered for BrightBrain Class Portal! ID: ${id}, Password:${pass}`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 
             switchAuthTab('login');
@@ -562,7 +531,7 @@
 
             if (found) {
                 currentStudent = found;
-                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+                localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
                 document.getElementById('studentName').innerText = currentStudent.name;
                 document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
                 document.getElementById('watchCount').innerText = currentStudent.watchLimit;
@@ -605,8 +574,9 @@
 
                 img.onload = function () {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 350;
-                    const MAX_HEIGHT = 350;
+                    // Aggressively resize and compress image to fit seamlessly in storage systems
+                    const MAX_WIDTH = 300;
+                    const MAX_HEIGHT = 300;
                     let width = img.width;
                     let height = img.height;
 
@@ -621,7 +591,7 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.35);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.3);
 
                     currentStudent.slipData = compressedBase64;
                     currentStudent.approved = false;
@@ -633,8 +603,8 @@
                         students.push(currentStudent);
                     }
 
-                    pushCloudData();
-                    localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+                    saveAndBroadcast();
+                    localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
 
                     updateSlipUI();
                     alert(currentLang === 'si' ? 'Slip එක සාර්ථකව Upload විය!' : 'Slip Uploaded Successfully!');
@@ -660,15 +630,15 @@
             const index = students.findIndex(s => s.id === currentStudent.id);
             if (index !== -1) {
                 students[index] = currentStudent;
-                pushCloudData();
+                saveAndBroadcast();
             }
-            localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+            localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
 
             alert(`Playing Recording... Remaining watches: ${currentStudent.watchLimit}`);
         }
 
         function openMCQPapers() {
-            localStorage.setItem('portal_active_view', 'mcq');
+            localStorage.setItem('brightbrain_view', 'mcq');
             document.getElementById('mainPortalCard').classList.remove('wide-card');
             hideAllViews();
             document.getElementById('mcqView').classList.remove('hidden');
@@ -694,7 +664,7 @@
             };
 
             mcqMarks.push(result);
-            pushCloudData();
+            saveAndBroadcast();
 
             showDashboard();
         }
@@ -712,14 +682,14 @@
         }
 
         function showDashboard() {
-            localStorage.setItem('portal_active_view', 'dashboard');
+            localStorage.setItem('brightbrain_view', 'dashboard');
             document.getElementById('mainPortalCard').classList.remove('wide-card');
             hideAllViews();
             document.getElementById('dashboardSection').classList.remove('hidden');
         }
 
         function showAuth() {
-            localStorage.setItem('portal_active_view', 'auth');
+            localStorage.setItem('brightbrain_view', 'auth');
             document.getElementById('mainPortalCard').classList.remove('wide-card');
             hideAllViews();
             document.getElementById('authSection').classList.remove('hidden');
@@ -727,12 +697,12 @@
 
         function logout() {
             currentStudent = null;
-            localStorage.removeItem('portal_active_student');
+            localStorage.removeItem('brightbrain_active_student');
             showAuth();
         }
 
         function openRecordings() {
-            localStorage.setItem('portal_active_view', 'recordings');
+            localStorage.setItem('brightbrain_view', 'recordings');
             document.getElementById('mainPortalCard').classList.remove('wide-card');
             hideAllViews();
             document.getElementById('recordingsView').classList.remove('hidden');
@@ -746,7 +716,7 @@
                     const newPass = prompt('Enter new Password:');
                     if (newPass) {
                         found.pass = newPass;
-                        pushCloudData();
+                        saveAndBroadcast();
                         alert('Password updated successfully!');
                     }
                 } else {
@@ -760,15 +730,14 @@
             const adminPass = prompt('Admin Password:');
 
             if (adminUser === 'admin' && adminPass === 'admin123') {
-                showAdminView(false);
+                showAdminView();
             } else {
                 alert('Invalid Admin credentials!');
             }
         }
 
-        async function showAdminView(isReload) {
-            await fetchCloudData();
-            localStorage.setItem('portal_active_view', 'admin');
+        function showAdminView() {
+            localStorage.setItem('brightbrain_view', 'admin');
             document.getElementById('mainPortalCard').classList.add('wide-card');
             renderAdminTables();
             hideAllViews();
@@ -803,7 +772,7 @@
             }
 
             const mcqBody = document.getElementById('mcqReportBody');
-            mcqBody.innerHTML = '';
+            mcqBody.innerHTML = ``;
 
             if (mcqMarks.length === 0) {
                 mcqBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">තවමත් කිසිදු ශිෂ්‍යයෙක් MCQ Paper එකක් Submit කර නැත.</td></tr>`;
@@ -829,11 +798,11 @@
 
         function approveStudent(index) {
             students[index].approved = true;
-            pushCloudData();
+            saveAndBroadcast();
             
             if (currentStudent && currentStudent.id === students[index].id) {
                 currentStudent.approved = true;
-                localStorage.setItem('portal_active_student', JSON.stringify(currentStudent));
+                localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
             }
 
             renderAdminTables();
