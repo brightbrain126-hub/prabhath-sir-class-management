@@ -40,11 +40,12 @@
         .btn-success { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; }
         .link-text { color: #7c3aed; cursor: pointer; font-size: 13px; font-weight: 600; text-decoration: none; }
         
-        .nav-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 24px; }
-        .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; }
-        .menu-card { background: #f8fafc; padding: 20px 15px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; cursor: pointer; }
-        .menu-card i { font-size: 32px; color: #7c3aed; margin-bottom: 10px; }
-        .menu-card h4 { font-size: 14px; color: #334155; }
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; margin-bottom: 20px; }
+        .grid-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px; margin-top: 15px; }
+        .menu-card { background: #f8fafc; padding: 18px 12px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s; }
+        .menu-card:hover { border-color: #7c3aed; transform: translateY(-2px); }
+        .menu-card i { font-size: 28px; color: #7c3aed; margin-bottom: 8px; }
+        .menu-card h4 { font-size: 13px; color: #334155; }
         .badge-soon { background: #ef4444; color: white; font-size: 10px; padding: 2px 6px; border-radius: 8px; margin-left: 4px; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 14px; }
@@ -181,6 +182,16 @@
                 <button class="btn-primary" style="width: auto; padding: 6px 14px; font-size: 13px;" onclick="logout()" id="btnLogout">Logout</button>
             </div>
 
+            <!-- Subject Selection Buttons -->
+            <div style="margin-bottom: 18px;">
+                <h4 style="font-size: 13px; color: #475569; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">පන්ති / විෂයයන් තෝරන්න (Select Subject)</h4>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="btn-success" style="font-size: 13px; padding: 8px 14px;" onclick="selectSubject('Science')">🔬 විද්‍යාව (Science)</button>
+                    <button class="btn-primary" style="font-size: 13px; padding: 8px 14px; width: auto;" onclick="selectSubject('Maths')">📐 ගණිතය (Maths)</button>
+                </div>
+                <p id="selectedSubjectText" style="font-size: 12px; color: #7c3aed; font-weight: 600; margin-top: 6px;">තෝරාගත් විෂයය: විද්‍යාව (Science)</p>
+            </div>
+
             <div class="grid-menu">
                 <div class="menu-card" onclick="alert('Live Sessions ළඟදීම!')">
                     <i class="fa-solid fa-video"></i>
@@ -213,7 +224,7 @@
                 <h4 style="font-size: 14px; color: #1e293b; margin-bottom: 10px;" id="txtLessonsHeader">පවතින වීඩියෝ පාඩම්</h4>
                 <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <strong style="font-size: 13px; color: #334155;">Unit 01 - Theory Class</strong>
+                        <strong style="font-size: 13px; color: #334155;" id="currentLessonTitle">Unit 01 - Theory Class</strong>
                         <p style="font-size: 11px; color: #64748b; margin-top: 2px;"><span id="txtWatchRemaining">නැරඹීමට ඉතිරි වාර:</span> <span id="watchCount" style="color:#7c3aed; font-weight:bold;">3</span> / 3</p>
                     </div>
                     <button class="btn-primary" style="width: auto; padding: 6px 12px; font-size: 12px;" onclick="playRecording()" id="btnWatchVideo">නරඹන්න</button>
@@ -255,8 +266,8 @@
                             <th>Student ID</th>
                             <th>Name</th>
                             <th>Grade</th>
+                            <th>Subject</th>
                             <th>Phone Number</th>
-                            <th>Password</th>
                             <th>Payment Slip</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -274,6 +285,7 @@
                             <th>Student ID</th>
                             <th>Name</th>
                             <th>Grade</th>
+                            <th>Subject</th>
                             <th>Exam Paper Name</th>
                             <th>Marks Obtained</th>
                         </tr>
@@ -423,20 +435,18 @@
             updateSlipUI();
         }
 
-        // Shared Global Cross-Device Synchronizer via BroadcastChannel & LocalStorage Events
         let students = JSON.parse(localStorage.getItem('brightbrain_students')) || [
-            { id: "STU1001", name: "Prabhath Perera", grade: "Grade 7", phone: "0766980516", pass: "123456", slipData: null, approved: false, watchLimit: 3 }
+            { id: "STU1001", name: "Prabhath Perera", grade: "Grade 7", subject: "Science", phone: "0766980516", pass: "123456", slipData: null, approved: false, watchLimit: 3 }
         ];
         let mcqMarks = JSON.parse(localStorage.getItem('brightbrain_mcq')) || [];
         let currentStudent = JSON.parse(localStorage.getItem('brightbrain_active_student')) || null;
-        let activeView = localStorage.getItem('brightbrain_view') || 'auth';
+        let activeView = JSON.parse(localStorage.getItem('brightbrain_view_state') || '"auth"');
 
         function saveAndBroadcast() {
             localStorage.setItem('brightbrain_students', JSON.stringify(students));
             localStorage.setItem('brightbrain_mcq', JSON.stringify(mcqMarks));
         }
 
-        // Listen to storage events instantly so changes on phone/laptop sync across tabs/devices if on same browser window or shared storage
         window.addEventListener('storage', (e) => {
             if (e.key === 'brightbrain_students') {
                 students = JSON.parse(e.newValue) || [];
@@ -463,7 +473,8 @@
                 const fresh = students.find(s => s.id === currentStudent.id);
                 if (fresh) currentStudent = fresh;
                 document.getElementById('studentName').innerText = currentStudent.name;
-                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
+                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade + ' | ' + (currentStudent.subject || 'Science');
+                document.getElementById('selectedSubjectText').innerText = 'තෝරාගත් විෂයය: ' + (currentStudent.subject || 'Science');
                 document.getElementById('watchCount').innerText = currentStudent.watchLimit;
                 updateSlipUI();
 
@@ -474,7 +485,6 @@
                 showAuth();
             }
 
-            // Continuous polling sync every 1.5 seconds for multi-device harmony
             setInterval(() => {
                 const sData = localStorage.getItem('brightbrain_students');
                 const mData = localStorage.getItem('brightbrain_mcq');
@@ -510,13 +520,13 @@
             const pass = document.getElementById('regPass').value;
             const id = 'STU' + Math.floor(1000 + Math.random() * 9000);
 
-            const newStudent = { id, name, grade, phone, pass, slipData: null, approved: false, watchLimit: 3 };
+            const newStudent = { id, name, grade, subject: "Science", phone, pass, slipData: null, approved: false, watchLimit: 3 };
             students.push(newStudent);
             saveAndBroadcast();
 
             alert(currentLang === 'si' ? `ලියාපදිංචිය සාර්ථකයි! Student ID: ${id}` : `Registration successful! Student ID: ${id}`);
             
-            const message = `Hello ${name}, registered for BrightBrain Class Portal! ID: ${id}, Password:${pass}`;
+            const message = `Hello ${name}, registered for BrightBrain Class Portal! ID: ${id}, Password: ${pass}`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
 
             switchAuthTab('login');
@@ -531,15 +541,33 @@
 
             if (found) {
                 currentStudent = found;
+                if(!currentStudent.subject) currentStudent.subject = "Science";
                 localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
                 document.getElementById('studentName').innerText = currentStudent.name;
-                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade;
+                document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade + ' | ' + currentStudent.subject;
+                document.getElementById('selectedSubjectText').innerText = 'තෝරාගත් විෂයය: ' + currentStudent.subject;
                 document.getElementById('watchCount').innerText = currentStudent.watchLimit;
                 updateSlipUI();
                 showDashboard();
             } else {
                 alert(currentLang === 'si' ? 'ඇතුළත් කළ තොරතුරු වැරදියි!' : 'Invalid credentials!');
             }
+        }
+
+        function selectSubject(subj) {
+            if (!currentStudent) return;
+            currentStudent.subject = subj;
+            document.getElementById('selectedSubjectText').innerText = 'තෝරාගත් විෂයය: ' + subj;
+            document.getElementById('studentGrade').innerText = 'Grade: ' + currentStudent.grade + ' | ' + subj;
+            document.getElementById('currentLessonTitle').innerText = subj + ' - Unit 01 Theory Class';
+
+            const index = students.findIndex(s => s.id === currentStudent.id);
+            if (index !== -1) {
+                students[index] = currentStudent;
+                saveAndBroadcast();
+            }
+            localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
+            alert(currentLang === 'si' ? `${subj} විෂයය තෝරාගන්නා ලදී!` : `Selected subject: ${subj}`);
         }
 
         function updateSlipUI() {
@@ -574,7 +602,6 @@
 
                 img.onload = function () {
                     const canvas = document.createElement('canvas');
-                    // Aggressively resize and compress image to fit seamlessly in storage systems
                     const MAX_WIDTH = 300;
                     const MAX_HEIGHT = 300;
                     let width = img.width;
@@ -638,7 +665,7 @@
         }
 
         function openMCQPapers() {
-            localStorage.setItem('brightbrain_view', 'mcq');
+            localStorage.setItem('brightbrain_view_state', JSON.stringify('mcq'));
             document.getElementById('mainPortalCard').classList.remove('wide-card');
             hideAllViews();
             document.getElementById('mcqView').classList.remove('hidden');
@@ -659,6 +686,7 @@
                 id: currentStudent.id,
                 name: currentStudent.name,
                 grade: currentStudent.grade,
+                subject: currentStudent.subject || 'Science',
                 paper: "MCQ Paper 01",
                 marks: score + "%"
             };
@@ -682,16 +710,17 @@
         }
 
         function showDashboard() {
-            localStorage.setItem('brightbrain_view', 'dashboard');
+            localStorage.setItem('brightbrain_view_state', JSON.stringify('dashboard'));
             document.getElementById('mainPortalCard').classList.remove('wide-card');
             hideAllViews();
             document.getElementById('dashboardSection').classList.remove('hidden');
         }
 
         function showAuth() {
-            localStorage.setItem('brightbrain_view', 'auth');
+            localStorage.setItem('brightbrain_view_state', JSON.stringify('auth'));
             document.getElementById('mainPortalCard').classList.remove('wide-card');
             hideAllViews();
+            document.getElementById('authSection').classList.add('hidden');
             document.getElementById('authSection').classList.remove('hidden');
         }
 
@@ -702,7 +731,7 @@
         }
 
         function openRecordings() {
-            localStorage.setItem('brightbrain_view', 'recordings');
+            localStorage.setItem('brightbrain_view_state', JSON.stringify('recordings'));
             document.getElementById('mainPortalCard').classList.remove('wide-card');
             hideAllViews();
             document.getElementById('recordingsView').classList.remove('hidden');
@@ -737,7 +766,7 @@
         }
 
         function showAdminView() {
-            localStorage.setItem('brightbrain_view', 'admin');
+            localStorage.setItem('brightbrain_view_state', JSON.stringify('admin'));
             document.getElementById('mainPortalCard').classList.add('wide-card');
             renderAdminTables();
             hideAllViews();
@@ -761,8 +790,8 @@
                         <td><strong>${s.id}</strong></td>
                         <td>${s.name}</td>
                         <td>${s.grade}</td>
+                        <td><span style="color:#7c3aed; font-weight:600;">${s.subject || 'Science'}</span></td>
                         <td>${s.phone}</td>
-                        <td>${s.pass || '-'}</td>
                         <td>${s.slipData ? `<button class="btn-primary" style="padding:4px 8px; font-size:11px;" onclick="viewSlip('${s.slipData}')">View Slip</button>` : '<span style="color:#94a3b8;">No Slip</span>'}</td>
                         <td>${s.approved ? '<span style="color:#10b981; font-weight:bold;">Approved</span>' : '<span style="color:#f59e0b; font-weight:bold;">Pending</span>'}</td>
                         <td>${!s.approved && s.slipData ? `<button class="btn-success" onclick="approveStudent(${index})">Approve</button>` : ''}</td>
@@ -772,10 +801,10 @@
             }
 
             const mcqBody = document.getElementById('mcqReportBody');
-            mcqBody.innerHTML = ``;
+            mcqBody.innerHTML = '';
 
             if (mcqMarks.length === 0) {
-                mcqBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">තවමත් කිසිදු ශිෂ්‍යයෙක් MCQ Paper එකක් Submit කර නැත.</td></tr>`;
+                mcqBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8;">තවමත් කිසිදු ශිෂ්‍යයෙක් MCQ Paper එකක් Submit කර නැත.</td></tr>`;
             } else {
                 mcqMarks.forEach(m => {
                     const tr = document.createElement('tr');
@@ -783,6 +812,7 @@
                         <td><strong>${m.id}</strong></td>
                         <td>${m.name}</td>
                         <td>${m.grade}</td>
+                        <td>${m.subject || 'Science'}</td>
                         <td>${m.paper}</td>
                         <td><span style="color:#7c3aed; font-weight:bold; font-size:15px;">${m.marks}</span></td>
                     `;
@@ -805,7 +835,7 @@
                 localStorage.setItem('brightbrain_active_student', JSON.stringify(currentStudent));
             }
 
-            renderAdminTables();
+            renderAdminPanel();
             alert('Payment Approved!');
         }
     </script>
