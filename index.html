@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Learning Platform - Login</title>
-    <!-- Tailwind CSS CDN -->
+    <title>BrightBrain Class Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-slate-100 flex items-center justify-center min-h-screen">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md relative">
+        <div class="absolute top-4 right-4">
+            <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-semibold">
+                <i class="fa-solid fa-wifi"></i> Cloud Sync Active
+            </span>
+        </div>
+
         <div class="text-center mb-6">
-            <i class="fa-solid fa-graduation-cap text-4xl text-indigo-600 mb-2"></i>
+            <div class="text-indigo-600 text-4xl mb-2"><i class="fa-solid fa-graduation-cap"></i></div>
             <h1 class="text-2xl font-bold text-slate-800">Learning Platform</h1>
             <p class="text-sm text-slate-500">කරුණාකර ඔබේ ගිණුමට ඇතුළු වන්න</p>
         </div>
@@ -21,51 +26,42 @@
         <!-- Login Form -->
         <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
             <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">පරිශීලක හැඳුනුම්පත (Login ID)</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                        <i class="fa-solid fa-user"></i>
-                    </span>
-                    <input type="text" id="loginId" required class="w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Username ඇතුළත් කරන්න">
-                </div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Student ID / දුරකථන අංකය</label>
+                <input type="text" id="loginId" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="STU1001 හෝ 0766980516">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-slate-700 mb-1">මුරපදය (Password)</label>
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                        <i class="fa-solid fa-lock"></i>
-                    </span>
-                    <input type="password" id="loginPassword" required class="w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="••••••••">
-                </div>
+                <input type="password" id="loginPassword" required class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="••••••••">
             </div>
 
-            <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold py-2.5 rounded-xl shadow-lg hover:opacity-95 transition">
+            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl shadow-lg transition">
                 <i class="fa-solid fa-right-to-bracket mr-2"></i> ඇතුළු වන්න
             </button>
         </form>
 
-        <div class="mt-6 border-t pt-4 text-center">
-            <p class="text-sm text-slate-600">ගිණුමක් නොමැද්ද? <button onclick="toggleModal(true)" class="text-indigo-600 font-semibold hover:underline">ලියාපදිංචි වන්න</button></p>
+        <div class="mt-6 flex justify-between items-center text-sm">
+            <button onclick="openRegModal()" class="text-indigo-600 font-semibold hover:underline">ගිණුමක් නැද්ද? ලියාපදිංචි වන්න</button>
+            <a href="admin.html" class="text-slate-500 hover:text-indigo-600 font-medium">Admin Panel</a>
         </div>
     </div>
 
     <!-- Registration Modal -->
-    <div id="regModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4">
+    <div id="regModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
         <div class="bg-white p-6 rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-slate-800">නව ලියාපදිංචිය</h2>
-                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+                <h2 class="text-xl font-bold text-slate-800">නව ශිෂ්‍ය ලියාපදිංචිය</h2>
+                <button onclick="closeRegModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             
             <form id="regForm" onsubmit="handleRegister(event)" class="space-y-3">
                 <div>
                     <label class="block text-sm font-medium text-slate-700">සම්පූර්ණ නම</label>
-                    <input type="text" required class="w-full p-2 border rounded-xl" placeholder="නම ඇතුළත් කරන්න">
+                    <input type="text" id="regName" required class="w-full p-2.5 border rounded-xl" placeholder="ඔබේ නම">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700">ශ්‍රේණිය (Grade)</label>
-                    <select id="regGrade" required class="w-full p-2 border rounded-xl">
+                    <label class="block text-sm font-medium text-slate-700">ශ්‍රේණිය (Grade 1 සිට 11 දක්වා)</label>
+                    <select id="regGrade" required class="w-full p-2.5 border rounded-xl">
                         <option value="">ශ්‍රේණිය තෝරන්න</option>
                         <option value="1">Grade 1</option>
                         <option value="2">Grade 2</option>
@@ -81,21 +77,24 @@
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700">දුරකථන අංකය</label>
-                    <input type="tel" required class="w-full p-2 border rounded-xl" placeholder="07XXXXXXXX">
+                    <label class="block text-sm font-medium text-slate-700">දුරකථන අංකය (Username ලෙස භාවිතා වේ)</label>
+                    <input type="tel" id="regPhone" required class="w-full p-2.5 border rounded-xl" placeholder="07XXXXXXXX">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700">මුරපදය</label>
-                    <input type="password" required class="w-full p-2 border rounded-xl">
+                    <label class="block text-sm font-medium text-slate-700">මව්පියන්ගේ නම</label>
+                    <input type="text" id="regParent" required class="w-full p-2.5 border rounded-xl" placeholder="මව්පියන්ගේ නම">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-2.5 rounded-xl shadow hover:bg-emerald-700 transition">
-                    ගිණුම සාදාගන්න
+                <div>
+                    <label class="block text-sm font-medium text-slate-700">මුරපදය (Password)</label>
+                    <input type="password" id="regPass" required class="w-full p-2.5 border rounded-xl" placeholder="මුරපදයක් ලබා දෙන්න">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow transition">
+                    ලියාපදිංචි වන්න
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- JavaScript -->
     <script src="app.js"></script>
 </body>
 </html>

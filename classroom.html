@@ -3,53 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>පංති සහ අභ්‍යාස - Classroom</title>
+    <title>පංති මැදිරිය - Classroom</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.html">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-100 min-h-screen p-6">
 
-    <div class="max-w-4xl mx-auto">
-        <div class="mb-6 flex items-center justify-between">
-            <h1 id="subjectTitle" class="text-2xl font-bold text-slate-800">විෂය නාමය</h1>
-            <a href="subject-selection.html" class="text-sm bg-white px-4 py-2 rounded-xl shadow-sm hover:bg-slate-50"><i class="fa-solid fa-arrow-left"></i> ආපසු</a>
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-2xl shadow-lg">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <div>
+                <h1 id="classroomTitle" class="text-2xl font-bold text-slate-800">විෂය පංතිය</h1>
+                <p class="text-sm text-slate-500" id="studentWelcome">සාදරයෙන් පිළිගනිමු!</p>
+            </div>
+            <a href="subject_selection.html" class="bg-slate-100 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-slate-200">
+                <i class="fa-solid fa-arrow-left"></i> ආපසු
+            </a>
         </div>
 
-        <!-- Tabs Container -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Live Class Option -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-l-4 border-l-red-500">
-                <div class="text-red-500 text-2xl mb-2"><i class="fa-solid fa-video"></i></div>
-                <h3 class="font-bold text-lg mb-1">Live Classes</h3>
-                <p class="text-xs text-slate-500 mb-4">සජීවී පංති සමඟ සම්බන්ධ වන්න.</p>
-                <button onclick="alert('Live පන්තිය වෙත සම්බන්ධ වෙමින් පවතී...')" class="bg-red-500 text-white text-sm px-4 py-2 rounded-xl w-full hover:bg-red-600">Join Live</button>
-            </div>
+        <!-- Payment Slip Upload Box -->
+        <div class="bg-purple-50 border-2 border-dashed border-purple-300 p-6 rounded-2xl mb-6 text-center">
+            <h3 class="font-bold text-purple-900 mb-2"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> මාසික පන්ති ගෙවීම් රිසිට්පත Upload කරන්න</h3>
+            <input type="file" id="slipFileInput" accept="image/*" class="mb-3 block mx-auto text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700">
+            <button onclick="uploadPaymentSlip()" class="bg-purple-600 text-white px-6 py-2 rounded-xl font-semibold shadow hover:bg-purple-700 transition">
+                Upload Slip
+            </button>
+            <p id="slipStatusMsg" class="mt-2 text-xs font-semibold text-emerald-700"></p>
+        </div>
 
-            <!-- Recordings Option -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-l-4 border-l-blue-500">
-                <div class="text-blue-500 text-2xl mb-2"><i class="fa-solid fa-play-circle"></i></div>
-                <h3 class="font-bold text-lg mb-1">Recordings</h3>
-                <p class="text-xs text-slate-500 mb-4">පසුගිය පාඩම් නැවත නරඹන්න.</p>
-                <button onclick="alert('පටිගත කළ වීඩියෝ ලැයිස්තුව විවෘත වේ...')" class="bg-blue-500 text-white text-sm px-4 py-2 rounded-xl w-full hover:bg-blue-600">View Videos</button>
-            </div>
-
-            <!-- MCQ / Quizzes Option -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-l-4 border-l-emerald-500">
-                <div class="text-emerald-500 text-2xl mb-2"><i class="fa-solid fa-list-check"></i></div>
-                <h3 class="font-bold text-lg mb-1">MCQ Quizzes</h3>
-                <p class="text-xs text-slate-500 mb-4">ප්‍රශ්න පත්‍ර සහ අභ්‍යාස කරන්න.</p>
-                <button onclick="alert('MCQ ප්‍රශ්න පත්‍රය ආරම්භ වේ...')" class="bg-emerald-500 text-white text-sm px-4 py-2 rounded-xl w-full hover:bg-emerald-600">Start Quiz</button>
+        <!-- Class Recordings List -->
+        <h3 class="font-bold text-lg text-slate-800 mb-3"><i class="fa-solid fa-play-circle text-purple-600 mr-2"></i> පවතින වීඩියෝ පාඩම්</h3>
+        <div class="space-y-3">
+            <div class="flex justify-between items-center p-4 bg-slate-50 border rounded-xl">
+                <div>
+                    <h4 class="font-bold text-slate-800">Unit 01 - Theory Class</h4>
+                    <p class="text-xs text-slate-500">නැරඹීමට ඉතිරි වාර: <span id="watchCount">3</span> / 3</p>
+                </div>
+                <button onclick="playVideo()" class="bg-purple-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-purple-700">නරඹන්න</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // URL එකෙන් විෂයයේ නම ලබාගෙන සਿਰසට එකතු කිරීම
-        const urlParams = new URLSearchParams(window.location.search);
-        const subject = urlParams.get('subject');
-        if(subject) {
-            document.getElementById('subjectTitle').innerText = subject + " පංතිය";
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

@@ -6,54 +6,46 @@
     <title>විෂයයන් තෝරාගැනීම - Subject Selection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-50 min-h-screen p-6">
 
     <div class="max-w-4xl mx-auto">
         <header class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl shadow-sm">
-            <h1 class="text-xl font-bold text-slate-800"><i class="fa-solid fa-book-open text-indigo-600 mr-2"></i> ඔබේ විෂයයන්</h1>
-            <a href="index.html" class="text-red-500 font-semibold text-sm hover:underline"><i class="fa-solid fa-right-from-bracket"></i> පිටවීම</a>
+            <h1 class="text-xl font-bold text-slate-800"><i class="fa-solid fa-book-open text-purple-600 mr-2"></i> ඔබේ විෂයයන් තෝරන්න</h1>
+            <a href="index.html" class="text-red-500 font-semibold text-sm hover:underline"><i class="fa-solid fa-right-from-bracket"></i> ඉවත් වන්න</a>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Subject Card 1 -->
-        <div class="bg-white p-6 rounded-2xl shadow-md border hover:shadow-lg transition">
-                <div class="text-indigo-600 text-3xl mb-3"><i class="fa-solid fa-calculator"></i></div>
+            <div class="bg-white p-6 rounded-2xl shadow-md border hover:shadow-xl transition">
+                <div class="text-purple-600 text-3xl mb-3"><i class="fa-solid fa-calculator"></i></div>
                 <h3 class="text-lg font-bold text-slate-800 mb-2">ගණිතය (Maths)</h3>
-                <p class="text-sm text-slate-500 mb-4">පංති, දේශන සහ MCQ අභ්‍යාස.</p>
-                <button onclick="openSubjectPanel('ගණිතය')" class="w-full bg-indigo-50 text-indigo-600 font-semibold py-2 rounded-xl hover:bg-indigo-600 hover:text-white transition">
+                <p class="text-sm text-slate-500 mb-4">සජීවී පංති, වීඩියෝ සහ MCQ අභ්‍යාස.</p>
+                <button onclick="selectSubject('ගණිතය')" class="w-full bg-purple-50 text-purple-600 font-semibold py-2.5 rounded-xl hover:bg-purple-600 hover:text-white transition">
                     ඇතුළු වන්න
                 </button>
             </div>
 
-            <!-- Subject Card 2 -->
-            <div class="bg-white p-6 rounded-2xl shadow-md border hover:shadow-lg transition">
+            <div class="bg-white p-6 rounded-2xl shadow-md border hover:shadow-xl transition">
                 <div class="text-emerald-600 text-3xl mb-3"><i class="fa-solid fa-flask"></i></div>
                 <h3 class="text-lg font-bold text-slate-800 mb-2">විද්‍යාව (Science)</h3>
-                <p class="text-sm text-slate-500 mb-4">පංති, දේශන සහ MCQ අභ්‍යාස.</p>
-                <button onclick="openSubjectPanel('විද්‍යාව')" class="w-full bg-emerald-50 text-emerald-600 font-semibold py-2 rounded-xl hover:bg-emerald-600 hover:text-white transition">
+                <p class="text-sm text-slate-500 mb-4">සජීවී පංති, වීඩියෝ සහ MCQ අභ්‍යාස.</p>
+                <button onclick="selectSubject('විද්‍යාව')" class="w-full bg-emerald-50 text-emerald-600 font-semibold py-2.5 rounded-xl hover:bg-emerald-600 hover:text-white transition">
                     ඇතුළු වන්න
                 </button>
             </div>
 
-            <!-- Subject Card 3 -->
-            <div class="bg-white p-6 rounded-2xl shadow-md border hover:shadow-lg transition">
-                <div class="text-amber-600 text-3xl mb-3"><i class="fa-solid fa-language"></i></div>
-                <h3 class="text-lg font-bold text-slate-800 mb-2">සිංහල භාෂාව (Sinhala)</h3>
-                <p class="text-sm text-slate-500 mb-4">පංති, දේශන සහ MCQ අභ්‍යාස.</p>
-                <button onclick="openSubjectPanel('සිංහල භාෂාව')" class="w-full bg-amber-50 text-amber-600 font-semibold py-2 rounded-xl hover:bg-amber-600 hover:text-white transition">
+            <div class="bg-white p-6 rounded-2xl shadow-md border hover:shadow-xl transition">
+                <div class="text-amber-600 text-3xl mb-3"><i class="fa-solid fa-globe"></i></div>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">භූගෝල විද්‍යාව (Geography)</h3>
+                <p class="text-sm text-slate-500 mb-4">සජීවී පංති, වීඩියෝ සහ MCQ අභ්‍යාස.</p>
+                <button onclick="selectSubject('Geography')" class="w-full bg-amber-50 text-amber-600 font-semibold py-2.5 rounded-xl hover:bg-amber-600 hover:text-white transition">
                     ඇතුළු වන්න
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Sub-options Modal / Panel script -->
-    <script>
-        function openSubjectPanel(subjectName) {
-            // මෙහිදී ඔබට Live, Recording හෝ MCQ පිටුවට යොමු කළ හැක
-            window.location.href = `classroom.html?subject=${encodeURIComponent(subjectName)}`;
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

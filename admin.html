@@ -1,167 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Class Admin Panel</title>
-    <!-- Firebase Libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <style>
-        * { box-sizing: border-box; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        body { background: #f0f2f5; padding: 20px; }
-        h1 { color: #003366; margin-bottom: 20px; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { padding: 12px 25px; background: #003366; color: white; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; }
-        .tab-btn.active { background: #007bff; }
-        .tab-content { display: none; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .tab-content.active { display: block; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
-        th { background: #f8f9fa; }
-        .btn { padding: 8px 12px; border: none; color: white; border-radius: 4px; cursor: pointer; margin-right: 5px; font-size: 13px; font-weight: bold; }
-        .btn-approve { background: #28a745; }
-        .btn-block { background: #dc3545; }
-        .btn-sms { background: #25D366; text-decoration: none; display: inline-block; }
-        .btn-call { background: #17a2b8; text-decoration: none; display: inline-block; }
-        .img-preview { max-width: 100px; max-height: 100px; border-radius: 4px; }
-    </style>
+    <title>Class Admin Panel & Reports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg-slate-100 min-h-screen p-6">
 
-    <h1>Class Admin Control Dashboard</h1>
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">Admin Panel & System Reports</h1>
+                <p class="text-xs text-emerald-600 font-semibold"><i class="fa-solid fa-circle-check"></i> Cross-Device Real-time Database Connected</p>
+            </div>
+            <a href="index.html" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-xl text-sm font-semibold shadow">Exit Admin</a>
+        </div>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="openTab('students')">Students</button>
-        <button class="tab-btn" onclick="openTab('payments')">Payments / Slips</button>
+        <!-- Student Management & Payments Section -->
+        <h3 class="font-bold text-lg text-purple-800 mb-3"><i class="fa-solid fa-users mr-2"></i> Student Management & Real-time Payments</h3>
+        <div class="overflow-x-auto mb-8">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-purple-600 text-white text-xs uppercase tracking-wider">
+                        <th class="p-3">Student ID</th>
+                        <th class="p-3">Name</th>
+                        <th class="p-3">Grade</th>
+                        <th class="p-3">Phone Number</th>
+                        <th class="p-3">Password</th>
+                        <th class="p-3">Payment Slip</th>
+                        <th class="p-3">Approval Status</th>
+                        <th class="p-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="adminStudentTableBody" class="text-sm divide-y divide-slate-200">
+                    <!-- Dynamic Data loaded via JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- MCQ Marks & Performance Report Section -->
+        <h3 class="font-bold text-lg text-purple-800 mb-3"><i class="fa-solid fa-chart-bar mr-2"></i> MCQ Marks & Exam Performance Report</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-purple-600 text-white text-xs uppercase tracking-wider">
+                        <th class="p-3">Student ID</th>
+                        <th class="p-3">Name</th>
+                        <th class="p-3">Grade</th>
+                        <th class="p-3">Paper Title</th>
+                        <th class="p-3">Marks Obtained</th>
+                    </tr>
+                </thead>
+                <tbody id="adminMarksTableBody" class="text-sm divide-y divide-slate-200">
+                    <!-- Dynamic Data loaded via JS -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <!-- STUDENTS TAB -->
-    <div id="students" class="tab-content active">
-        <h2>Registered Students Management</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Student Name</th>
-                    <th>Username (Contact)</th>
-                    <th>WhatsApp No</th>
-                    <th>Parent Name</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="student-table-body"></tbody>
-        </table>
-    </div>
-
-    <!-- PAYMENTS TAB -->
-    <div id="payments" class="tab-content">
-        <h2>Submitted Bank Slips</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Student Details</th>
-                    <th>Grade & Subject</th>
-                    <th>Uploaded Date</th>
-                    <th>Bank Slip</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="payment-table-body"></tbody>
-        </table>
-    </div>
-
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBkcvUQqYH5DKftxGSa6WEi0NmCqaTpHPs",
-            authDomain: "classportal-fb629.firebaseapp.com",
-            databaseURL: "https://classportal-fb629-default-rtdb.firebaseio.com",
-            projectId: "classportal-fb629",
-            storageBucket: "classportal-fb629.firebasestorage.app",
-            messagingSenderId: "902455956329",
-            appId: "1:902455956329:web:b4f3665be872493ad5e3f8",
-            measurementId: "G-5JF8MTJ8CF"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        function openTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(tb => tb.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        // Live Students Render
-        function renderStudents() {
-            database.ref('students').on('value', snapshot => {
-                let tbody = document.getElementById('student-table-body');
-                tbody.innerHTML = '';
-                const data = snapshot.val();
-
-                for (let key in data) {
-                    let s = data[key];
-                    let formattedPhone = s.whatsappNo.startsWith('0') ? '94' + s.whatsappNo.substring(1) : s.whatsappNo;
-                    let msg = encodeURIComponent(`Hello ${s.fullName}! Your account has been APPROVED.\nUsername: ${s.contactNo}`);
-
-                    tbody.innerHTML += `
-                        <tr>
-                            <td><b>${s.fullName}</b></td>
-                            <td>${s.contactNo}</td>
-                            <td>${s.whatsappNo}</td>
-                            <td>${s.parentName}</td>
-                            <td><b>${s.status.toUpperCase()}</b></td>
-                            <td>
-                                <button class="btn btn-approve" onclick="updateStudentStatus('${s.contactNo}', 'approved', '${formattedPhone}', '${msg}')">Approve & Send SMS</button>
-                                <button class="btn btn-block" onclick="updateStudentStatus('${s.contactNo}', 'blocked')">Block</button>
-                                <a href="https://wa.me/${formattedPhone}?text=${msg}" target="_blank" class="btn btn-sms">WhatsApp</a>
-                                <a href="tel:${s.contactNo}" class="btn btn-call">Call Parent</a>
-                            </td>
-                        </tr>
-                    `;
-                }
-            });
-        }
-
-        function updateStudentStatus(contactNo, status, phone, msg) {
-            database.ref('students/' + contactNo).update({ status: status }).then(() => {
-                if (status === 'approved' && phone) {
-                    window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
-                }
-            });
-        }
-
-        // Live Payments Render
-        function renderPayments() {
-            database.ref('payments').on('value', snapshot => {
-                let tbody = document.getElementById('payment-table-body');
-                tbody.innerHTML = '';
-                const data = snapshot.val();
-
-                for (let key in data) {
-                    let p = data[key];
-                    let formattedPhone = p.whatsappNo.startsWith('0') ? '94' + p.whatsappNo.substring(1) : p.whatsappNo;
-                    let msg = encodeURIComponent(`Hello ${p.studentName}, your bank slip for Grade ${p.grade} (${p.subject}) has been VERIFIED!`);
-
-                    tbody.innerHTML += `
-                        <tr>
-                            <td><b>${p.studentName}</b><br><small>${p.contactNo}</small></td>
-                            <td>Grade ${p.grade} - ${p.subject}</td>
-                            <td>${p.date}</td>
-                            <td><a href="${p.slipData}" target="_blank"><img src="${p.slipData}" class="img-preview"></a></td>
-                            <td>
-                                <a href="https://wa.me/${formattedPhone}?text=${msg}" target="_blank" class="btn btn-sms">Confirm Payment via WhatsApp</a>
-                            </td>
-                        </tr>
-                    `;
-                }
-            });
-        }
-
-        renderStudents();
-        renderPayments();
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
