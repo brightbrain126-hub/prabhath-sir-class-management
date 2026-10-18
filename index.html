@@ -31,11 +31,36 @@
         }
 
         /* Header / Navbar */
-        header { background-color: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        header { background-color: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); flex-wrap: wrap; gap: 10px; }
         .logo-title { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: bold; cursor: pointer; }
-        .nav-actions { display: flex; gap: 15px; align-items: center; }
+        .nav-actions { display: flex; gap: 12px; align-items: center; }
         .btn-header { background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
         .btn-header:hover { background: rgba(255,255,255,0.3); }
+
+        /* Language Switcher Styling */
+        .lang-select-wrap {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+            font-size: 14px;
+        }
+        .lang-select-wrap select {
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+        .lang-select-wrap select option {
+            color: #2c3e50;
+            background: white;
+        }
 
         /* Floating WhatsApp Button */
         .whatsapp-float {
@@ -140,8 +165,23 @@
             <span>BrightBrain e-Learning</span>
         </div>
         <div class="nav-actions">
-            <a href="#" onclick="playClickSound(); showGradesView()" class="btn-header"><i class="fa-solid fa-house blink-icon"></i> මුල් පිටුව</a>
-            <a href="#" onclick="playClickSound(); logout()" id="logoutBtn" class="btn-header hidden"><i class="fa-solid fa-right-from-bracket blink-icon"></i> ලොග් අවුට්</a>
+            <!-- Language Selection Icon & Dropdown -->
+            <div class="lang-select-wrap">
+                <i class="fa-solid fa-globe blink-icon"></i>
+                <select id="langSelect" onchange="playClickSound(); changeLanguage(this.value)">
+                    <option value="si" selected>සිංහල (SI)</option>
+                    <option value="en">English (EN)</option>
+                </select>
+            </div>
+
+            <!-- Home Tab Button -->
+            <a href="#" onclick="playClickSound(); showGradesView()" class="btn-header">
+                <i class="fa-solid fa-house blink-icon"></i> <span id="txtNavHome">මුල් පිටුව</span>
+            </a>
+            
+            <a href="#" onclick="playClickSound(); logout()" id="logoutBtn" class="btn-header hidden">
+                <i class="fa-solid fa-right-from-bracket blink-icon"></i> <span id="txtLogout">ලොග් අවුට්</span>
+            </a>
         </div>
     </header>
 
@@ -164,20 +204,20 @@
                 <div id="loginForm">
                     <form onsubmit="handleLogin(event)">
                         <div class="form-group">
-                            <label>USERNAME / PHONE NUMBER</label>
+                            <label id="lblLoginUser">USERNAME / PHONE NUMBER</label>
                             <div class="input-wrap">
                                 <i class="fa-solid fa-user blink-icon"></i>
                                 <input type="text" id="loginUser" placeholder="උදා: 0766980516" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>PASSWORD</label>
+                            <label id="lblLoginPass">PASSWORD</label>
                             <div class="input-wrap">
                                 <i class="fa-solid fa-lock blink-icon"></i>
                                 <input type="password" id="loginPass" placeholder="••••••••" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn-auth">ඇතුළු වන්න</button>
+                        <button type="submit" class="btn-auth" id="btnLogin">ඇතුළු වන්න</button>
                     </form>
                 </div>
 
@@ -185,27 +225,27 @@
                 <div id="registerForm" class="hidden">
                     <form onsubmit="handleRegister(event)">
                         <div class="form-group">
-                            <label>FULL NAME</label>
+                            <label id="lblRegName">FULL NAME</label>
                             <div class="input-wrap">
                                 <i class="fa-solid fa-id-card blink-icon"></i>
                                 <input type="text" id="regName" placeholder="ඔබගේ නම" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>PHONE NUMBER (USERNAME)</label>
+                            <label id="lblRegPhone">PHONE NUMBER (USERNAME)</label>
                             <div class="input-wrap">
                                 <i class="fa-solid fa-phone blink-icon"></i>
                                 <input type="tel" id="regPhone" placeholder="07XXXXXXXX" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>PASSWORD</label>
+                            <label id="lblRegPass">PASSWORD</label>
                             <div class="input-wrap">
                                 <i class="fa-solid fa-key blink-icon"></i>
                                 <input type="password" id="regPass" placeholder="••••••••" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn-auth">ලියාපදිංචි වන්න</button>
+                        <button type="submit" class="btn-auth" id="btnRegister">ලියාපදිංචි වන්න</button>
                     </form>
                 </div>
             </div>
@@ -217,27 +257,27 @@
 
         <!-- VIEW 2: GRADE SELECTION PAGE -->
         <div id="gradesView">
-            <div class="section-title">ප්‍රාථමික අධ්‍යාපනය (1-5 ශ්‍රේණි)</div>
+            <div class="section-title" id="txtTitlePrimary">ප්‍රාථමික අධ්‍යාපනය (1-5 ශ්‍රේණි)</div>
             <div class="grade-group">
                 <div class="grade-grid">
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('1 ශ්‍රේණිය')"><i class="fa-solid fa-child blink-icon"></i><span>1 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('2 ශ්‍රේණිය')"><i class="fa-solid fa-pencil blink-icon"></i><span>2 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('3 ශ්‍රේණිය')"><i class="fa-solid fa-puzzle-piece blink-icon"></i><span>3 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('4 ශ්‍රේණිය')"><i class="fa-solid fa-book-open blink-icon"></i><span>4 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('5 ශ්‍රේණිය')"><i class="fa-solid fa-shapes blink-icon"></i><span>5 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('1 ශ්‍රේණිය', 'Grade 1')"><i class="fa-solid fa-child blink-icon"></i><span class="g1-title">1 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('2 ශ්‍රේණිය', 'Grade 2')"><i class="fa-solid fa-pencil blink-icon"></i><span class="g2-title">2 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('3 ශ්‍රේණිය', 'Grade 3')"><i class="fa-solid fa-puzzle-piece blink-icon"></i><span class="g3-title">3 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('4 ශ්‍රේණිය', 'Grade 4')"><i class="fa-solid fa-book-open blink-icon"></i><span class="g4-title">4 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('5 ශ්‍රේණිය', 'Grade 5')"><i class="fa-solid fa-shapes blink-icon"></i><span class="g5-title">5 ශ්‍රේණිය</span></div>
                 </div>
             </div>
 
-            <div class="section-title">ද්විතීයික අධ්‍යාපනය (6-13 ශ්‍රේණි)</div>
+            <div class="section-title" id="txtTitleSecondary">ද්විතීයික අධ්‍යාපනය (6-13 ශ්‍රේණි)</div>
             <div class="grade-group">
                 <div class="grade-grid">
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('6 ශ්‍රේණිය')"><i class="fa-solid fa-atom blink-icon"></i><span>6 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('7 ශ්‍රේණිය')"><i class="fa-solid fa-flask blink-icon"></i><span>7 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('8 ශ්‍රේණිය')"><i class="fa-solid fa-microscope blink-icon"></i><span>8 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('9 ශ්‍රේණිය')"><i class="fa-solid fa-calculator blink-icon"></i><span>9 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('10 ශ්‍රේණිය')"><i class="fa-solid fa-laptop-code blink-icon"></i><span>10 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('11 ශ්‍රේණිය')"><i class="fa-solid fa-award blink-icon"></i><span>11 ශ්‍රේණිය</span></div>
-                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('12/13 ශ්‍රේණිය')"><i class="fa-solid fa-user-graduate blink-icon"></i><span>12/13 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('6 ශ්‍රේණිය', 'Grade 6')"><i class="fa-solid fa-atom blink-icon"></i><span class="g6-title">6 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('7 ශ්‍රේණිය', 'Grade 7')"><i class="fa-solid fa-flask blink-icon"></i><span class="g7-title">7 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('8 ශ්‍රේණිය', 'Grade 8')"><i class="fa-solid fa-microscope blink-icon"></i><span class="g8-title">8 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('9 ශ්‍රේණිය', 'Grade 9')"><i class="fa-solid fa-calculator blink-icon"></i><span class="g9-title">9 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('10 ශ්‍රේණිය', 'Grade 10')"><i class="fa-solid fa-laptop-code blink-icon"></i><span class="g10-title">10 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('11 ශ්‍රේණිය', 'Grade 11')"><i class="fa-solid fa-award blink-icon"></i><span class="g11-title">11 ශ්‍රේණිය</span></div>
+                    <div class="grade-card" onclick="playClickSound(); openSubjectGrid('12/13 ශ්‍රේණිය', 'Grade 12/13')"><i class="fa-solid fa-user-graduate blink-icon"></i><span class="g12-title">12/13 ශ්‍රේණිය</span></div>
                 </div>
             </div>
         </div>
@@ -245,7 +285,7 @@
         <!-- VIEW 3: SUBJECT CARDS GRID -->
         <div id="subjectsView" class="hidden">
             <div class="breadcrumb">
-                <a onclick="playClickSound(); showGradesView()">පාඩම්මාලා</a> &gt; <span id="selectedGradeTitle">6 ශ්‍රේණිය</span>
+                <a onclick="playClickSound(); showGradesView()" id="txtBreadcrumbCourses">පාඩම්මාලා</a> &gt; <span id="selectedGradeTitle">6 ශ්‍රේණිය</span>
             </div>
 
             <div class="search-bar-container">
@@ -256,14 +296,14 @@
             </div>
 
             <div class="subject-grid" id="subjectGridContainer">
-                <!-- Dynamic Subjects populated via JS -->
+                <!-- Dynamic Subjects -->
             </div>
         </div>
 
         <!-- VIEW 4: COURSE CONTENT VIEW -->
         <div id="courseView" class="hidden">
             <div class="breadcrumb">
-                <a onclick="playClickSound(); showGradesView()">පාඩම්මාලා</a> &gt; 
+                <a onclick="playClickSound(); showGradesView()" id="txtBreadcrumbCourses2">පාඩම්මාලා</a> &gt; 
                 <a onclick="playClickSound(); backToSubjects()" id="breadcrumbGrade">6 ශ්‍රේණිය</a> &gt; 
                 <span id="breadcrumbSubject">මව්බස</span>
             </div>
@@ -273,9 +313,9 @@
                     <h4>Table of Contents</h4>
                     <ul class="sidebar-menu">
                         <li class="active"><i class="fa-solid fa-folder blink-icon"></i> General</li>
-                        <li onclick="playClickSound()"><i class="fa-solid fa-file-lines blink-icon"></i> ඇගයීම්</li>
-                        <li onclick="playClickSound()"><i class="fa-solid fa-book blink-icon"></i> පෙළ පොත</li>
-                        <li onclick="playClickSound()"><i class="fa-solid fa-clipboard-question blink-icon"></i> නිවාඩු කාලීන පැවරුම්</li>
+                        <li onclick="playClickSound()"><i class="fa-solid fa-file-lines blink-icon"></i> <span id="txtSideAssessments">ඇගයීම්</span></li>
+                        <li onclick="playClickSound()"><i class="fa-solid fa-book blink-icon"></i> <span id="txtSideTextbook">පෙළ පොත</span></li>
+                        <li onclick="playClickSound()"><i class="fa-solid fa-clipboard-question blink-icon"></i> <span id="txtSideAssignments">නිවාඩු කාලීන පැවරුම්</span></li>
                     </ul>
                 </div>
 
@@ -295,19 +335,19 @@
                                 <i class="fa-solid fa-bullhorn blink-icon"></i>
                                 <span>ANNOUNCEMENTS & NEWS FORUM</span>
                             </div>
-                            <a href="#" onclick="playClickSound()" class="btn-view">බලන්න</a>
+                            <a href="#" onclick="playClickSound()" class="btn-view" id="btnViewNews">බලන්න</a>
                         </div>
                         <div class="resource-item">
                             <div class="resource-item-left">
                                 <i class="fa-regular fa-file-pdf blink-icon"></i>
-                                <span>විෂය නිර්දේශය (නව නිර්දේශය)</span>
+                                <span id="txtSyllabus">විෂය නිර්දේශය (නව නිර්දේශය)</span>
                             </div>
                             <a href="#" onclick="playClickSound()" class="btn-view">Download PDF</a>
                         </div>
                     </div>
 
                     <div class="content-section">
-                        <h3>ඇගයීම් (Assessments)</h3>
+                        <h3 id="txtSectionAssessments">ඇගයීම් (Assessments)</h3>
                         <div class="resource-item">
                             <div class="resource-item-left">
                                 <i class="fa-regular fa-file-pdf blink-icon"></i>
@@ -330,6 +370,73 @@
     </div>
 
     <script>
+        let currentLang = 'si';
+
+        const dict = {
+            si: {
+                txtNavHome: "මුල් පිටුව",
+                txtLogout: "ලොග් අවුට්",
+                loginTabBtn: "ඇතුළු වන්න",
+                regTabBtn: "ලියාපදිංචිය",
+                btnLogin: "ඇතුළු වන්න",
+                btnRegister: "ලියාපදිංචි වන්න",
+                txtTitlePrimary: "ප්‍රාථමික අධ්‍යාපනය (1-5 ශ්‍රේණි)",
+                txtTitleSecondary: "ද්විතීයික අධ්‍යාපනය (6-13 ශ්‍රේණි)",
+                txtBreadcrumbCourses: "පාඩම්මාලා",
+                txtBreadcrumbCourses2: "පාඩම්මාලා",
+                subjectSearchPlaceholder: "විෂයයන් සොයන්න...",
+                txtSideAssessments: "ඇගයීම්",
+                txtSideTextbook: "පෙළ පොත",
+                txtSideAssignments: "නිවාඩු කාලීන පැවරුම්",
+                txtSyllabus: "විෂය නිර්දේශය (නව නිර්දේශය)",
+                txtSectionAssessments: "ඇගයීම් (Assessments)",
+                btnViewNews: "බලන්න"
+            },
+            en: {
+                txtNavHome: "Home",
+                txtLogout: "Logout",
+                loginTabBtn: "Login",
+                regTabBtn: "Register",
+                btnLogin: "Login",
+                btnRegister: "Register",
+                txtTitlePrimary: "Primary Education (Grades 1-5)",
+                txtTitleSecondary: "Secondary Education (Grades 6-13)",
+                txtBreadcrumbCourses: "Courses",
+                txtBreadcrumbCourses2: "Courses",
+                subjectSearchPlaceholder: "Search Subjects...",
+                txtSideAssessments: "Assessments",
+                txtSideTextbook: "Textbook",
+                txtSideAssignments: "Vacation Assignments",
+                txtSyllabus: "Syllabus (New Syllabus)",
+                txtSectionAssessments: "Assessments",
+                btnViewNews: "View"
+            }
+        };
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const d = dict[lang];
+
+            for (let id in d) {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (el.tagName === 'INPUT') {
+                        el.placeholder = d[id];
+                    } else {
+                        el.innerText = d[id];
+                    }
+                }
+            }
+
+            const searchInp = document.getElementById('subjectSearchInput');
+            if (searchInp) searchInp.placeholder = d.subjectSearchPlaceholder;
+
+            // Re-render subjects with updated language if visible
+            if (currentActiveGrade) {
+                renderSubjects(subjectData);
+            }
+        }
+
         // Web Audio API Click Sound Generator
         function playClickSound() {
             try {
@@ -350,18 +457,19 @@
 
         // Subject Data
         const subjectData = [
-            { name: "මව්බස / සිංහල භාෂාව", icon: "fa-feather-pointed", count: "43 lessons" },
-            { name: "ගණිතය (Mathematics)", icon: "fa-calculator", count: "90 lessons" },
-            { name: "විද්‍යාව (Science)", icon: "fa-flask", count: "154 lessons" },
-            { name: "පරිසරය (ENV)", icon: "fa-leaf", count: "30 lessons" },
-            { name: "බුද්ධ ධර්මය", icon: "fa-dharmachakra", count: "112 lessons" },
-            { name: "ඉංග්‍රීසි භාෂාව (English)", icon: "fa-language", count: "85 lessons" },
-            { name: "තොරතුරු තාක්ෂණය (ICT)", icon: "fa-desktop", count: "60 lessons" }
+            { nameSi: "මව්බස / සිංහල භාෂාව", nameEn: "Mother Tongue / Sinhala", icon: "fa-feather-pointed", count: "43 lessons" },
+            { nameSi: "ගණිතය (Mathematics)", nameEn: "Mathematics", icon: "fa-calculator", count: "90 lessons" },
+            { nameSi: "විද්‍යාව (Science)", nameEn: "Science", icon: "fa-flask", count: "154 lessons" },
+            { nameSi: "පරිසරය (ENV)", nameEn: "Environment (ENV)", icon: "fa-leaf", count: "30 lessons" },
+            { nameSi: "බුද්ධ ධර්මය", nameEn: "Buddhism", icon: "fa-dharmachakra", count: "112 lessons" },
+            { nameSi: "ඉංග්‍රීසි භාෂාව (English)", nameEn: "English Language", icon: "fa-language", count: "85 lessons" },
+            { nameSi: "තොරතුරු තාක්ෂණය (ICT)", nameEn: "ICT", icon: "fa-desktop", count: "60 lessons" }
         ];
 
+        let currentActiveGradeSi = "";
+        let currentActiveGradeEn = "";
         let currentActiveGrade = "";
 
-        // Switch Tabs in Auth Card
         function switchAuthTab(tab) {
             document.getElementById('loginTabBtn').classList.toggle('active', tab === 'login');
             document.getElementById('regTabBtn').classList.toggle('active', tab === 'register');
@@ -369,7 +477,6 @@
             document.getElementById('registerForm').classList.toggle('hidden', tab !== 'register');
         }
 
-        // Login Handler
         function handleLogin(e) {
             e.preventDefault();
             document.getElementById('authView').classList.add('hidden');
@@ -378,14 +485,12 @@
             showGradesView();
         }
 
-        // Registration Handler
         function handleRegister(e) {
             e.preventDefault();
-            alert("ලියාපදිංචිය සාර්ථකයි! දැන් ඇතුළු වන්න.");
+            alert(currentLang === 'si' ? "ලියාපදිංචිය සාර්ථකයි! දැන් ඇතුළු වන්න." : "Registration successful! Please login.");
             switchAuthTab('login');
         }
 
-        // Logout
         function logout() {
             document.getElementById('portalContent').classList.add('hidden');
             document.getElementById('authView').classList.remove('hidden');
@@ -402,9 +507,12 @@
             document.getElementById('courseView').classList.add('hidden');
         }
 
-        function openSubjectGrid(gradeName) {
-            currentActiveGrade = gradeName;
-            document.getElementById('selectedGradeTitle').innerText = gradeName;
+        function openSubjectGrid(gradeSi, gradeEn) {
+            currentActiveGradeSi = gradeSi;
+            currentActiveGradeEn = gradeEn;
+            currentActiveGrade = (currentLang === 'si') ? gradeSi : gradeEn;
+
+            document.getElementById('selectedGradeTitle').innerText = currentActiveGrade;
             document.getElementById('gradesView').classList.add('hidden');
             document.getElementById('subjectsView').classList.remove('hidden');
             document.getElementById('courseView').classList.add('hidden');
@@ -413,18 +521,22 @@
         }
 
         function renderSubjects(list) {
+            currentActiveGrade = (currentLang === 'si') ? currentActiveGradeSi : currentActiveGradeEn;
+            document.getElementById('selectedGradeTitle').innerText = currentActiveGrade;
+
             const container = document.getElementById('subjectGridContainer');
             container.innerHTML = "";
             list.forEach(sub => {
+                const name = (currentLang === 'si') ? sub.nameSi : sub.nameEn;
                 const card = document.createElement('div');
                 card.className = 'subject-card';
-                card.onclick = () => { playClickSound(); openCourseView(sub.name); };
+                card.onclick = () => { playClickSound(); openCourseView(name); };
                 card.innerHTML = `
                     <div class="subject-card-banner">
                         <i class="fa-solid ${sub.icon} blink-icon"></i>
                     </div>
                     <div class="subject-card-body">
-                        <h3>${sub.name} - ${currentActiveGrade}</h3>
+                        <h3>${name} - ${currentActiveGrade}</h3>
                         <p><i class="fa-regular fa-folder-open blink-icon"></i> ${sub.count}</p>
                     </div>
                 `;
@@ -434,7 +546,10 @@
 
         function filterSubjects() {
             const query = document.getElementById('subjectSearchInput').value.toLowerCase();
-            const filtered = subjectData.filter(s => s.name.toLowerCase().includes(query));
+            const filtered = subjectData.filter(s => {
+                const name = (currentLang === 'si') ? s.nameSi : s.nameEn;
+                return name.toLowerCase().includes(query);
+            });
             renderSubjects(filtered);
         }
 
