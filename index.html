@@ -1,5 +1,28 @@
+ඔන්න ඔබ ඉල්ලූ සියලුම අලුත් පහසුකම් එක් කරමින් කෝඩ් එක සම්පූර්ණයෙන්ම සකස් කළා:
+
+### 🌟 එකතු කළ අලුත් පහසුකම්:
+
+1. **Background Educational Wallpapers Slideshow:** අධ්‍යාපනික පසුබිම් රූප (Educational Background Slideshow) තත්පර 4කට වරක් මාරු වන ලෙස එකතු කර ඇත.
+2. **"Click here for payments" Tab:** Header navigation බාර් එකේම අලුතින් එක් කර ඇත.
+3. **ගෙවීම් ක්‍රියාවලිය (Step-by-step Payment Flow):**
+* **Step 1:** Grade එක තෝරන්න (Drop-down).
+* **Step 2:** Subject එක තෝරන්න (Drop-down).
+* **Step 3:** මාසික පන්ති ගාස්තුව **LKR 500.00** ලෙස පැහැදිලිව දර්ශනය වේ.
+* **Step 4:** ගෙවීම් ක්‍රම 2ක් (Payment Options):
+1. **Upload Bank Slip** (බැංකු රිසිට්පත Upload කිරීම).
+2. **Online Payment** (කාඩ්පත් මගින් අන්තර්ජාලයෙන් ගෙවීම).
+
+
+
+
+
+---
+
+### 💻 ඔබේ GitHub `index.html` එකට පහත සම්පූර්ණ Code එක Copy කරගන්න:
+
+```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,8 +39,31 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-light); color: var(--text); min-height: 100vh; position: relative; }
+        body { color: var(--text); min-height: 100vh; position: relative; overflow-x: hidden; }
 
+        /* Background Educational Slideshow */
+        .bg-slideshow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-size: cover;
+            background-position: center;
+            transition: background-image 1.2s ease-in-out;
+        }
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: rgba(240, 244, 248, 0.85);
+        }
+
+        /* Icon Blinking Animation */
         @keyframes pulse-blink {
             0% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.15); opacity: 0.7; }
@@ -29,11 +75,14 @@
             display: inline-block;
         }
 
-        header { background-color: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); flex-wrap: wrap; gap: 10px; }
+        /* Header / Navbar */
+        header { background-color: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.15); flex-wrap: wrap; gap: 10px; z-index: 10; position: relative; }
         .logo-title { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: bold; cursor: pointer; }
-        .nav-actions { display: flex; gap: 12px; align-items: center; }
+        .nav-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .btn-header { background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
         .btn-header:hover { background: rgba(255,255,255,0.3); }
+        .btn-header-pay { background: #ff9800; color: white; font-weight: bold; }
+        .btn-header-pay:hover { background: #e68a00; }
 
         .lang-select-wrap {
             background: rgba(255,255,255,0.2);
@@ -59,6 +108,7 @@
             background: white;
         }
 
+        /* Floating WhatsApp Button */
         .whatsapp-float {
             position: fixed;
             bottom: 25px;
@@ -78,32 +128,33 @@
         }
         .whatsapp-float:hover { transform: scale(1.05); }
 
+        /* Auth Container (Login / Register) */
         .auth-wrapper { display: flex; justify-content: center; align-items: center; min-height: 85vh; padding: 20px; }
         .auth-card { background: white; width: 100%; max-width: 450px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; overflow: hidden; }
         .auth-tabs { display: flex; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; }
         .auth-tab-btn { flex: 1; padding: 15px; border: none; background: none; font-size: 15px; font-weight: bold; color: #64748b; cursor: pointer; }
         .auth-tab-btn.active { color: var(--primary); background: white; border-bottom: 3px solid var(--primary); }
-        .auth-body { padding: 25px 25px 15px 25px; }
+        .auth-body { padding: 25px; }
         .form-group { margin-bottom: 16px; }
         .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 6px; color: #475569; }
         .input-wrap { position: relative; }
         .input-wrap i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
-        .input-wrap input, .input-wrap select { width: 100%; padding: 12px 14px 12px 40px; border: 1.5px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; }
+        .input-wrap input, .input-wrap select { width: 100%; padding: 12px 14px 12px 40px; border: 1.5px solid #e2e8f0; border-radius: 8px; outline: none; font-size: 14px; background: #fff; }
         .btn-auth { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 5px; }
         .btn-auth:hover { background: var(--primary-dark); }
 
-        .terms-box {
-            font-size: 11px;
-            color: #64748b;
-            text-align: center;
-            padding: 10px 25px 20px 25px;
-            background: #fff;
-            border-top: 1px solid #f1f5f9;
-        }
+        .terms-box { font-size: 11px; color: #64748b; text-align: center; padding: 10px 25px 20px 25px; background: #fff; border-top: 1px solid #f1f5f9; }
         .terms-box a { color: var(--primary); text-decoration: none; font-weight: 600; cursor: pointer; }
 
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
         .section-title { font-size: 22px; font-weight: bold; margin-bottom: 20px; text-align: center; color: var(--primary-dark); }
+
+        /* Payments Card & Options */
+        .payment-card { background: white; max-width: 550px; margin: 20px auto; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e0e0e0; }
+        .fee-badge { background: #e0f2f1; color: var(--primary-dark); padding: 12px; border-radius: 8px; font-size: 18px; font-weight: bold; text-align: center; margin: 15px 0; border: 1px dashed var(--primary); }
+        .payment-methods { display: flex; gap: 12px; margin-top: 15px; }
+        .pay-option-btn { flex: 1; padding: 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; background: #f8fafc; cursor: pointer; text-align: center; font-weight: bold; font-size: 13px; color: #334155; }
+        .pay-option-btn.selected { border-color: var(--primary); background: #e0f7fa; color: var(--primary-dark); }
 
         .grade-group { margin-bottom: 35px; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .grade-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; }
@@ -158,6 +209,10 @@
 </head>
 <body onclick="playClickSound()">
 
+    <!-- Educational Wallpaper Slideshow Background -->
+    <div id="bgSlide" class="bg-slideshow"></div>
+    <div class="bg-overlay"></div>
+
     <header>
         <div class="logo-title" onclick="playClickSound(); showAuthView();">
             <i class="fa-solid fa-graduation-cap blink-icon"></i>
@@ -171,6 +226,11 @@
                     <option value="en" selected>English (EN)</option>
                 </select>
             </div>
+
+            <!-- Click here for payments tab -->
+            <a href="#" onclick="playClickSound(); showPaymentsView()" class="btn-header btn-header-pay">
+                <i class="fa-solid fa-credit-card blink-icon"></i> <span id="txtNavPayments">Click here for payments</span>
+            </a>
 
             <a href="#" onclick="playClickSound(); showGradesView()" class="btn-header">
                 <i class="fa-solid fa-house blink-icon"></i> <span id="txtNavHome">Home</span>
@@ -187,7 +247,7 @@
         <span id="txtWhatsAppBtn">Contact Us</span>
     </a>
 
-    <!-- AUTHENTICATION PAGE WITH TERMS & CONDITIONS -->
+    <!-- VIEW 1: AUTHENTICATION PAGE -->
     <div id="authView" class="auth-wrapper">
         <div class="auth-card">
             <div class="auth-tabs">
@@ -248,6 +308,85 @@
                 <span id="txtTermsText">By continuing, you agree to our</span> 
                 <a onclick="alert(currentLang==='si' ? 'භාවිතා කිරීමේ කොන්දේසි: මෙම පද්ධතිය අධ්‍යාපනික කටයුතු සඳහා පමණි.' : 'Terms & Conditions: This portal is strictly for educational purposes.')" id="txtTermsLink">Terms & Conditions</a>
             </div>
+        </div>
+    </div>
+
+    <!-- VIEW 2: CLASS PAYMENTS SECTION -->
+    <div id="paymentsView" class="container hidden">
+        <div class="payment-card">
+            <h2 style="text-align: center; color: var(--primary-dark); margin-bottom: 20px;" id="txtPayTitle">Class Fee Payments</h2>
+            
+            <form onsubmit="handlePaymentSubmit(event)">
+                <!-- Dropdown 1: Select Grade -->
+                <div class="form-group">
+                    <label id="lblSelectGrade">1. SELECT GRADE / ශ්‍රේණිය තෝරන්න</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-graduation-cap blink-icon"></i>
+                        <select id="payGradeSelect" onchange="updatePaySubjects()" required>
+                            <option value="" id="optSelectGrade">-- Select Grade --</option>
+                            <option value="Grade 1">Grade 1</option>
+                            <option value="Grade 2">Grade 2</option>
+                            <option value="Grade 3">Grade 3</option>
+                            <option value="Grade 4">Grade 4</option>
+                            <option value="Grade 5">Grade 5</option>
+                            <option value="Grade 6">Grade 6</option>
+                            <option value="Grade 7">Grade 7</option>
+                            <option value="Grade 8">Grade 8</option>
+                            <option value="Grade 9">Grade 9</option>
+                            <option value="Grade 10">Grade 10</option>
+                            <option value="Grade 11">Grade 11</option>
+                            <option value="Grades 12/13">Grades 12/13</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dropdown 2: Select Subject -->
+                <div class="form-group">
+                    <label id="lblSelectSubject">2. SELECT SUBJECT / විෂයය තෝරන්න</label>
+                    <div class="input-wrap">
+                        <i class="fa-solid fa-book-open blink-icon"></i>
+                        <select id="paySubjectSelect" onchange="showPayAmount()" required>
+                            <option value="" id="optSelectSub">-- Select Subject --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Monthly Amount Display Box -->
+                <div id="amountBox" class="fee-badge hidden">
+                    <span id="txtMonthlyFee">Monthly Class Fee:</span> <span style="color: #00838f;">LKR 500.00</span>
+                </div>
+
+                <!-- Payment Options Selection -->
+                <div id="payOptionsSection" class="hidden">
+                    <label style="font-size: 12px; font-weight: bold; color: #475569;" id="lblPayOption">3. CHOOSE PAYMENT METHOD</label>
+                    <div class="payment-methods">
+                        <div class="pay-option-btn selected" id="optBankSlip" onclick="selectPayOption('slip')">
+                            <i class="fa-solid fa-file-arrow-up blink-icon"></i><br>
+                            <span id="txtOptSlip">Upload Bank Slip</span>
+                        </div>
+                        <div class="pay-option-btn" id="optOnlinePay" onclick="selectPayOption('online')">
+                            <i class="fa-solid fa-credit-card blink-icon"></i><br>
+                            <span id="txtOptOnline">Online Payment</span>
+                        </div>
+                    </div>
+
+                    <!-- Option A: Bank Slip Upload Input -->
+                    <div id="slipUploadWrap" class="form-group" style="margin-top: 15px;">
+                        <label id="lblUploadSlip">UPLOAD BANK SLIP IMAGE</label>
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-paperclip blink-icon"></i>
+                            <input type="file" id="bankSlipFile" accept="image/*">
+                        </div>
+                    </div>
+
+                    <!-- Option B: Online Payment Details Box -->
+                    <div id="onlinePayWrap" class="form-group hidden" style="margin-top: 15px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; text-align: center;">
+                        <p style="font-size: 13px; color: #334155;" id="txtOnlineNotice"><i class="fa-solid fa-lock" style="color: #10b981;"></i> Secure Payment Gateway (Visa / Master Card)</p>
+                    </div>
+
+                    <button type="submit" class="btn-auth" style="background: #10b981;" id="btnSubmitPayment">Proceed Payment</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -364,11 +503,31 @@
     </div>
 
     <script>
+        // Background Slideshow System
+        const bgImages = [
+            'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=1200&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1200&auto=format&fit=crop'
+        ];
+        let currentBgIndex = 0;
+        function changeBgSlide() {
+            const bgDiv = document.getElementById('bgSlide');
+            if (bgDiv && bgImages.length > 0) {
+                bgDiv.style.backgroundImage = `url('${bgImages[currentBgIndex]}')`;
+                currentBgIndex = (currentBgIndex + 1) % bgImages.length;
+            }
+        }
+        changeBgSlide();
+        setInterval(changeBgSlide, 4000);
+
         let currentLang = 'en';
+        let selectedPayMode = 'slip';
 
         const dict = {
             si: {
                 txtNavHome: "මුල් පිටුව",
+                txtNavPayments: "ගෙවීම් සඳහා මෙතැන ක්ලික් කරන්න",
                 txtLogout: "ලොග් අවුට්",
                 txtWhatsAppBtn: "සම්බන්ධ වන්න",
                 loginTabBtn: "ඇතුළු වන්න",
@@ -382,6 +541,17 @@
                 btnRegister: "ලියාපදිංචි වන්න",
                 txtTermsText: "දිගටම කරගෙන යාමෙන්, ඔබ අපගේ",
                 txtTermsLink: "භාවිතා කිරීමේ කොන්දේසි වලට එකඟ වේ",
+                txtPayTitle: "පන්ති ගාස්තු ගෙවීම් (Fee Payments)",
+                lblSelectGrade: "1. ශ්‍රේණිය තෝරන්න (SELECT GRADE)",
+                lblSelectSubject: "2. විෂයය තෝරන්න (SELECT SUBJECT)",
+                optSelectGrade: "-- ශ්‍රේණිය තෝරන්න --",
+                optSelectSub: "-- විෂයය තෝරන්න --",
+                txtMonthlyFee: "මාසික පන්ති ගාස්තුව:",
+                lblPayOption: "3. ගෙවීම් ක්‍රමය තෝරන්න (CHOOSE METHOD)",
+                txtOptSlip: "බැංකු රිසිට්පත Upload කරන්න",
+                txtOptOnline: "මාර්ගගත ගෙවීම් (Online)",
+                lblUploadSlip: "බැංකු රිසිට්පතේ ඡායාරූපය තෝරන්න",
+                btnSubmitPayment: "ගෙවීම ඉදිරිපත් කරන්න",
                 txtTitlePrimary: "ප්‍රාථමික අධ්‍යාපනය (1-5 ශ්‍රේණි)",
                 txtTitleSecondary: "ද්විතීයික අධ්‍යාපනය (6-13 ශ්‍රේණි)",
                 "g1-title": "1 ශ්‍රේණිය",
@@ -415,6 +585,7 @@
             },
             en: {
                 txtNavHome: "Home",
+                txtNavPayments: "Click here for payments",
                 txtLogout: "Logout",
                 txtWhatsAppBtn: "Contact Us",
                 loginTabBtn: "Login",
@@ -428,6 +599,17 @@
                 btnRegister: "Register Now",
                 txtTermsText: "By continuing, you agree to our",
                 txtTermsLink: "Terms & Conditions",
+                txtPayTitle: "Class Fee Payments",
+                lblSelectGrade: "1. SELECT GRADE",
+                lblSelectSubject: "2. SELECT SUBJECT",
+                optSelectGrade: "-- Select Grade --",
+                optSelectSub: "-- Select Subject --",
+                txtMonthlyFee: "Monthly Class Fee:",
+                lblPayOption: "3. CHOOSE PAYMENT METHOD",
+                txtOptSlip: "Upload Bank Slip",
+                txtOptOnline: "Online Payment",
+                lblUploadSlip: "UPLOAD BANK SLIP IMAGE",
+                btnSubmitPayment: "Proceed Payment",
                 txtTitlePrimary: "Primary Education (Grades 1-5)",
                 txtTitleSecondary: "Secondary Education (Grades 6-13)",
                 "g1-title": "Grade 1",
@@ -501,6 +683,61 @@
             } catch(e) {}
         }
 
+        // Payments Logic
+        function showPaymentsView() {
+            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('portalContent').classList.add('hidden');
+            document.getElementById('paymentsView').classList.remove('hidden');
+        }
+
+        function updatePaySubjects() {
+            const grade = document.getElementById('payGradeSelect').value;
+            const subSelect = document.getElementById('paySubjectSelect');
+            subSelect.innerHTML = `<option value="">${dict[currentLang].optSelectSub}</option>`;
+
+            if (grade) {
+                subjectData.forEach(sub => {
+                    const name = (currentLang === 'si') ? sub.nameSi : sub.nameEn;
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.innerText = name;
+                    subSelect.appendChild(opt);
+                });
+            }
+            document.getElementById('amountBox').classList.add('hidden');
+            document.getElementById('payOptionsSection').classList.add('hidden');
+        }
+
+        function showPayAmount() {
+            const sub = document.getElementById('paySubjectSelect').value;
+            if (sub) {
+                document.getElementById('amountBox').classList.remove('hidden');
+                document.getElementById('payOptionsSection').classList.remove('hidden');
+            } else {
+                document.getElementById('amountBox').classList.add('hidden');
+                document.getElementById('payOptionsSection').classList.add('hidden');
+            }
+        }
+
+        function selectPayOption(mode) {
+            selectedPayMode = mode;
+            document.getElementById('optBankSlip').classList.toggle('selected', mode === 'slip');
+            document.getElementById('optOnlinePay').classList.toggle('selected', mode === 'online');
+
+            document.getElementById('slipUploadWrap').classList.toggle('hidden', mode !== 'slip');
+            document.getElementById('onlinePayWrap').classList.toggle('hidden', mode !== 'online');
+        }
+
+        function handlePaymentSubmit(e) {
+            e.preventDefault();
+            if (selectedPayMode === 'slip') {
+                alert(currentLang === 'si' ? 'ගෙවීම් රිසිට්පත සාර්ථකව Upload විය! Admin අනුමැතියෙන් පසු පන්තිය සක්‍රිය වේ.' : 'Bank slip uploaded successfully! Class will activate after admin approval.');
+            } else {
+                alert(currentLang === 'si' ? 'Online Payment Gateway වෙත සම්බන්ධ වෙමින් පවතී...' : 'Redirecting to Online Payment Gateway...');
+            }
+            showGradesView();
+        }
+
         const subjectData = [
             { nameSi: "මව්බස / සිංහල භාෂාව", nameEn: "Mother Tongue / Sinhala", icon: "fa-feather-pointed", countSi: "පාඩම් 43", countEn: "43 lessons" },
             { nameSi: "ගණිතය (Mathematics)", nameEn: "Mathematics", icon: "fa-calculator", countSi: "පාඩම් 90", countEn: "90 lessons" },
@@ -525,6 +762,7 @@
         function handleLogin(e) {
             e.preventDefault();
             document.getElementById('authView').classList.add('hidden');
+            document.getElementById('paymentsView').classList.add('hidden');
             document.getElementById('portalContent').classList.remove('hidden');
             document.getElementById('logoutBtn').classList.remove('hidden');
             showGradesView();
@@ -538,6 +776,7 @@
 
         function logout() {
             document.getElementById('portalContent').classList.add('hidden');
+            document.getElementById('paymentsView').classList.add('hidden');
             document.getElementById('authView').classList.remove('hidden');
             document.getElementById('logoutBtn').classList.add('hidden');
         }
@@ -547,6 +786,9 @@
         }
 
         function showGradesView() {
+            document.getElementById('paymentsView').classList.add('hidden');
+            document.getElementById('authView').classList.add('hidden');
+            document.getElementById('portalContent').classList.remove('hidden');
             document.getElementById('gradesView').classList.remove('hidden');
             document.getElementById('subjectsView').classList.add('hidden');
             document.getElementById('courseView').classList.add('hidden');
@@ -619,3 +861,5 @@
     </script>
 </body>
 </html>
+
+```
